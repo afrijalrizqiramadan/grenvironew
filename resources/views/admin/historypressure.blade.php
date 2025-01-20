@@ -67,14 +67,15 @@
                     <table class="table align-middle table-nowrap" id="customerTable">
                         <thead class="table-light">
                         <tr>
-                            <th>No</th>
-                            <th>Nama</th>
-                            <th>Lokasi</th>
-                          <th>Progress</th>
-                          <th>Tekanan</th>
-                          <th>Status</th>
-                          <th>Update Terakhir</th>
-                          <th>Aksi</th>
+                            <th class="long" data-sort="no">No</th>
+                                                            <th class="long" data-sort="customer_name">Nama</th>
+                                                            <th class="sort" data-sort="phone">Kapasitas</th>
+                                                            <th class="sort" data-sort="phone">Suhu</th>
+                                                            <th class="sort" data-sort="phone">Bar Tekanan</th>
+                                                            <th class="sort" data-sort="phone">Nilai Tekanan</th>
+                                                            <th class="sort" data-sort="status">Status</th>
+                                                            <th class="sort" data-sort="status">Update</th>
+                                                            <th class="sort" data-sort="action">Action</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -84,12 +85,11 @@
                         <tr>
                             <td class="py-1">{{ $index + 1 }}</td>
 
-                          <td class="py-1">
-                            {{ $pressure->name }}
-                          </td>
-                          <td>
-                            {{ $pressure->location }}
-                          </td>
+                            <td><a href="{{ route('detail-customer',$pressure->id) }}" class="text-success fw-bold">{{ $pressure->name }}</a></td>
+
+                            <td>{{ $pressure->capacity }} Bar</td>
+                            <td>{{ $pressure->temperature }}</td>
+
                           <td>
                             <div class="progress">
                                 <div class="progress-bar
@@ -103,27 +103,27 @@
                             " role="progressbar" style="width: {{$pressure->pressure }}%" aria-valuenow="{{$pressure->pressure }}" aria-valuemin="0" aria-valuemax="100"></div>                            </div>
                           </td>
                       
-                                                    <td class="@if($pressure->pressure < 20)
-                                   text-danger
-                                @elseif($pressure->pressure  >= 20 && $pressure->pressure  < 40)
-                                    text-warning
-                                @else
-                                    text-success
-                                @endif font-weight-bold">{{ $pressure->pressure }}%
-                                                    </td>
-                             <td><label class="badge @if($pressure->pressure < 20)
-                                   bg-danger-subtle text-danger
-                                @elseif($pressure->pressure  >= 20 && $pressure->pressure  < 40)
-                                    bg-warning-subtle text-warning
-                                @else
-                                    bg-success-subtle text-success
-                                @endif"> @if($pressure->pressure < 20)
-                                Waktu Pengisian
-                            @elseif($pressure->pressure >= 20 && $pressure->pressure < 40)
-                                Hampir Habis
-                            @else
-                                Masih Penuh
-                            @endif</label></td>
+                          <td class="@if($pressure->pressure < 20)
+                            text-danger
+                         @elseif($pressure->pressure  >= 20 && $pressure->pressure  < 60)
+                             text-warning
+                         @else
+                             text-success
+                         @endif font-weight-bold">{{ $pressure->pressure }} Bar
+
+                      <td><label class="badge @if($pressure->pressure < 20)
+                           bg-danger-subtle text-danger
+                         @elseif($pressure->pressure  >= 20 && $pressure->pressure  < 60)
+                             bg-warning-subtle text-warning
+                         @else
+                             bg-success-subtle text-success
+                         @endif"> @if($pressure->pressure < 20)
+                         Waktu Pengisian
+                     @elseif($pressure->pressure >= 20 && $pressure->pressure < 60)
+                         Hampir Habis
+                     @else
+                         Masih Penuh
+                     @endif</label></td></td>
                             <td>{{ \Carbon\Carbon::parse($pressure->updated_at)->translatedFormat('d F Y H:i')}}</td>
 
                         <td>

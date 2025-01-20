@@ -264,16 +264,16 @@
                                                             {{-- <td>{{ $status->district_name }}</td> --}}
                                                             <td>{{ $status->temperature }}</td>
                                                             <td><div class="progress">
-                                                              <div class="progress-bar
-                                                              @if($status->pressure < 20)
-                                                                  bg-danger
-                                                              @elseif($status->pressure  >= 20 && $status->pressure  < 60)
-                                                                  bg-warning
-                                                              @else
-                                                                  bg-success
-                                                              @endif
-                                                          " role="progressbar" style="width: {{$status->pressure / 2 }}%" aria-valuenow="{{$status->pressure / 2 }}" aria-valuemin="0" aria-valuemax="200"></div>                            </div>
-                                                        </td>
+                                                                <div class="progress-bar
+                                                                @if($status->pressure < 20)
+                                                                    bg-danger
+                                                                @elseif($status->pressure  >= 20 && $status->pressure  < 60)
+                                                                    bg-warning
+                                                                @else
+                                                                    bg-success
+                                                                @endif
+                                                            " role="progressbar" style="width: {{$status->pressure / 2 }}%" aria-valuenow="{{$status->pressure / 2 }}" aria-valuemin="0" aria-valuemax="200"></div>                            </div>
+                                                          </td>
                                                           <td class="@if($status->pressure < 20)
                                                                  text-danger
                                                               @elseif($status->pressure  >= 20 && $status->pressure  < 60)

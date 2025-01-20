@@ -15,7 +15,7 @@ class PressureController extends Controller
         $user = $request->user();
 
         if($user->hasRole('administrator')) {
-            $latestPressures = DataSensor::select('customers.id','customers.name','customers.telp','customers.location', 'data_sensors.device_id', 'data_sensors.pressure')
+            $latestPressures = DataSensor::select('customers.id','customers.name','customers.telp','customers.location', 'data_sensors.device_id', 'data_sensors.pressure','data_sensors.temperature')
             ->leftJoin('customers', 'data_sensors.device_id', '=', 'customers.device_id')
             ->whereIn('data_sensors.id', function ($query) {
                 $query->selectRaw('MAX(id)')
