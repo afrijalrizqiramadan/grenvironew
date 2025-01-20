@@ -59,7 +59,7 @@ Route::middleware([
     Route::get('/delivery', [DeliveryController::class,'deliveryPage'])->name('delivery');
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('/map',[App\Http\Controllers\MapController::class,'index'])->name('map.index');
+    Route::get('/map',[App\Http\Controllers\MapController::class,'index'])->name('map');
     Route::get('/detailcustomer/{slug}',[App\Http\Controllers\DetailCustomerController::class,'detailPage'])->name('detail-customer');
 
     Route::resource('customer',(CustomerController::class));

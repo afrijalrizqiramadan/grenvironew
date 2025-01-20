@@ -101,9 +101,9 @@
                                 <div class="tab-pane fade show active" id="diproses" role="tabpanel" aria-labelledby="proses-tab">
                                     <div class="col-lg-12 grid-margin stretch-card">
                                         <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table ">
-                                              <thead>
+                                          <div class="table-responsive table-card mt-3 mb-1">
+                                            <table class="table align-middle table-nowrap" id="customerTable">
+                                                <thead class="table-light">
                                                 <tr>
                                                     <th>No</th>
                                                     <th>Nama</th>
@@ -174,9 +174,9 @@
                                 <div class="tab-pane fade" id="pengiriman" role="tabpanel" aria-labelledby="kirim-tab">
                                     <div class="col-lg-12 grid-margin stretch-card">
                                         <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table">
-                                              <thead>
+                                          <div class="table-responsive table-card mt-3 mb-1">
+                                            <table class="table align-middle table-nowrap" id="customerTable">
+                                                <thead class="table-light">
                                                 <tr>
                                                     <th>No</th>
                                                     <th>Nama</th>
@@ -252,9 +252,9 @@
                                         <div class="card-body">
                                             <div class="row">
 
-                                        <div class="table-responsive">
-                                            <table class="table">
-                                              <thead>
+                                              <div class="table-responsive table-card mt-3 mb-1">
+                                                <table class="table align-middle table-nowrap" id="customerTable">
+                                                    <thead class="table-light">
                                                 <tr>
                                                     <th>No</th>
                                                     <th>Nama</th>
@@ -328,9 +328,9 @@
                                 <div class="tab-pane fade" id="dibatalkan" role="tabpanel" aria-labelledby="batal-tab">
                                     <div class="col-lg-12 grid-margin stretch-card">
                                         <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table">
-                                              <thead>
+                                          <div class="table-responsive table-card mt-3 mb-1">
+                                            <table class="table align-middle table-nowrap" id="customerTable">
+                                                <thead class="table-light">
                                                 <tr>
                                                     <th>No</th>
                                                     <th>Nama</th>

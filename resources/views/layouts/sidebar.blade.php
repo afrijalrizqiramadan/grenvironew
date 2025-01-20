@@ -39,7 +39,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="delivery">
+                    <a class="nav-link menu-link" href="{{ route('delivery') }}">
                         <i class="ri-truck-line"></i> <span>Pengiriman</span>
                     </a>
                 </li>
@@ -51,22 +51,22 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="pressure">
+                    <a class="nav-link menu-link" href="{{ route('pressure') }}">
                         <i class="ri-bar-chart-line"></i> <span>Tekanan</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="delivery">
+                    <a class="nav-link menu-link" href="{{ route('delivery') }}">
                         <i class="ri-truck-line"></i> <span>Pengiriman</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="map">
+                    <a class="nav-link menu-link" href="{{ route('map') }}">
                         <i class="ri-map-line"></i> <span>Peta</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="customer">
+                    <a class="nav-link menu-link" href="{{ route('customer.index') }}">
                         <i class="ri-customer-service-line"></i> <span>Pelanggan</span>
                     </a>
                 </li>

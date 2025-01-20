@@ -63,9 +63,9 @@
                 <div class="alert alert-danger" id="errorAlert" role="alert" style="display:none;">
                     Failed to insert data.
                 </div>
-                  <div class="table-responsive">
-                    <table class="table">
-                      <thead>
+                <div class="table-responsive table-card mt-3 mb-1">
+                    <table class="table align-middle table-nowrap" id="customerTable">
+                        <thead class="table-light">
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
@@ -112,11 +112,11 @@
                                 @endif font-weight-bold">{{ $pressure->pressure }}%
                                                     </td>
                              <td><label class="badge @if($pressure->pressure < 20)
-                                   badge-danger
+                                   bg-danger-subtle text-danger
                                 @elseif($pressure->pressure  >= 20 && $pressure->pressure  < 40)
-                                    badge-warning
+                                    bg-warning-subtle text-warning
                                 @else
-                                    badge-success
+                                    bg-success-subtle text-success
                                 @endif"> @if($pressure->pressure < 20)
                                 Waktu Pengisian
                             @elseif($pressure->pressure >= 20 && $pressure->pressure < 40)
@@ -127,16 +127,17 @@
                             <td>{{ \Carbon\Carbon::parse($pressure->updated_at)->translatedFormat('d F Y H:i')}}</td>
 
                         <td>
-                            <a class="btn btn-success" href="https://api.whatsapp.com/send?phone={{ $pressure->telp }}&text=Hai%20{{ $pressure->name }},%20tekanan%20gas%20anda%20saat%20ini%20{{ $pressure->pressure }}%" target="_blank">
-                                Kirim WA
-                            </a>
-                            <button class="btn btn-primary insert-btn"
+                            <div class="d-flex gap-2">
+                                <a href="https://api.whatsapp.com/send?phone=+{{ $pressure->telp }}" class="btn btn-sm btn-success me-1" target="_blank"><i class="ri-whatsapp-line"></i></a>
+
+                            <button class="btn btn-sm btn-primary insert-btn"
                             data-customer-id="{{ $pressure->id }}"
                             data-customer-name="{{ $pressure->name }}"
                             data-toggle="modal"
                             data-target="#insertModal">
                             Kirim
                         </button>
+                            </div>
                             </td>
                         </tr>
 

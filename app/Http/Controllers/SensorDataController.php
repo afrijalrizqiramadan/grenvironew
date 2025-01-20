@@ -71,7 +71,7 @@ class SensorDataController extends Controller
             $query->where('timestamp', '>=', now()->subDay());
         } 
         elseif ($filter == '1w') {
-            $query->whereBetween('timestamp', [now()->startOfWeek(), now()->endOfWeek()]);
+            $query->whereBetween('timestamp', [now()->subWeek()->startOfWeek(), now()->subWeek()->endOfWeek()]);
         } elseif ($filter == '1m') {
             $query->whereMonth('timestamp', $currentMonth)->whereYear('timestamp', $currentYear);
         } elseif ($filter == '6y') {
