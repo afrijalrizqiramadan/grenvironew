@@ -259,7 +259,7 @@
                                                             
                                                             @foreach($minpressuresensor as $index=>$status)
                                                             <td>{{ $index + 1 }}</td>
-                                                            <td>{{ $status->name }}</td>
+                                                            <td><a href="{{ route('detail-customer',$status->id) }}" class="text-success fw-bold">{{ $status->name }}</a></td>
                                                             <td>{{ $status->capacity }} Bar</td>
                                                             <td>{{ $status->district_name }}</td>
                                                             <td><div class="progress">
