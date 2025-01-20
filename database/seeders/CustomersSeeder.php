@@ -31,9 +31,9 @@ class CustomersSeeder extends Seeder
                 'capacity' => 200,
                 'device_id' => 1,
                 'province' => 35,
-                'regency' => 3573,
-                'district' => 3507,
-                'village' => 350723,
+                'regency' => 259,
+                'district' => 3410,
+                'village' => 42538,
                 'status' => 'aktif',
             ]
             

@@ -245,9 +245,9 @@
                                                             <th class="long" data-sort="no">No</th>
                                                             <th class="long" data-sort="customer_name">Nama</th>
                                                             <th class="sort" data-sort="phone">Kapasitas</th>
-                                                            <th class="sort" data-sort="phone">Kecamatan</th>
-                                                            <th class="sort" data-sort="phone">Tekanan</th>
-                                                            <th class="sort" data-sort="phone">Persentase</th>
+                                                            <th class="sort" data-sort="phone">Suhu</th>
+                                                            <th class="sort" data-sort="phone">Bar Tekanan</th>
+                                                            <th class="sort" data-sort="phone">Nilai Tekanan</th>
                                                             <th class="sort" data-sort="status">Status</th>
                                                             <th class="sort" data-sort="status">Update</th>
                                                             <th class="sort" data-sort="action">Action</th>
@@ -261,7 +261,8 @@
                                                             <td>{{ $index + 1 }}</td>
                                                             <td><a href="{{ route('detail-customer',$status->id) }}" class="text-success fw-bold">{{ $status->name }}</a></td>
                                                             <td>{{ $status->capacity }} Bar</td>
-                                                            <td>{{ $status->district_name }}</td>
+                                                            {{-- <td>{{ $status->district_name }}</td> --}}
+                                                            <td>{{ $status->temperature }}</td>
                                                             <td><div class="progress">
                                                               <div class="progress-bar
                                                               @if($status->pressure < 20)
@@ -279,7 +280,7 @@
                                                                   text-warning
                                                               @else
                                                                   text-success
-                                                              @endif font-weight-bold">{{ $status->pressure }}%
+                                                              @endif font-weight-bold">{{ $status->pressure }} Bar
           
                                                            <td><label class="badge @if($status->pressure < 20)
                                                                 bg-danger-subtle text-danger

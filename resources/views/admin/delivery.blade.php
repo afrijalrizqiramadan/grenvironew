@@ -110,7 +110,6 @@
                                                     <th>Lokasi</th>
                                                     <th>Jadwal</th>
                                                     <th>Total Pengiriman</th>
-                                                    <th>No Telepon</th>
                                                     <th>Status</th>
                                                     @if($user->hasRole('administrator'))
                                                         <th>Aksi</th>
@@ -132,12 +131,7 @@
                                                   <td>
                                                     {{ $delivery->total }}
                                                   </td>
-                                                  <td>
-                                                    {{ $delivery->customer->telp }}
-                                                    <button onclick="redirectToWhatsApp(' {{ $delivery->customer->telp }}')" type="button" class="btn btn-inverse-success btn-icon">
-                                                        <i class="mdi mdi-whatsapp"></i>
-                                                      </button>
-                                                  </td>
+                                                 
                                                   <td><label class="badge
                                                     @if($delivery->status == 'Selesai')
                                                        bg-success-subtle text-success
@@ -152,13 +146,17 @@
                                                    @if($user->hasRole('administrator'))
 
                                                   <td>
-                                                    <button class="btn btn-warning update-btn"
+                                                    <div class="d-flex gap-2">
+                                                      <a href="https://api.whatsapp.com/send?phone={{ $delivery->customer->telp }}" class="btn btn-sm btn-success me-1" target="_blank"><i class="ri-whatsapp-line"></i></a>
+
+                                                    <button class="btn btn-sm btn-warning update-btn"
                                                     data-delivery-status="{{ $delivery->status }}"
                                                     data-delivery-id="{{ $delivery->id }}"
                                                     data-toggle="modal"
                                                     data-target="#updateModal">
                                                     Update
                                                 </button>
+                                                    </div>
                                                     </td>
                                                     @endif
                                                 </tr>
@@ -183,7 +181,6 @@
                                                     <th>Lokasi</th>
                                                     <th>Jadwal</th>
                                                     <th>Total Pengiriman</th>
-                                                    <th>No Telepon</th>
                                                     <th>Status</th>
                                                     @if($user->hasRole('administrator'))
 
@@ -207,12 +204,7 @@
                                                   <td class="py-1">
                                                     {{ $delivery->total }}
                                                   </td>
-                                                  <td>
-                                                    {{ $delivery->customer->telp }}
-                                                    <button onclick="redirectToWhatsApp(' {{ $delivery->customer->telp }}')" type="button" class="btn btn-inverse-success btn-icon">
-                                                        <i class="mdi mdi-whatsapp"></i>
-                                                      </button>
-                                                  </td>
+                                               
                                                   <td><label class="badge
                                                     @if($delivery->status == 'Selesai')
                                                        bg-success-subtle text-success
@@ -225,8 +217,10 @@
                                                    @endif
                                                    ">{{ $delivery->status }}</label></td>
                                                    @if($user->hasRole('administrator'))
-                                                  <td>
-                                                   <button class="btn btn-warning update-btn"
+                                                  <td>    <div class="d-flex gap-2">
+                                                    <a href="https://api.whatsapp.com/send?phone={{ $delivery->customer->telp }}" class="btn btn-sm btn-success me-1" target="_blank"><i class="ri-whatsapp-line"></i></a>
+
+                                                   <button class="btn btn-sm btn-warning update-btn"
                                                    data-delivery-status="{{ $delivery->status }}"
                                                    data-delivery-id="{{ $delivery->id }}"
 
@@ -234,6 +228,7 @@
                                                    data-target="#updateModal">
                                                    Update
                                                </button>
+                                               </div>
                                                     </td>
                                                     @endif
                                                 </tr>
@@ -261,7 +256,6 @@
                                                     <th>Lokasi</th>
                                                     <th>Jadwal</th>
                                                     <th>Total Pengiriman</th>
-                                                    <th>No Telepon</th>
                                                     <th>Status</th>
                                                     @if($user->hasRole('administrator'))
                                                   <th>Aksi</th>
@@ -284,12 +278,7 @@
                                                   <td class="py-1">
                                                     {{ $delivery->total }}
                                                   </td>
-                                                  <td>
-                                                    {{ $delivery->customer->telp }}
-                                                    <button onclick="redirectToWhatsApp(' {{ $delivery->customer->telp }}')" type="button" class="btn btn-inverse-success btn-icon">
-                                                        <i class="mdi mdi-whatsapp"></i>
-                                                      </button>
-                                                  </td>
+                                                
                                                   <td><label class="badge
                                                     @if($delivery->status == 'Selesai')
                                                        bg-success-subtle text-success
@@ -303,8 +292,9 @@
                                                    ">{{ $delivery->status }}</label></td>
                                                    @if($user->hasRole('administrator'))
                                                   <td>
-
-                                                    <button class="btn btn-warning update-btn"
+                                                    <div class="d-flex gap-2">
+                                                      <a href="https://api.whatsapp.com/send?phone={{ $delivery->customer->telp }}" class="btn btn-sm btn-success me-1" target="_blank"><i class="ri-whatsapp-line"></i></a>
+                                                    <button class="btn btn-sm btn-warning update-btn"
                                                     data-delivery-status="{{ $delivery->status }}"
                                                     data-delivery-id="{{ $delivery->id }}"
 
@@ -312,6 +302,8 @@
                                                     data-target="#updateModal">
                                                     Update
                                                 </button>
+                                              </div>
+
                                                     </td>
                                                     @endif
                                                 </tr>
@@ -337,7 +329,6 @@
                                                     <th>Lokasi</th>
                                                     <th>Jadwal</th>
                                                     <th>Total Pengiriman</th>
-                                                    <th>No Telepon</th>
                                                     <th>Status</th>
 
                                                 </tr>
@@ -359,10 +350,9 @@
                                                     {{ $delivery->total }}
                                                   </td>
                                                   <td>
-                                                    {{ $delivery->customer->telp }}
-                                                    <button onclick="redirectToWhatsApp(' {{ $delivery->customer->telp }}')" type="button" class="btn btn-inverse-success btn-icon">
-                                                        <i class="mdi mdi-whatsapp"></i>
-                                                      </button>
+                                                    <div class="d-flex gap-2">
+                                                      <a href="https://api.whatsapp.com/send?phone={{ $delivery->customer->telp }}" class="btn btn-sm btn-success me-1" target="_blank"><i class="ri-whatsapp-line"></i></a>
+                                                    </div>
                                                   </td>
                                                   <td><label class="badge
                                                     @if($delivery->status == 'Selesai')
@@ -423,30 +413,7 @@
                             </div>
                         </div>
                     </div>
-            @push('javascript')
-        
-            <script>
-                function redirectToWhatsApp(phoneNumber) {
-                    phoneNumber = phoneNumber.replace(/\D/g, '');
-
-// Logika untuk menambahkan +62 jika diperlukan
-if (!phoneNumber.startsWith('62')) {
-    if (phoneNumber.startsWith('0')) {
-        phoneNumber = '62' + phoneNumber.slice(1);
-    } else {
-        phoneNumber = '62' + phoneNumber;
-    }
-}
-
-// Menambahkan tanda +
-phoneNumber = '+' + phoneNumber;
-                    var message = ''; // Ganti dengan pesan yang Anda inginkan
-                    var url = 'https://wa.me/' + phoneNumber + '?text=' + encodeURIComponent(message);
-                    console.log(url)
-                    window.location.href = url;
-                }
-                </script>
-                @endpush
+           
                 @endsection
 @section('script')
 <!-- apexcharts -->
