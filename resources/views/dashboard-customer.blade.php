@@ -256,7 +256,7 @@
 
                         <div class="card-body p-0 pb-2">
                             <div class="w-100">
-                                <div id="pressure_chart" data-colors='["--vz-primary","--vz-success", "--vz-light"]' class="apex-charts" dir="ltr"></div>
+                                <div id="pressure_chart" data-colors='["--vz-primary"]' class="apex-charts" dir="ltr"></div>
                             </div>
                         </div><!-- end card body -->
                     </div><!-- end card -->
@@ -1002,10 +1002,7 @@ if (linechartBasicColors) {
                 show: false
             }
         },
-        markers: {
-            size: 1,  // Ukuran marker
-   
-        },
+       
         dataLabels: {
             enabled: false
         },
