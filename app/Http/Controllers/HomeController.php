@@ -44,107 +44,107 @@ class HomeController extends Controller
 
     public function root()
     {
-        $currentMonth = Carbon::now()->month;
-        $currentYear = Carbon::now()->year;
-        $user = Auth::user();
-        dd($user);
+    //     $currentMonth = Carbon::now()->month;
+    //     $currentYear = Carbon::now()->year;
+    //     $user = Auth::user();
 
-        if($user->hasRole('administrator')) {
-            $user = Auth::user(); // Mendapatkan pengguna yang sedang login
-            $customerCount = Customer::count(); // Menghitung jumlah data customer
-            $averagePressure = DataSensor::avg('pressure');
-            $lowPressureCount = DataSensor::where('pressure', '<', 20)->count();
+    //     if($user->hasRole('administrator')) {
+    //         $user = Auth::user(); // Mendapatkan pengguna yang sedang login
+    //         $customerCount = Customer::count(); // Menghitung jumlah data customer
+    //         $averagePressure = DataSensor::avg('pressure');
+    //         $lowPressureCount = DataSensor::where('pressure', '<', 20)->count();
 
-            $minpressuresensor = DataSensor::join('devices', 'data_sensors.device_id', '=', 'devices.id')
-            ->join('customers', 'devices.id', '=', 'customers.device_id')
-            ->join('indonesia_districts', 'customers.district', '=', 'indonesia_districts.id') // Join dengan tabel districts
-            ->select('data_sensors.*', 'customers.*', 'indonesia_districts.name as district_name')
-            ->get();
+    //         $minpressuresensor = DataSensor::join('devices', 'data_sensors.device_id', '=', 'devices.id')
+    //         ->join('customers', 'devices.id', '=', 'customers.device_id')
+    //         ->join('indonesia_districts', 'customers.district', '=', 'indonesia_districts.id') // Join dengan tabel districts
+    //         ->select('data_sensors.*', 'customers.*', 'indonesia_districts.name as district_name')
+    //         ->get();
 
-            $countDeliveries = DeliveryStatus::where('status', 'Selesai')
-            ->whereYear('delivery_date', now()->year)
-            ->whereMonth('delivery_date', now()->month)
-            ->count();
+    //         $countDeliveries = DeliveryStatus::where('status', 'Selesai')
+    //         ->whereYear('delivery_date', now()->year)
+    //         ->whereMonth('delivery_date', now()->month)
+    //         ->count();
 
-              return view('dashboard-administrator', compact('countDeliveries','customerCount','lowPressureCount','averagePressure', 'minpressuresensor'));
-     }
-        elseif($user->hasRole('customer')) {
-            $user = Auth::user(); // Mendapatkan pengguna yang sedang login
+    //           return view('dashboard-administrator', compact('countDeliveries','customerCount','lowPressureCount','averagePressure', 'minpressuresensor'));
+    //  }
+    //     elseif($user->hasRole('customer')) {
+    //         $user = Auth::user(); // Mendapatkan pengguna yang sedang login
 
-            $customer = $user->customer; // Mendapatkan data customer yang terkait dengan pengguna
-            $device = $customer->device;
-            $customer_id = $customer->id;
-            $location = $customer->location;
-            $address = $customer->address;
-            $capacity = $customer->capacity;
-            $nama = $customer->name;
-            $images = $customer->images;
-            $maps = $device->maps;
-            $email = $customer->email;
-            $id_device = $device->id;
-            $status_device = $device->status;
-            $sensorData = HistorySensor::where('device_id', $id_device)
-            ->whereMonth('timestamp', $currentMonth)
-            ->whereYear('timestamp', $currentYear)
-            ->orderBy('timestamp')
-            ->get();
+    //         $customer = $user->customer; // Mendapatkan data customer yang terkait dengan pengguna
+    //         $device = $customer->device;
+    //         $customer_id = $customer->id;
+    //         $location = $customer->location;
+    //         $address = $customer->address;
+    //         $capacity = $customer->capacity;
+    //         $nama = $customer->name;
+    //         $images = $customer->images;
+    //         $maps = $device->maps;
+    //         $email = $customer->email;
+    //         $id_device = $device->id;
+    //         $status_device = $device->status;
+    //         $sensorData = HistorySensor::where('device_id', $id_device)
+    //         ->whereMonth('timestamp', $currentMonth)
+    //         ->whereYear('timestamp', $currentYear)
+    //         ->orderBy('timestamp')
+    //         ->get();
 
-            // Mengumpulkan data nilai_sensor dan tanggal untuk chart
-            $pressure_history = [];
-            $pressure_history['data'] = $sensorData->pluck('pressure')->toArray();
-            $pressure_history['categories'] = $sensorData->pluck('timestamp')->map(function($date) {
-                return \Carbon\Carbon::parse($date)->translatedFormat('d F Y H:i:s');
-            })->toArray();
-        $apiKey = '50833fc817cd790ad28ff60cf080111e';  // Ganti dengan API Key Anda
-        $city = 'Malang';  // Ganti dengan lokasi yang diinginkan
-        $units = 'metric';  // Gunakan 'imperial' untuk Fahrenheit
-        $client = new Client();
-        $response = $client->get("https://api.openweathermap.org/data/2.5/weather?q={$city}&units={$units}&appid={$apiKey}");
+    //         // Mengumpulkan data nilai_sensor dan tanggal untuk chart
+    //         $pressure_history = [];
+    //         $pressure_history['data'] = $sensorData->pluck('pressure')->toArray();
+    //         $pressure_history['categories'] = $sensorData->pluck('timestamp')->map(function($date) {
+    //             return \Carbon\Carbon::parse($date)->translatedFormat('d F Y H:i:s');
+    //         })->toArray();
+    //     $apiKey = '50833fc817cd790ad28ff60cf080111e';  // Ganti dengan API Key Anda
+    //     $city = 'Malang';  // Ganti dengan lokasi yang diinginkan
+    //     $units = 'metric';  // Gunakan 'imperial' untuk Fahrenheit
+    //     $client = new Client();
+    //     $response = $client->get("https://api.openweathermap.org/data/2.5/weather?q={$city}&units={$units}&appid={$apiKey}");
 
-        $weatherData = json_decode($response->getBody(), true);
+    //     $weatherData = json_decode($response->getBody(), true);
 
-            $registration_date_device = $customer->registration_date;
-            $statuses = DeliveryStatus::where('customer_id', $customer_id)->orderBy('delivery_date', 'desc')
-            ->take(5)->get();
-           $latestPressure = DataSensor::where('device_id',  $id_device)
-            ->orderBy('timestamp', 'desc')
-            ->value('pressure');
-            $latestTime = DataSensor::where('device_id',  $id_device)
-            ->orderBy('timestamp', 'desc')
-            ->value('timestamp');
-            $sensorData = HistorySensor::where('device_id', $id_device)
-            ->whereMonth('timestamp', $currentMonth)
-            ->whereYear('timestamp', $currentYear)
-            ->orderBy('timestamp')
-            ->get();
+    //         $registration_date_device = $customer->registration_date;
+    //         $statuses = DeliveryStatus::where('customer_id', $customer_id)->orderBy('delivery_date', 'desc')
+    //         ->take(5)->get();
+    //        $latestPressure = DataSensor::where('device_id',  $id_device)
+    //         ->orderBy('timestamp', 'desc')
+    //         ->value('pressure');
+    //         $latestTime = DataSensor::where('device_id',  $id_device)
+    //         ->orderBy('timestamp', 'desc')
+    //         ->value('timestamp');
+    //         $sensorData = HistorySensor::where('device_id', $id_device)
+    //         ->whereMonth('timestamp', $currentMonth)
+    //         ->whereYear('timestamp', $currentYear)
+    //         ->orderBy('timestamp')
+    //         ->get();
 
-            // Mengumpulkan data nilai_sensor dan tanggal untuk chart
-            $pressure = $sensorData->pluck('pressure');
-            $timestamp = $sensorData->pluck('timestamp');
+    //         // Mengumpulkan data nilai_sensor dan tanggal untuk chart
+    //         $pressure = $sensorData->pluck('pressure');
+    //         $timestamp = $sensorData->pluck('timestamp');
 
-        return view('dashboard-customer', compact('customer','address','pressure_history','latestTime','weatherData','maps','id_device','latestPressure','images','location','pressure', 'timestamp','nama', 'statuses','email','status_device','capacity','registration_date_device'));
-        }
-        elseif($user->hasRole('technician')) {
+    //     return view('dashboard-customer', compact('customer','address','pressure_history','latestTime','weatherData','maps','id_device','latestPressure','images','location','pressure', 'timestamp','nama', 'statuses','email','status_device','capacity','registration_date_device'));
+    //     }
+    //     elseif($user->hasRole('technician')) {
 
-            $deviceData = Device::get();
-            $user = Auth::user(); // Mendapatkan pengguna yang sedang login
-            $customerCount = Customer::count(); // Menghitung jumlah data customer
-            $averagePressure = DataSensor::avg('pressure');
-            $lowPressureCount = DataSensor::where('pressure', '<', 20)->count();
+    //         $deviceData = Device::get();
+    //         $user = Auth::user(); // Mendapatkan pengguna yang sedang login
+    //         $customerCount = Customer::count(); // Menghitung jumlah data customer
+    //         $averagePressure = DataSensor::avg('pressure');
+    //         $lowPressureCount = DataSensor::where('pressure', '<', 20)->count();
 
-            $minpressuresensor = DataSensor::join('devices', 'data_sensors.device_id', '=', 'devices.id')
-            ->join('customers', 'devices.id', '=', 'customers.device_id')
-            ->join('indonesia_districts', 'customers.district', '=', 'indonesia_districts.id') // Join dengan tabel districts
-            ->select('data_sensors.*', 'customers.*', 'indonesia_districts.name as district_name')
-            ->get();
+    //         $minpressuresensor = DataSensor::join('devices', 'data_sensors.device_id', '=', 'devices.id')
+    //         ->join('customers', 'devices.id', '=', 'customers.device_id')
+    //         ->join('indonesia_districts', 'customers.district', '=', 'indonesia_districts.id') // Join dengan tabel districts
+    //         ->select('data_sensors.*', 'customers.*', 'indonesia_districts.name as district_name')
+    //         ->get();
 
-            $countDeliveries = DeliveryStatus::where('status', 'Selesai')
-            ->whereYear('delivery_date', now()->year)
-            ->whereMonth('delivery_date', now()->month)
-            ->count();
+    //         $countDeliveries = DeliveryStatus::where('status', 'Selesai')
+    //         ->whereYear('delivery_date', now()->year)
+    //         ->whereMonth('delivery_date', now()->month)
+    //         ->count();
 
-              return view('dashboard-technician', compact('deviceData','countDeliveries','lowPressureCount','customerCount','averagePressure', 'minpressuresensor'));
-         }
+    //           return view('dashboard-technician', compact('deviceData','countDeliveries','lowPressureCount','customerCount','averagePressure', 'minpressuresensor'));
+    //      }
+    return view('index');
     }
 
    
