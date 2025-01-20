@@ -294,7 +294,7 @@
                                                           @else
                                                               Masih Penuh
                                                           @endif</label></td></td>
-                                                          <td>{{ \Carbon\Carbon::parse($status->updated_at)->translatedFormat('d F Y H:i')}}</td>
+                                                          <td>{{ \Carbon\Carbon::parse($status->updated_at)->locale('id_ID')->translatedFormat('d F Y H:i')}}</td>
                                                           <td>
                                                             <a href="https://api.whatsapp.com/send?phone=+{{ $status->telp }}" class="btn btn-sm btn-success me-1" target="_blank"><i class="ri-whatsapp-line"></i></a>
                                                             <div class="edit">
