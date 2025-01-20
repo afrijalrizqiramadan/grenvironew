@@ -15,13 +15,12 @@ class DataSensorsSeeder extends Seeder
     {
         DB::table('data_sensors')->insert([
             [
-                'id' => 1,
                 'device_id' => 1,
                 'timestamp' => '2024-06-06 03:11:44',
                 'pressure' => 150,
                 'pressuremedium' => 0,
                 'pressurelow' => 0,
-                'temperature' => 28,
+                'temperature' => 28
             ]
         ]);
     }
