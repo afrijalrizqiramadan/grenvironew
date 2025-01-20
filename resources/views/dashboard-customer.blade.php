@@ -865,7 +865,7 @@
     </div> <!-- end col -->
 </div>
     </div>
-        <script>
+        {{-- <script>
                             document.addEventListener('DOMContentLoaded', function() {
                                 var id_device = @json($id_device);
                                 var ctx = document.getElementById('sensorChart').getContext('2d');
@@ -971,7 +971,7 @@
                                 fetchPressureData();
                                 fetchTemperatureData();
                             });
-                        </script>
+                        </script> --}}
 @endsection
 @section('script')
 <!-- apexcharts -->
