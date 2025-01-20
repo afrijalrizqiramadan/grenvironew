@@ -107,6 +107,9 @@ class HomeController extends Controller
            $latestPressure = DataSensor::where('device_id',  $id_device)
             ->orderBy('timestamp', 'desc')
             ->value('pressure');
+            $latestTemperature = DataSensor::where('device_id',  $id_device)
+            ->orderBy('timestamp', 'desc')
+            ->value('temperature');
             $latestTime = DataSensor::where('device_id',  $id_device)
             ->orderBy('timestamp', 'desc')
             ->value('timestamp');
