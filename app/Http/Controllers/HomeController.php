@@ -51,6 +51,7 @@ class HomeController extends Controller
         if($user->hasRole('administrator')) {
             $user = Auth::user(); // Mendapatkan pengguna yang sedang login
             $customerCount = Customer::count(); // Menghitung jumlah data customer
+            
             $lowPressureCount = DataSensor::where('pressure', '<', 20)->count();
             $lowTemperatureCount = DataSensor::where('temperature', '<', 20)->count();
 

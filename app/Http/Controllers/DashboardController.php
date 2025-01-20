@@ -21,12 +21,13 @@ class DashboardController extends Controller
     public function dashboardPage(Request $request): View {
         // $user = $request->user();
         $user = Auth::user();
+        
         if($user->hasRole('administrator')) {
             $user = Auth::user(); // Mendapatkan pengguna yang sedang login
             $customerCount = Customer::count(); // Menghitung jumlah data customer
             $averagePressure = DataSensor::avg('pressure');
             $lowPressureCount = DataSensor::where('pressure', '<', 20)->count();
-
+                
             $minpressuresensor = DataSensor::join('devices', 'data_sensors.device_id', '=', 'devices.id')
             ->join('customers', 'devices.id', '=', 'customers.device_id')
             ->join('indonesia_districts', 'customers.district', '=', 'indonesia_districts.id') // Join dengan tabel districts
