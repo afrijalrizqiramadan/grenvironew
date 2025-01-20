@@ -5,53 +5,8 @@
 <link href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css')}}" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
-@push('javascript')
-<script>
-       document.addEventListener('DOMContentLoaded', function () {
-            $('.insert-btn').on('click', function () {
-                var customerId = $(this).data('customer-id');
-                var customerName = $(this).data('customer-name');
-                $('#formCustomerName').val(customerName);
-                $('#formCustomerId').val(customerId);
-            });
-            $('#insertForm').on('submit', function (e) {
-                e.preventDefault();
-
-                $.ajax({
-                    url: '/api/insert-delivery',
-                    method: 'POST',
-                    data: $(this).serialize(),
-                    success: function (response) {
-                        if (response.success) {
-                            $('#successAlert').show();
-                            $('#errorAlert').hide();
-                            $('#insertModal').modal('hide');
-                        } else {
-                            $('#errorAlert').show();
-                            $('#successAlert').hide();
-                        }
-                    },
-                    error: function (jqXHR) {
-                        if (jqXHR.status === 422) {
-                            var errors = jqXHR.responseJSON.errors;
-                            var errorMessage = 'Validation errors:';
-                            for (var field in errors) {
-                                errorMessage += '\n' + field + ': ' + errors[field].join(', ');
-                            }
-                            $('#errorAlert').text(errorMessage).show();
-                        } else {
-                            $('#errorAlert').text('Failed to insert data.').show();
-                        }
-                        $('#successAlert').hide();
-                    }
-                });
-            });
-        });
-</script>
-@endpush
 <div class="row">
     <div class="col">
-
         <div class="h-100">
             <div class="row mb-3 pb-1">
                 <div class="col-12">
@@ -207,185 +162,235 @@
                             </div>
                         </div><!-- end card body -->
                     </div><!-- end card -->
-                </div><!-- end col -->
-
-               
+                </div><!-- end col -->   
             </div> <!-- end row-->
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h4 class="card-title mb-0">Data Pelanggan</h4>
-                                    </div><!-- end card header -->
-                        
-                                    <div class="card-body">
-                                        <div class="listjs-table" id="customerList">
-                                            <div class="row g-4 mb-3">
-                                                <div class="col-sm-auto">
-                                                    {{-- <div>
-                                                        <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" onclick="window.location.href='{{ route('customer.create') }}'"><i class="ri-add-line align-bottom me-1"></i> Tambah</button>
-                                                        <button class="btn btn-soft-danger" onClick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>
-                                                    </div> --}}
-                                                </div>
-                                                <div class="col-sm">
-                                                    <div class="d-flex justify-content-sm-end">
-                                                        <div class="search-box ms-2">
-                                                            <input type="text" class="form-control search" placeholder="Search...">
-                                                            <i class="ri-search-line search-icon"></i>
+            
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title mb-0">Data Pelanggan</h4>
+                        </div><!-- end card header -->
+            
+                        <div class="card-body">
+                            <div class="listjs-table" id="customerList">
+                                <div class="row g-4 mb-3">
+                                    <div class="col-sm-auto">
+                                        {{-- <div>
+                                            <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" onclick="window.location.href='{{ route('customer.create') }}'"><i class="ri-add-line align-bottom me-1"></i> Tambah</button>
+                                            <button class="btn btn-soft-danger" onClick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>
+                                        </div> --}}
+                                    </div>
+                                    <div class="col-sm">
+                                        <div class="d-flex justify-content-sm-end">
+                                            <div class="search-box ms-2">
+                                                <input type="text" class="form-control search" placeholder="Search...">
+                                                <i class="ri-search-line search-icon"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                <div class="table-responsive table-card mt-3 mb-1">
+                                    <table class="table align-middle table-nowrap" id="customerTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                
+                                                <th class="long" data-sort="no">No</th>
+                                                <th class="long" data-sort="customer_name">Nama</th>
+                                                <th class="sort" data-sort="phone">Kapasitas</th>
+                                                <th class="sort" data-sort="phone">Suhu</th>
+                                                <th class="sort" data-sort="phone">Bar Tekanan</th>
+                                                <th class="sort" data-sort="phone">Nilai Tekanan</th>
+                                                <th class="sort" data-sort="status">Status</th>
+                                                <th class="sort" data-sort="status">Update</th>
+                                                <th class="sort" data-sort="action">Action</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody class="list form-check-all">
+                                            <tr>
+                                                
+                                                @foreach($minpressuresensor as $index=>$status)
+                                                <td>{{ $index + 1 }}</td>
+                                                <td><a href="{{ route('detail-customer',$status->id) }}" class="text-success fw-bold">{{ $status->name }}</a></td>
+                                                <td>{{ $status->capacity }} Bar</td>
+                                                {{-- <td>{{ $status->district_name }}</td> --}}
+                                                <td>{{ $status->temperature }}</td>
+                                                <td><div class="progress">
+                                                    <div class="progress-bar
+                                                    @if($status->pressure < 20)
+                                                        bg-danger
+                                                    @elseif($status->pressure  >= 20 && $status->pressure  < 60)
+                                                        bg-warning
+                                                    @else
+                                                        bg-success
+                                                    @endif
+                                                " role="progressbar" style="width: {{$status->pressure / 2 }}%" aria-valuenow="{{$status->pressure / 2 }}" aria-valuemin="0" aria-valuemax="200"></div>                            </div>
+                                            </td>
+                                                <td class="@if($status->pressure < 20)
+                                                        text-danger
+                                                    @elseif($status->pressure  >= 20 && $status->pressure  < 60)
+                                                        text-warning
+                                                    @else
+                                                        text-success
+                                                    @endif font-weight-bold">{{ $status->pressure }} Bar
+
+                                                <td><label class="badge @if($status->pressure < 20)
+                                                    bg-danger-subtle text-danger
+                                                    @elseif($status->pressure  >= 20 && $status->pressure  < 60)
+                                                        bg-warning-subtle text-warning
+                                                    @else
+                                                        bg-success-subtle text-success
+                                                    @endif"> @if($status->pressure < 20)
+                                                    Waktu Pengisian
+                                                @elseif($status->pressure >= 20 && $status->pressure < 60)
+                                                    Hampir Habis
+                                                @else
+                                                    Masih Penuh
+                                                @endif</label></td></td>
+                                                <td>{{ \Carbon\Carbon::parse($status->timestamp)->format('d-m-Y H:i') }}</td>
+                                                <td>
+                                                <div class="d-flex gap-2">
+
+                                                <a href="https://api.whatsapp.com/send?phone={{ $status->telp }}" class="btn btn-sm btn-success me-1" target="_blank"><i class="ri-whatsapp-line"></i></a>
+                                                
+                                                <div class="edit">
+                                                    <button class="btn btn-sm btn-primary insert-btn"
+                                                    data-customer-id="{{ $status->id }}"
+                                                    data-customer-name="{{ $status->name }}"
+                                                    data-toggle="modal"
+                                                    data-target="#insertModal">
+                                                    Pengiriman
+                                                </button>    </div></td>
+                                                                                        </tr>
+                                            @endforeach
+                                            <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="insertModalLabel">Tambah Pengiriman</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form id="insertForm">
+                                                                @csrf
+                                                                <input type="hidden" name="customer_id" id="formCustomerId">
+                                                                <div class="form-group">
+                                                                    <label for="formCustomerName">Nama Customer</label>
+                                                                    <input type="text" class="form-control" id="formCustomerName" name="customer_name" readonly>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="formDeliveryDate">Delivery Date</label>
+                                                                    <input type="date" class="form-control" id="formDeliveryDate" name="delivery_date" required>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="formTotal">Total</label>
+                                                                    <input type="number" class="form-control" id="formTotal" name="total" required>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="formStatus">Status</label>
+                                                                    <select class="form-control" id="formStatus" name="status" required>
+                                                                        <option value="Disiapkan">Diproses</option>
+                                                                        <option value="Dalam Perjalanan">Dalam Perjalanan</option>
+                                                                        <option value="Selesai">Selesai</option>
+                                                                        <option value="Batal">Batal</option>
+                                                                    </select>
+                                                                </div>
+                                                                <button type="submit" class="btn btn-primary">Tambah</button>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                        
-                                            <div class="table-responsive table-card mt-3 mb-1">
-                                                <table class="table align-middle table-nowrap" id="customerTable">
-                                                    <thead class="table-light">
-                                                        <tr>
-                                                            
-                                                            <th class="long" data-sort="no">No</th>
-                                                            <th class="long" data-sort="customer_name">Nama</th>
-                                                            <th class="sort" data-sort="phone">Kapasitas</th>
-                                                            <th class="sort" data-sort="phone">Suhu</th>
-                                                            <th class="sort" data-sort="phone">Bar Tekanan</th>
-                                                            <th class="sort" data-sort="phone">Nilai Tekanan</th>
-                                                            <th class="sort" data-sort="status">Status</th>
-                                                            <th class="sort" data-sort="status">Update</th>
-                                                            <th class="sort" data-sort="action">Action</th>
-                                                         
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody class="list form-check-all">
-                                                        <tr>
-                                                            
-                                                            @foreach($minpressuresensor as $index=>$status)
-                                                            <td>{{ $index + 1 }}</td>
-                                                            <td><a href="{{ route('detail-customer',$status->id) }}" class="text-success fw-bold">{{ $status->name }}</a></td>
-                                                            <td>{{ $status->capacity }} Bar</td>
-                                                            {{-- <td>{{ $status->district_name }}</td> --}}
-                                                            <td>{{ $status->temperature }}</td>
-                                                            <td><div class="progress">
-                                                                <div class="progress-bar
-                                                                @if($status->pressure < 20)
-                                                                    bg-danger
-                                                                @elseif($status->pressure  >= 20 && $status->pressure  < 60)
-                                                                    bg-warning
-                                                                @else
-                                                                    bg-success
-                                                                @endif
-                                                            " role="progressbar" style="width: {{$status->pressure / 2 }}%" aria-valuenow="{{$status->pressure / 2 }}" aria-valuemin="0" aria-valuemax="200"></div>                            </div>
-                                                          </td>
-                                                          <td class="@if($status->pressure < 20)
-                                                                 text-danger
-                                                              @elseif($status->pressure  >= 20 && $status->pressure  < 60)
-                                                                  text-warning
-                                                              @else
-                                                                  text-success
-                                                              @endif font-weight-bold">{{ $status->pressure }} Bar
-          
-                                                           <td><label class="badge @if($status->pressure < 20)
-                                                                bg-danger-subtle text-danger
-                                                              @elseif($status->pressure  >= 20 && $status->pressure  < 60)
-                                                                  bg-warning-subtle text-warning
-                                                              @else
-                                                                  bg-success-subtle text-success
-                                                              @endif"> @if($status->pressure < 20)
-                                                              Waktu Pengisian
-                                                          @elseif($status->pressure >= 20 && $status->pressure < 60)
-                                                              Hampir Habis
-                                                          @else
-                                                              Masih Penuh
-                                                          @endif</label></td></td>
-                                                          <td>{{ \Carbon\Carbon::parse($status->timestamp)->format('d-m-Y H:i') }}</td>
-                                                          <td>
-                                                            <div class="d-flex gap-2">
-
-                                                            <a href="https://api.whatsapp.com/send?phone={{ $status->telp }}" class="btn btn-sm btn-success me-1" target="_blank"><i class="ri-whatsapp-line"></i></a>
-                                                          
-                                                            <div class="edit">
-                                                              <button class="btn btn-sm btn-primary insert-btn"
-                                                              data-customer-id="{{ $status->id }}"
-                                                              data-customer-name="{{ $status->name }}"
-                                                              data-toggle="modal"
-                                                              data-target="#insertModal">
-                                                              Pengiriman
-                                                          </button>    </div></td>
-                                                                                                  </tr>
-                                                        @endforeach
-                                                        <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
-                                                          <div class="modal-dialog" role="document">
-                                                              <div class="modal-content">
-                                                                  <div class="modal-header">
-                                                                      <h5 class="modal-title" id="insertModalLabel">Tambah Pengiriman</h5>
-                                                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                          <span aria-hidden="true">&times;</span>
-                                                                      </button>
-                                                                  </div>
-                                                                  <div class="modal-body">
-                                                                      <form id="insertForm">
-                                                                          @csrf
-                                                                          <input type="hidden" name="customer_id" id="formCustomerId">
-                                                                          <div class="form-group">
-                                                                              <label for="formCustomerName">Nama Customer</label>
-                                                                              <input type="text" class="form-control" id="formCustomerName" name="customer_name" readonly>
-                                                                          </div>
-                                                                          <div class="form-group">
-                                                                              <label for="formDeliveryDate">Delivery Date</label>
-                                                                              <input type="date" class="form-control" id="formDeliveryDate" name="delivery_date" required>
-                                                                          </div>
-                                                                          <div class="form-group">
-                                                                              <label for="formTotal">Total</label>
-                                                                              <input type="number" class="form-control" id="formTotal" name="total" required>
-                                                                          </div>
-                                                                          <div class="form-group">
-                                                                              <label for="formStatus">Status</label>
-                                                                              <select class="form-control" id="formStatus" name="status" required>
-                                                                                  <option value="Disiapkan">Diproses</option>
-                                                                                  <option value="Dalam Perjalanan">Dalam Perjalanan</option>
-                                                                                  <option value="Selesai">Selesai</option>
-                                                                                  <option value="Batal">Batal</option>
-                                                                              </select>
-                                                                          </div>
-                                                                          <button type="submit" class="btn btn-primary">Tambah</button>
-                                                                      </form>
-                                                                  </div>
-                                                              </div>
-                                                          </div>
-                                                      </div>
-                                                            
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                                <div class="noresult" style="display: none">
-                                                    <div class="text-center">
-                                                        <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px">
-                                                        </lord-icon>
-                                                        <h5 class="mt-2">Maaf</h5>
-                                                        <p class="text-muted mb-0">Data Kosong</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                        
-                                            <div class="d-flex justify-content-end">
-                                                <div class="pagination-wrap hstack gap-2">
-                                                    <a class="page-item pagination-prev disabled" href="javascript:void(0);">
-                                                        Previous
-                                                    </a>
-                                                    <ul class="pagination listjs-pagination mb-0"></ul>
-                                                    <a class="page-item pagination-next" href="javascript:void(0);">
-                                                        Next
-                                                    </a>
-                                                </div>
-                                            </div>
+                                                
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="noresult" style="display: none">
+                                        <div class="text-center">
+                                            <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px">
+                                            </lord-icon>
+                                            <h5 class="mt-2">Maaf</h5>
+                                            <p class="text-muted mb-0">Data Kosong</p>
                                         </div>
-                                    </div><!-- end card -->
+                                    </div>
                                 </div>
-                                <!-- end col -->
-                            </div>
-                            <!-- end col -->
-                        </div>
             
-                        
+                                <div class="d-flex justify-content-end">
+                                    <div class="pagination-wrap hstack gap-2">
+                                        <a class="page-item pagination-prev disabled" href="javascript:void(0);">
+                                            Previous
+                                        </a>
+                                        <ul class="pagination listjs-pagination mb-0"></ul>
+                                        <a class="page-item pagination-next" href="javascript:void(0);">
+                                            Next
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- end card -->
                     </div>
-                </div> <!-- end col -->
-            </div>
-                    @endsection
+                    <!-- end col -->
+                </div>
+                <!-- end col -->
+            </div>                
+        </div>
+    </div> <!-- end col -->
+</div>
+@endsection
+@section('script')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+         $('.insert-btn').on('click', function () {
+             var customerId = $(this).data('customer-id');
+             var customerName = $(this).data('customer-name');
+             $('#formCustomerName').val(customerName);
+             $('#formCustomerId').val(customerId);
+         });
+         $('#insertForm').on('submit', function (e) {
+             e.preventDefault();
+
+             $.ajax({
+                 url: '/api/insert-delivery',
+                 method: 'POST',
+                 data: $(this).serialize(),
+                 success: function (response) {
+                     if (response.success) {
+                         $('#successAlert').show();
+                         $('#errorAlert').hide();
+                         $('#insertModal').modal('hide');
+                     } else {
+                         $('#errorAlert').show();
+                         $('#successAlert').hide();
+                     }
+                 },
+                 error: function (jqXHR) {
+                     if (jqXHR.status === 422) {
+                         var errors = jqXHR.responseJSON.errors;
+                         var errorMessage = 'Validation errors:';
+                         for (var field in errors) {
+                             errorMessage += '\n' + field + ': ' + errors[field].join(', ');
+                         }
+                         $('#errorAlert').text(errorMessage).show();
+                     } else {
+                         $('#errorAlert').text('Failed to insert data.').show();
+                     }
+                     $('#successAlert').hide();
+                 }
+             });
+         });
+     });
+</script>
+<!-- apexcharts -->
+<script src="{{ URL::asset('build/libs/apexcharts/apexcharts.min.js') }}"></script>
+<script src="{{ URL::asset('build/libs/jsvectormap/js/jsvectormap.min.js') }}"></script>
+<script src="{{ URL::asset('build/libs/jsvectormap/maps/world-merc.js') }}"></script>
+<script src="{{ URL::asset('build/libs/swiper/swiper-bundle.min.js')}}"></script>
+<!-- dashboard init -->
+<script src="{{ URL::asset('build/js/pages/dashboard-nft.init.js') }}"></script>
+<script src="{{ URL::asset('build/js/pages/dashboard-ecommerce.init.js') }}"></script>
+<script src="{{ URL::asset('build/js/app.js') }}"></script>
+@endsection

@@ -7,7 +7,6 @@
 @section('content')
 <div class="row">
     <div class="col">
-
         <div class="h-100">
             <div class="row mb-3 pb-1">
                 <div class="col-12">
@@ -864,8 +863,7 @@
 
     </div> <!-- end col -->
 </div>
-    </div>
-        <script>
+{{-- <script>
                             document.addEventListener('DOMContentLoaded', function() {
                                 var id_device = @json($id_device);
                                 var ctx = document.getElementById('sensorChart').getContext('2d');
@@ -971,7 +969,7 @@
                                 fetchPressureData();
                                 fetchTemperatureData();
                             });
-                        </script>
+                        </script> --}}
 @endsection
 @section('script')
 <!-- apexcharts -->
@@ -1039,8 +1037,6 @@ if (linechartBasicColors) {
     var chart = new ApexCharts(document.querySelector("#pressure_chart"), options);
     chart.render();
 }
-
-
 function updateChart(filter, element) {
         var deviceId = {{ $customer->device_id }};  // Gantilah dengan ID perangkat yang sesuai
 
