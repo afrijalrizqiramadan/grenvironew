@@ -68,8 +68,9 @@ class HomeController extends Controller
               return view('dashboard-administrator', compact('countDeliveries','customerCount','lowPressureCount','averagePressure', 'minpressuresensor'));
      }
         elseif($user->hasRole('customer')) {
-            
             $user = Auth::user(); // Mendapatkan pengguna yang sedang login
+            dd($user);
+
             $customer = $user->customer; // Mendapatkan data customer yang terkait dengan pengguna
             $device = $customer->device;
             $customer_id = $customer->id;
