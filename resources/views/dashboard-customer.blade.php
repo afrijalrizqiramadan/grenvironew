@@ -182,7 +182,7 @@
                             </div>
                             <div class="d-flex align-items-end justify-content-between mt-4">
                                 <div>
-                                    <h4 class="fs-22 fw-semibold ff-secondary mb-2"><span class="counter-value" data-target="{{$latestPressure}}"></span> Bar
+                                    <h4 class="fs-22 fw-semibold ff-secondary mb-2"><span class="counter-value" data-target="{{$latestTemperature}}"></span> °C
                                     </h4>
                                     <a href="" class="text-primary">{{ \Carbon\Carbon::parse($latestTime)->isoFormat('D MMMM YYYY, HH:mm') }}</a>
                                </div>
