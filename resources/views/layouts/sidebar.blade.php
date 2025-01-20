@@ -62,7 +62,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="map">
-                        <i class="ri-map-line"></i> <span>Pengiriman</span>
+                        <i class="ri-map-line"></i> <span>Peta</span>
                     </a>
                 </li>
                 <li class="nav-item">

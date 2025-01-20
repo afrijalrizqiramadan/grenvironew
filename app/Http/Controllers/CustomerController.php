@@ -16,8 +16,9 @@ class CustomerController extends Controller
 
     public function index()
     {
-        // Menampilkan data dari tabel space
-        return view('customer.index');
+        // Menambahkan data diambil dari customers
+        $customers = Customer::all();
+        return view('customer.index', compact('customers'));
     }
     public function create()
     {

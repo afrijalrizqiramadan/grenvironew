@@ -1,9 +1,11 @@
-<x-app-layout>
-    @push('javascript')
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+@extends('layouts.master')
+@section('title') @lang('translation.dashboards') @endsection
+@section('css')
+<link href="{{ URL::asset('build/libs/jsvectormap/css/jsvectormap.min.css')}}" rel="stylesheet" type="text/css" />
+<link href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css')}}" rel="stylesheet" type="text/css" />
+@endsection
+@section('content')
+@push('javascript')
 <script>
        document.addEventListener('DOMContentLoaded', function () {
             $('.insert-btn').on('click', function () {
@@ -47,245 +49,338 @@
         });
 </script>
 @endpush
-    <div class="container-fluid page-body-wrapper">
-                <div class="main-panel">
-                    <div class="content-wrapper">
-                        <div class="row">
-                            <div class="col-sm-6 mb-4 mb-xl-0">
-                                <div class="d-lg-flex align-items-center">
-                                    <div>
-                                        <h3 class="text-dark font-weight-bold mb-2">Selamat Datang Admin</h3>
-                                    </div>
-                                    <!--<div class="ms-lg-5 d-lg-flex d-none">-->
-                                    <!--		<button type="button" class="btn bg-white btn-icon">-->
-                                    <!--			<i class="mdi mdi-view-grid text-success"></i>-->
-                                    <!--	</button>-->
-                                    <!--		<button type="button" class="btn bg-white btn-icon ms-2">-->
-                                    <!--			<i class="mdi mdi-format-list-bulleted font-weight-bold text-primary"></i>-->
-                                    <!--		</button>-->
-                                    <!--</div>-->
-                                </div>
-                            </div>
+<div class="row">
+    <div class="col">
 
-                            <div class="col-sm-12">
-                                <div class="d-flex align-items-center justify-content-md-end">
-                                    {{-- <div class="pe-1 mb-3 mb-xl-0">
-                                            <button type="button" class="btn btn-outline-inverse-info btn-icon-text">
-                                                Feedback
-                                                <i class="mdi mdi-message-outline btn-icon-append"></i>
-                                            </button>
+        <div class="h-100">
+            <div class="row mb-3 pb-1">
+                <div class="col-12">
+                    <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+                        <div class="flex-grow-1">
+                            <h4 class="fs-16 mb-1">Hai {{ Auth::user()->name }}</h4>
+                            <p class="text-muted mb-0">Berikut adalah ringkasan akun anda</p>
+                        </div>
+                        <div class="mt-3 mt-lg-0">
+                            <form action="javascript:void(0);">
+                                <div class="row g-3 mb-0 align-items-center justify-content-between">
+                                    <div class="col-sm-auto">
+                                       <script type='text/javascript'>
+                                    var months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober',
+                                        'November', 'Desember'
+                                    ];
+                                    var myDays = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jum&#39;at', 'Sabtu'];
+                                    var date = new Date();
+                                    var day = date.getDate();
+                                    var month = date.getMonth();
+                                    var thisDay = date.getDay(),
+                                        thisDay = myDays[thisDay];
+                                    var yy = date.getYear();
+                                    var year = (yy < 1000) ? yy + 1900 : yy;
+                                    document.write(thisDay + ', ' + day + ' ' + months[month] + ' ' + year);
+
+                                    function updateRealTime() {
+                                        var now = new Date();
+                                        var hours = now.getHours().toString().padStart(2, '0');
+                                        var minutes = now.getMinutes().toString().padStart(2, '0');
+                                        var seconds = now.getSeconds().toString().padStart(2, '0');
+                                        var timeString = hours + ':' + minutes + ':' + seconds;
+                                        document.getElementById('realTime').textContent = timeString;
+                                    }
+                                    setInterval(updateRealTime, 1000);
+                                    updateRealTime();
+                                </script>
+                                <br>
+                                <h2 id="realTime" class="h2 text-dark">00:00:00</h2>
                                     </div>
-                                    <div class="pe-1 mb-3 mb-xl-0">
-                                            <button type="button" class="btn btn-outline-inverse-info btn-icon-text">
-                                                Help
-                                                <i class="mdi mdi-help-circle-outline btn-icon-append"></i>
-                                        </button>
+                                    <!--end col-->
+                                    {{-- <div class="col-auto">
+                                        <button type="button" class="btn btn-soft-success"><i class="ri-add-circle-line align-middle me-1"></i>
+                                            Add Product</button>
                                     </div> --}}
-                                    <!--<div class="pe-1 mb-3 mb-xl-0">-->
-                                    <!--		<button type="button" class="btn btn-outline-inverse-info btn-icon-text">-->
-                                    <!--			Print-->
-                                    <!--			<i class="mdi mdi-printer btn-icon-append"></i>                          -->
-                                    <!--		</button>-->
-                                    <!--</div>-->
+                                    <!--end col-->
+                                    {{-- <div class="col-auto">
+                                        <button type="button" class="btn btn-soft-info btn-icon waves-effect waves-light layout-rightside-btn"><i class="ri-pulse-line"></i></button>
+                                    </div> --}}
+                                    <!--end col-->
                                 </div>
-                            </div>
+                                <!--end row-->
+                            </form>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-2 mt-2 grid-margin stretch-card">
-                                <div class="card">
-                                    <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                                        <h1 class="h1 text-success font-weight-bold">{{$customerCount}}</h1>
-                                        <i class="mdi mdi-account-outline mdi-36px text-dark"></i>
-                                        <p class="text-center">Total Pelanggan</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-2 grid-margin stretch-card">
-                                <div class="card">
-                                    <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                                        <h2 class="h1 text-warning font-weight-bold">{{$averagePressure}}</h2>
-                                        <i class="mdi mdi-gas-station mdi-36px text-dark"></i>
-                                        <p class="text-center">Rata Rata Gas</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-2 grid-margin stretch-card">
-                                <div class="card">
-                                    <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                                        <h2 class="h1 text-danger font-weight-bold">{{$lowPressureCount}}</h2>
-                                        <i class="mdi mdi-refresh mdi-36px text-dark"></i>
-                                        <p class="text-center">Gas Rendah</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-2 grid-margin stretch-card">
-                                <div class="card">
-                                    <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                                        <h2 class="h1 text-info font-weight-bold">{{$countDeliveries}}</h2>
-                                        <i class="mdi mdi-file-document-outline mdi-36px text-dark"></i>
-                                        <p class="text-center">Total Pengiriman</p>
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- <div class="col-lg-2 grid-margin stretch-card">
-                                <div class="card">
-                                    <div class="card-body pb-0">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <h2 class="text-warning font-weight-bold">3259</h2>
-                                            <i class="mdi mdi-folder-outline mdi-18px text-dark"></i>
-                                        </div>
-                                    </div>
-                                    <canvas id="projects"></canvas>
-                                    <div class="line-chart-row-title">All PROJECTS</div>
-                                </div>
-                            </div>
-                            <div class="col-lg-2 grid-margin stretch-card">
-                                <div class="card">
-                                    <div class="card-body pb-0">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <h2 class="text-secondary font-weight-bold">586</h2>
-                                            <i class="mdi mdi-cart-outline mdi-18px text-dark"></i>
-                                        </div>
-                                    </div>
-                                    <canvas id="orderRecieved"></canvas>
-                                    <div class="line-chart-row-title">Orders Received</div>
-                                </div>
-                            </div>
-                            <div class="col-lg-2 grid-margin stretch-card">
-                                <div class="card">
-                                    <div class="card-body pb-0">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <h2 class="text-dark font-weight-bold">7826</h2>
-                                            <i class="mdi mdi-cash text-dark mdi-18px"></i>
-                                        </div>
-                                    </div>
-                                    <canvas id="transactions"></canvas>
-                                    <div class="line-chart-row-title">TRANSACTIONS</div>
-                                </div>
-                            </div> --}}
-                        </div>
-                        <div class="row mt-4">
-                            <div class="col-lg-12 grid-margin stretch-card">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <table class="table">
-                                            <thead>
-                                              <tr>
-                                                <th>No</th>
-                                                <th>Nama</th>
-                                                <th>Telepon</th>
-                                                <th>Lokasi</th>
-                                                <th>Kecamatan</th>
-                                                <th>Tekanan</th>
-                                                <th>Persentase</th>
-                                                <th>Status</th>
-                                                <th>Update Terakhir</th>
-                                                <th>Aksi</th>
-                                              </tr>
-                                            </thead>
-                                            <tbody>
-                                              @foreach($minpressuresensor as $index => $status)
-                                              <tr>
-                                                  <td>{{ $index + 1 }}</td>
-                                                  <td>{{ $status->name }}</td>
-                                                  <td>{{ $status->telp }}</td>
-                                                  <td>{{ $status->location }}</td>
-                                                  <td>{{ $status->district_name }}</td>
-                                                  <td><div class="progress">
-                                                    <div class="progress-bar
-                                                    @if($status->pressure < 20)
-                                                        bg-danger
-                                                    @elseif($status->pressure  >= 20 && $status->pressure  < 40)
-                                                        bg-warning
-                                                    @else
-                                                        bg-success
-                                                    @endif
-                                                " role="progressbar" style="width: {{$status->pressure }}%" aria-valuenow="{{$status->pressure }}" aria-valuemin="0" aria-valuemax="100"></div>                            </div>
-                                              </td>
-                                                <td class="@if($status->pressure < 20)
-                                                       text-danger
-                                                    @elseif($status->pressure  >= 20 && $status->pressure  < 40)
-                                                        text-warning
-                                                    @else
-                                                        text-success
-                                                    @endif font-weight-bold">{{ $status->pressure }}%
+                    </div><!-- end card header -->
+                </div>
+                <!--end col-->
+            </div>
+            <!--end row-->
 
-                                                 <td><label class="badge @if($status->pressure < 20)
-                                                       badge-danger
-                                                    @elseif($status->pressure  >= 20 && $status->pressure  < 40)
-                                                        badge-warning
-                                                    @else
-                                                        badge-success
-                                                    @endif"> @if($status->pressure < 20)
-                                                    Waktu Pengisian
-                                                @elseif($status->pressure >= 20 && $status->pressure < 40)
-                                                    Hampir Habis
-                                                @else
-                                                    Masih Penuh
-                                                @endif</label></td></td>
-                                                <td>{{ \Carbon\Carbon::parse($status->updated_at)->translatedFormat('d F Y H:i')}}</td>
-                                                <td>
-                                                    <a class="btn btn-success" href="https://api.whatsapp.com/send?phone={{ $status->telp }}&text=Hai%20{{ $status->name }},%20tekanan%20gas%20anda%20saat%20ini%20{{ $status->pressure }}%" target="_blank">
-                                                        Kirim WA
-                                                    </a>
-                                                    <button class="btn btn-primary insert-btn"
-                                                    data-customer-id="{{ $status->id }}"
-                                                    data-customer-name="{{ $status->name }}"
-                                                    data-toggle="modal"
-                                                    data-target="#insertModal">
-                                                    Kirim
-                                                </button>                                              </tr>
-                                              @endforeach
-                                              <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="insertModalLabel">Tambah Pengiriman</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form id="insertForm">
-                                                                @csrf
-                                                                <input type="hidden" name="customer_id" id="formCustomerId">
-                                                                <div class="form-group">
-                                                                    <label for="formCustomerName">Nama Customer</label>
-                                                                    <input type="text" class="form-control" id="formCustomerName" name="customer_name" readonly>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="formDeliveryDate">Delivery Date</label>
-                                                                    <input type="date" class="form-control" id="formDeliveryDate" name="delivery_date" required>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="formTotal">Total</label>
-                                                                    <input type="number" class="form-control" id="formTotal" name="total" required>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="formStatus">Status</label>
-                                                                    <select class="form-control" id="formStatus" name="status" required>
-                                                                        <option value="Disiapkan">Diproses</option>
-                                                                        <option value="Dalam Perjalanan">Dalam Perjalanan</option>
-                                                                        <option value="Selesai">Selesai</option>
-                                                                        <option value="Batal">Batal</option>
-                                                                    </select>
-                                                                </div>
-                                                                <button type="submit" class="btn btn-primary">Tambah</button>
-                                                            </form>
+            <div class="row">
+                <div class="col-xl-3 col-md-6">
+                    <!-- card -->
+                    <div class="card card-animate">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1 overflow-hidden">
+                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
+                                        Jumlah Pelanggan</p>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    {{-- <h5 class="text-success fs-14 mb-0">
+                                        <i class="ri-arrow-right-up-line fs-13 align-middle"></i>
+                                        +16.24 %
+                                    </h5> --}}
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-end justify-content-between mt-4">
+                                <div>
+                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="">{{$customerCount}}</span>
+                                    </h4>
+                                    {{-- <a href="" class="text-decoration-underline">View net
+                                        earnings</a> --}}
+                                </div>
+                                <div class="avatar-sm flex-shrink-0">
+                                    <span class="avatar-title bg-success-subtle rounded fs-3">
+                                        <i class="bx bx-user text-success"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div><!-- end card body -->
+                    </div><!-- end card -->
+                </div><!-- end col -->
+
+                <div class="col-xl-3 col-md-6">
+                    <!-- card -->
+                    <div class="card card-animate">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1 overflow-hidden">
+                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
+                                        Gas Tekanan Rendah</p>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    {{-- <h5 class="text-danger fs-14 mb-0">
+                                        <i class="ri-arrow-right-down-line fs-13 align-middle"></i>
+                                        -3.57 %
+                                    </h5> --}}
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-end justify-content-between mt-4">
+                                <div>
+                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="">{{$lowPressureCount}}</span>
+                                        {{-- <a href="" class="text-decoration-underline">View all orders</a> --}}
+                                </div>
+                                <div class="avatar-sm flex-shrink-0">
+                                    <span class="avatar-title bg-info-subtle rounded fs-3">
+                                        <i class="bx bx-gas-pump text-info"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div><!-- end card body -->
+                    </div><!-- end card -->
+                </div><!-- end col -->
+
+                <div class="col-xl-3 col-md-6">
+                    <!-- card -->
+                    <div class="card card-animate">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1 overflow-hidden">
+                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
+                                        Suhu Rendah</p>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    {{-- <h5 class="text-success fs-14 mb-0">
+                                        <i class="ri-arrow-right-up-line fs-13 align-middle"></i>
+                                        +29.08 %
+                                    </h5> --}}
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-end justify-content-between mt-4">
+                                <div>
+                                    <h4 class="fs-22 fw-semibold ff-secondary mb-2"><span class="counter-value" data-target="{{$lowTemperatureCount}}"></span>
+                                    </h4>
+                                    <a href="" class="text-primary"></a>
+                                </div>
+                                <div class="avatar-sm flex-shrink-0">
+                                    <span class="avatar-title bg-warning-subtle rounded fs-3">
+                                        <i class="ri-thermometer-line text-primary"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div><!-- end card body -->
+                    </div><!-- end card -->
+                </div><!-- end col -->
+
+               
+            </div> <!-- end row-->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title mb-0">Data Pelanggan</h4>
+                                    </div><!-- end card header -->
+                        
+                                    <div class="card-body">
+                                        <div class="listjs-table" id="customerList">
+                                            <div class="row g-4 mb-3">
+                                                <div class="col-sm-auto">
+                                                    {{-- <div>
+                                                        <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" onclick="window.location.href='{{ route('customer.create') }}'"><i class="ri-add-line align-bottom me-1"></i> Tambah</button>
+                                                        <button class="btn btn-soft-danger" onClick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>
+                                                    </div> --}}
+                                                </div>
+                                                <div class="col-sm">
+                                                    <div class="d-flex justify-content-sm-end">
+                                                        <div class="search-box ms-2">
+                                                            <input type="text" class="form-control search" placeholder="Search...">
+                                                            <i class="ri-search-line search-icon"></i>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            </tbody>
-
-
-                                          </table>                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
                         
-                    
+                                            <div class="table-responsive table-card mt-3 mb-1">
+                                                <table class="table align-middle table-nowrap" id="customerTable">
+                                                    <thead class="table-light">
+                                                        <tr>
+                                                            
+                                                            <th class="long" data-sort="no">No</th>
+                                                            <th class="long" data-sort="customer_name">Nama</th>
+                                                            <th class="sort" data-sort="phone">Kapasitas</th>
+                                                            <th class="sort" data-sort="phone">Kecamatan</th>
+                                                            <th class="sort" data-sort="phone">Tekanan</th>
+                                                            <th class="sort" data-sort="phone">Persentase</th>
+                                                            <th class="sort" data-sort="status">Status</th>
+                                                            <th class="sort" data-sort="status">Update</th>
+                                                            <th class="sort" data-sort="action">Action</th>
+                                                         
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="list form-check-all">
+                                                        <tr>
+                                                            
+                                                            @foreach($minpressuresensor as $index=>$status)
+                                                            <td>{{ $index + 1 }}</td>
+                                                            <td>{{ $status->name }}</td>
+                                                            <td>{{ $status->capacity }} Bar</td>
+                                                            <td>{{ $status->district_name }}</td>
+                                                            <td><div class="progress">
+                                                              <div class="progress-bar
+                                                              @if($status->pressure < 20)
+                                                                  bg-danger
+                                                              @elseif($status->pressure  >= 20 && $status->pressure  < 60)
+                                                                  bg-warning
+                                                              @else
+                                                                  bg-success
+                                                              @endif
+                                                          " role="progressbar" style="width: {{$status->pressure / 2 }}%" aria-valuenow="{{$status->pressure / 2 }}" aria-valuemin="0" aria-valuemax="200"></div>                            </div>
+                                                        </td>
+                                                          <td class="@if($status->pressure < 20)
+                                                                 text-danger
+                                                              @elseif($status->pressure  >= 20 && $status->pressure  < 60)
+                                                                  text-warning
+                                                              @else
+                                                                  text-success
+                                                              @endif font-weight-bold">{{ $status->pressure }}%
+          
+                                                           <td><label class="badge @if($status->pressure < 20)
+                                                                bg-danger-subtle text-danger
+                                                              @elseif($status->pressure  >= 20 && $status->pressure  < 60)
+                                                                  bg-warning-subtle text-warning
+                                                              @else
+                                                                  bg-success-subtle text-success
+                                                              @endif"> @if($status->pressure < 20)
+                                                              Waktu Pengisian
+                                                          @elseif($status->pressure >= 20 && $status->pressure < 60)
+                                                              Hampir Habis
+                                                          @else
+                                                              Masih Penuh
+                                                          @endif</label></td></td>
+                                                          <td>{{ \Carbon\Carbon::parse($status->updated_at)->translatedFormat('d F Y H:i')}}</td>
+                                                          <td>
+                                                            <a href="https://api.whatsapp.com/send?phone=+{{ $status->telp }}" class="btn btn-sm btn-success me-1" target="_blank"><i class="ri-whatsapp-line"></i></a>
+                                                            <div class="edit">
+                                                              <button class="btn btn-primary insert-btn"
+                                                              data-customer-id="{{ $status->id }}"
+                                                              data-customer-name="{{ $status->name }}"
+                                                              data-toggle="modal"
+                                                              data-target="#insertModal">
+                                                              Kirim
+                                                          </button>                                              </tr>
+                                                        @endforeach
+                                                        <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
+                                                          <div class="modal-dialog" role="document">
+                                                              <div class="modal-content">
+                                                                  <div class="modal-header">
+                                                                      <h5 class="modal-title" id="insertModalLabel">Tambah Pengiriman</h5>
+                                                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                          <span aria-hidden="true">&times;</span>
+                                                                      </button>
+                                                                  </div>
+                                                                  <div class="modal-body">
+                                                                      <form id="insertForm">
+                                                                          @csrf
+                                                                          <input type="hidden" name="customer_id" id="formCustomerId">
+                                                                          <div class="form-group">
+                                                                              <label for="formCustomerName">Nama Customer</label>
+                                                                              <input type="text" class="form-control" id="formCustomerName" name="customer_name" readonly>
+                                                                          </div>
+                                                                          <div class="form-group">
+                                                                              <label for="formDeliveryDate">Delivery Date</label>
+                                                                              <input type="date" class="form-control" id="formDeliveryDate" name="delivery_date" required>
+                                                                          </div>
+                                                                          <div class="form-group">
+                                                                              <label for="formTotal">Total</label>
+                                                                              <input type="number" class="form-control" id="formTotal" name="total" required>
+                                                                          </div>
+                                                                          <div class="form-group">
+                                                                              <label for="formStatus">Status</label>
+                                                                              <select class="form-control" id="formStatus" name="status" required>
+                                                                                  <option value="Disiapkan">Diproses</option>
+                                                                                  <option value="Dalam Perjalanan">Dalam Perjalanan</option>
+                                                                                  <option value="Selesai">Selesai</option>
+                                                                                  <option value="Batal">Batal</option>
+                                                                              </select>
+                                                                          </div>
+                                                                          <button type="submit" class="btn btn-primary">Tambah</button>
+                                                                      </form>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                            
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="noresult" style="display: none">
+                                                    <div class="text-center">
+                                                        <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px">
+                                                        </lord-icon>
+                                                        <h5 class="mt-2">Maaf</h5>
+                                                        <p class="text-muted mb-0">Data Kosong</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                        
+                                            <div class="d-flex justify-content-end">
+                                                <div class="pagination-wrap hstack gap-2">
+                                                    <a class="page-item pagination-prev disabled" href="javascript:void(0);">
+                                                        Previous
+                                                    </a>
+                                                    <ul class="pagination listjs-pagination mb-0"></ul>
+                                                    <a class="page-item pagination-next" href="javascript:void(0);">
+                                                        Next
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- end card -->
+                                </div>
+                                <!-- end col -->
+                            </div>
+                            <!-- end col -->
+                        </div>
+            
+                        
                     </div>
-
-                </x-app-layout>
+                </div> <!-- end col -->
+            </div>
+                    @endsection

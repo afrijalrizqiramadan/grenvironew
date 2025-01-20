@@ -51,21 +51,21 @@ class HomeController extends Controller
         if($user->hasRole('administrator')) {
             $user = Auth::user(); // Mendapatkan pengguna yang sedang login
             $customerCount = Customer::count(); // Menghitung jumlah data customer
-            $averagePressure = DataSensor::avg('pressure');
             $lowPressureCount = DataSensor::where('pressure', '<', 20)->count();
+            $lowTemperatureCount = DataSensor::where('temperature', '<', 20)->count();
 
             $minpressuresensor = DataSensor::join('devices', 'data_sensors.device_id', '=', 'devices.id')
             ->join('customers', 'devices.id', '=', 'customers.device_id')
             ->join('indonesia_districts', 'customers.district', '=', 'indonesia_districts.id') // Join dengan tabel districts
             ->select('data_sensors.*', 'customers.*', 'indonesia_districts.name as district_name')
             ->get();
-
+            
             $countDeliveries = DeliveryStatus::where('status', 'Selesai')
             ->whereYear('delivery_date', now()->year)
             ->whereMonth('delivery_date', now()->month)
             ->count();
 
-              return view('dashboard-administrator', compact('countDeliveries','customerCount','lowPressureCount','averagePressure', 'minpressuresensor'));
+              return view('dashboard-administrator', compact('countDeliveries','lowTemperatureCount','customerCount','lowPressureCount', 'minpressuresensor'));
      }
         elseif($user->hasRole('customer')) {
             $user = Auth::user(); // Mendapatkan pengguna yang sedang login
