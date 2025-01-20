@@ -294,17 +294,21 @@
                                                           @else
                                                               Masih Penuh
                                                           @endif</label></td></td>
-                                                          <td>{{ \Carbon\Carbon::parse($status->updated_at)->locale('id_ID')->translatedFormat('d F Y H:i')}}</td>
+                                                          <td>{{ \Carbon\Carbon::parse($status->timestamp)->format('d-m-Y H:i') }}</td>
                                                           <td>
+                                                            <div class="d-flex gap-2">
+
                                                             <a href="https://api.whatsapp.com/send?phone=+{{ $status->telp }}" class="btn btn-sm btn-success me-1" target="_blank"><i class="ri-whatsapp-line"></i></a>
+                                                          
                                                             <div class="edit">
-                                                              <button class="btn btn-primary insert-btn"
+                                                              <button class="btn btn-sm btn-primary insert-btn"
                                                               data-customer-id="{{ $status->id }}"
                                                               data-customer-name="{{ $status->name }}"
                                                               data-toggle="modal"
                                                               data-target="#insertModal">
-                                                              Kirim
-                                                          </button>                                              </tr>
+                                                              Pengiriman
+                                                          </button>    </div></td>
+                                                                                                  </tr>
                                                         @endforeach
                                                         <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
                                                           <div class="modal-dialog" role="document">
