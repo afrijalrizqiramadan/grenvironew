@@ -129,7 +129,7 @@
                                                   </td>
                                                     <td>{{ \Carbon\Carbon::parse($delivery->delivery_date)->translatedFormat('d F Y')}}</td>
                                                   <td>
-                                                    {{ $delivery->total }}
+                                                    {{ $delivery->total }} Bar
                                                   </td>
                                                  
                                                   <td><label class="badge
@@ -202,7 +202,7 @@
                                                   </td>
                                                     <td>{{ \Carbon\Carbon::parse($delivery->delivery_date)->translatedFormat('d F Y')}}</td>
                                                   <td class="py-1">
-                                                    {{ $delivery->total }}
+                                                    {{ $delivery->total }} Bar
                                                   </td>
                                                
                                                   <td><label class="badge
@@ -276,7 +276,7 @@
                                                   </td>
                                                     <td>{{ \Carbon\Carbon::parse($delivery->delivery_date)->translatedFormat('d F Y')}}</td>
                                                   <td class="py-1">
-                                                    {{ $delivery->total }}
+                                                    {{ $delivery->total }} Bar
                                                   </td>
                                                 
                                                   <td><label class="badge
@@ -347,7 +347,7 @@
                                                   </td>
                                                     <td>{{ \Carbon\Carbon::parse($delivery->delivery_date)->translatedFormat('d F Y')}}</td>
                                                   <td class="py-1">
-                                                    {{ $delivery->total }}
+                                                    {{ $delivery->total }} Bar
                                                   </td>
                                                   <td>
                                                     <div class="d-flex gap-2">
