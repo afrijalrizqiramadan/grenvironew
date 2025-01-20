@@ -47,6 +47,7 @@ class HomeController extends Controller
         $currentMonth = Carbon::now()->month;
         $currentYear = Carbon::now()->year;
         $user = Auth::user();
+        dd($user);
 
         if($user->hasRole('administrator')) {
             $user = Auth::user(); // Mendapatkan pengguna yang sedang login
@@ -69,7 +70,6 @@ class HomeController extends Controller
      }
         elseif($user->hasRole('customer')) {
             $user = Auth::user(); // Mendapatkan pengguna yang sedang login
-            dd($user);
 
             $customer = $user->customer; // Mendapatkan data customer yang terkait dengan pengguna
             $device = $customer->device;
