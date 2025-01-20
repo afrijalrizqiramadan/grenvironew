@@ -123,7 +123,7 @@ class HomeController extends Controller
             $pressure = $sensorData->pluck('pressure');
             $timestamp = $sensorData->pluck('timestamp');
 
-        return view('dashboard-customer', compact('customer','pressure_history','latestTime','weatherData','maps','id_device','latestPressure','images','location','pressure', 'timestamp','nama', 'statuses','email','status_device','capacity','registration_date_device'));
+        return view('dashboard-customer', compact('customer','pressure_history','latestTime','latestTemperature','weatherData','maps','id_device','latestPressure','images','location','pressure', 'timestamp','nama', 'statuses','email','status_device','capacity','registration_date_device'));
         }
         elseif($user->hasRole('technician')) {
 
