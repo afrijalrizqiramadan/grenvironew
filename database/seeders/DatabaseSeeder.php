@@ -27,10 +27,10 @@ class DatabaseSeeder extends Seeder
         $this->call(AdministratorsSeeder::class);
         $this->call(CenterPointSeeder::class);
         $this->call(CustomersSeeder::class);
-        $this->call(DataSensorsSeeder::class);
+        // $this->call(DataSensorsSeeder::class);
         $this->call(DeliveryStatusSeeder::class);
         $this->call(DevicesSeeder::class);
-        $this->call(HistorySensorsSeeder::class);
+        // $this->call(HistorySensorsSeeder::class);
         $this->call(MaintenancesSeeder::class);
         $this->call(TechniciansSeeder::class);
         $this->call(UserRolePermissionSeeder::class);

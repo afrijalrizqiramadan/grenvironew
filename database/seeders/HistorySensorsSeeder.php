@@ -15,7 +15,6 @@ class HistorySensorsSeeder extends Seeder
     {
         DB::table('history_sensors')->insert([
             [
-                'id' => 1,
                 'device_id' => 1,
                 'timestamp' => '2024-06-06 03:11:44',
                 'pressure' => 150,
