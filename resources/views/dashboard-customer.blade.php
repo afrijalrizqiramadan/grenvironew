@@ -299,7 +299,7 @@
                             </div>
                         
                         <h2 class="fs-24 fw-semibold">{{ $location }}</h2>
-                        <p class="text-muted">{{ $customer->address }}</p>
+                        <p class="text-muted">{{ $address }}</p>
                         
                         <a href="{{ $maps }}" class="btn btn-outline-success btn-icon">
                             <i class="mdi mdi-map-marker"></i>
