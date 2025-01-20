@@ -67,7 +67,7 @@
                                                 <td class="status"><span class="badge bg-success-subtle text-success text-uppercase">{{$customer->status}}</span></td>
                                                 <td>
                                                     <div class="d-flex gap-2">
-                                                        <a href="https://api.whatsapp.com/send?phone=+{{ $customer->telp }}" class="btn btn-sm btn-success me-1" target="_blank"><i class="ri-whatsapp-line"></i></a>
+                                                        <a href="https://api.whatsapp.com/send?phone={{ $customer->telp }}" class="btn btn-sm btn-success me-1" target="_blank"><i class="ri-whatsapp-line"></i></a>
                                                         <div class="edit">
                                                             <button class="btn btn-sm btn-warning edit-item-btn" data-bs-toggle="modal" data-bs-target="#showModal">Edit</button>
                                                         </div>

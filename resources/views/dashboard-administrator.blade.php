@@ -298,7 +298,7 @@
                                                           <td>
                                                             <div class="d-flex gap-2">
 
-                                                            <a href="https://api.whatsapp.com/send?phone=+{{ $status->telp }}" class="btn btn-sm btn-success me-1" target="_blank"><i class="ri-whatsapp-line"></i></a>
+                                                            <a href="https://api.whatsapp.com/send?phone={{ $status->telp }}" class="btn btn-sm btn-success me-1" target="_blank"><i class="ri-whatsapp-line"></i></a>
                                                           
                                                             <div class="edit">
                                                               <button class="btn btn-sm btn-primary insert-btn"
