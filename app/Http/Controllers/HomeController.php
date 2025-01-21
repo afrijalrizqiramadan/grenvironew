@@ -15,6 +15,7 @@ use App\Models\Device;
 use App\Models\DataSensor;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
+use App\Models\CentrePoint;
 
 class HomeController extends Controller
 {
@@ -51,7 +52,9 @@ class HomeController extends Controller
         if($user->hasRole('administrator')) {
             $user = Auth::user(); // Mendapatkan pengguna yang sedang login
             $customerCount = Customer::count(); // Menghitung jumlah data customer
-            
+            $centrePoint = CentrePoint::get()->first();
+            $spaces = Customer::get();
+      
             $lowPressureCount = DataSensor::where('pressure', '<', 20)->count();
             $lowTemperatureCount = DataSensor::where('temperature', '<', 20)->count();
 
@@ -66,7 +69,7 @@ class HomeController extends Controller
             ->whereMonth('delivery_date', now()->month)
             ->count();
 
-              return view('dashboard-administrator', compact('countDeliveries','lowTemperatureCount','customerCount','lowPressureCount', 'minpressuresensor'));
+              return view('dashboard-administrator', compact( 'spaces','centrePoint','countDeliveries','lowTemperatureCount','customerCount','lowPressureCount', 'minpressuresensor'));
      }
         elseif($user->hasRole('customer')) {
             $user = Auth::user(); // Mendapatkan pengguna yang sedang login

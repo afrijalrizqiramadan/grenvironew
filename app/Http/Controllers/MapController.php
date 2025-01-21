@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CentrePoint;
+use App\Models\DataSensor;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 
@@ -12,9 +13,13 @@ class MapController extends Controller
     {
 
         $centrePoint = CentrePoint::get()->first();
-        $spaces = Customer::get();
+        $customers = DataSensor::join('devices', 'data_sensors.device_id', '=', 'devices.id')
+        ->join('customers', 'devices.id', '=', 'customers.device_id')
+        ->join('indonesia_districts', 'customers.district', '=', 'indonesia_districts.id') // Join dengan tabel districts
+        ->select('data_sensors.*', 'customers.*', 'indonesia_districts.name as district_name')
+        ->get();
         return view('map',[
-            'spaces' => $spaces,
+            'customers' => $customers,
             'centrePoint' => $centrePoint
         ]);
         //return dd($spaces);

@@ -39,7 +39,7 @@ class Customer extends Model
         }
 
         if ($this->image) {
-            return asset('/uploads/imgCover/' . $this->image);
+            return asset('/images/customer/' . $this->image);
         }
 
         return 'https://via.placeholder.com/500x500.png?text=No+Cover';

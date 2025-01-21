@@ -5,19 +5,13 @@
 <link href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css')}}" rel="stylesheet" type="text/css" />
 <link href="http://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
 integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-
 <link rel="stylesheet" href="http://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin="" />
 <link rel="stylesheet" href="http://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.css" />
 <link rel="stylesheet" href="http://unpkg.com/leaflet.markercluster@1.3.0/dist/MarkerCluster.Default.css" />
-
 <script src="http://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
 <script src="http://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js"></script>
-
-{{-- cdn leaflet search --}}
 <link rel="stylesheet" href=" http://cdnjs.cloudflare.com/ajax/libs/leaflet-search/3.0.9/leaflet-search.min.css">
 <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet-search/3.0.9/leaflet-search.src.js"></script>
-
-
 @endsection
 @section('content')
 
@@ -46,11 +40,11 @@ integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmV
 <script src="{{ URL::asset('build/js/app.js') }}"></script>
     <script>
     //   var datas =
-    //         @foreach ($spaces as $key => $value)
+    //         @foreach ($customers as $key => $value)
     //             [{{ $value->location }},"{!! $value->name !!}"],
     //         @endforeach
 
-    var dataArray= JSON.parse('{!!$spaces!!}', true);
+    var dataArray= JSON.parse('{!!$customers!!}', true);
 
     var addressPoints = [];
     dataArray.forEach(function(data) {
@@ -102,11 +96,12 @@ L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 
 var markers = L.markerClusterGroup();
 
-        @foreach ($spaces as $item)
+        @foreach ($customers as $item)
 
                 var marker = L.marker(new L.LatLng({{ $item->latitude }}, {{ $item->longitude }}));
-  marker.bindPopup( "<div class='my-2'><img src='{{ $item->getImage() }}' class='img-fluid' width='700px'></div>" +
-                    "<div class='my-2'>Lokasi: <br><strong>{{ $item->location }}</strong></div>" +
+  marker.bindPopup( "<div class='my-2'><br><strong>{{ $item->location }}</strong></div>" +
+  "<div class='my-2'>Tekanan :<br><strong>{{ $item->pressure }}</strong></div>" +
+  "<div class='my-2'>Suhu :<br><strong>{{ $item->temperature }}</strong></div>" +
                     "<div><a href='{{ route('detail-customer',$item) }}' class='btn btn-outline-info btn-sm'>Detail Space</a></div>" +
                     "<div class='my-2'></div>");
   markers.addLayer(marker);
@@ -141,13 +136,14 @@ map.addLayer(markers);
         //     "Satellite": satellite,
         // };
         // // Menampilkan popup data ketika marker di klik
-        // @foreach ($spaces as $item)
+        // @foreach ($customers as $item)
 
         //     L.marker([{{ $item->location }}])
         //         .bindPopup(
-        //             "<div class='my-2'><img src='{{ $item->getImage() }}' class='img-fluid' width='700px'></div>" +
-        //             "<div class='my-2'><strong>Nama Space:</strong> <br>{{ $item->name }}</div>" +
-        //             "<div><a href='' class='btn btn-outline-info btn-sm'>Detail Space</a></div>" +
+//        "<div class='my-2'><br><strong>{{ $item->location }}</strong></div>" +
+//   "<div class='my-2'>Tekanan :<br><strong>{{ $item->pressure }}</strong></div>" +
+//   "<div class='my-2'>Suhu :<br><strong>{{ $item->temperature }}</strong></div>" +
+          //             "<div><a href='' class='btn btn-outline-info btn-sm'>Detail Space</a></div>" +
         //             "<div class='my-2'></div>"
         //         ).addTo(map);
 
@@ -180,12 +176,11 @@ map.addLayer(markers);
         //     markersLayer.addLayer(marker);
 
         //     // melakukan looping data untuk memunculkan popup dari space yang dipilih
-        //     @foreach ($spaces as $item)
+        //     @foreach ($customers as $item)
         //         L.marker([{{ $item->location }}])
-        //             .bindPopup(
-        //                 "<div class='my-2'><img src='{{ $item->getImage() }}' class='img-fluid' width='700px'></div>" +
-        //                 "<div class='my-2'><strong>Nama Spot:</strong> <br>{{ $item->name }}</div>" +
-        //                 "<a href='' class='btn btn-outline-info btn-sm'>Detail Spot</a></div>" +
+        //             .bindPopup("<div class='my-2'><br><strong>{{ $item->location }}</strong></div>" +
+  //"<div class='my-2'>Tekanan :<br><strong>{{ $item->pressure }}</strong></div>" +
+  //"<div class='my-2'>Suhu :<br><strong>{{ $item->temperature }}</strong></div>" +        //                 "<a href='' class='btn btn-outline-info btn-sm'>Detail Spot</a></div>" +
         //                 "<div class='my-2'></div>"
         //             ).addTo(map);
         //     @endforeach
