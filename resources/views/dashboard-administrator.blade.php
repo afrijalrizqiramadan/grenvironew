@@ -428,7 +428,7 @@ integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmV
 });
 
 // Sekarang datas akan berisi data dalam format yang Anda inginkan
-        var mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+var mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
             'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             mbUrl =
             'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWl5b3RoaW5ncyIsImEiOiJjbHg5dzl3bnowdmdsMnZwenNxNTgzbzI3In0.bvzwvgTp1oDlxOBRnb3lRg';
@@ -437,37 +437,60 @@ integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmV
                 id: 'mapbox/satellite-v9',
                 tileSize: 512,
                 zoomOffset: -1,
-                attribution: mbAttr
+                attribution: false
             }),
             dark = L.tileLayer(mbUrl, {
                 id: 'mapbox/dark-v10',
                 tileSize: 512,
                 zoomOffset: -1,
-                attribution: mbAttr
+                attribution: false
             }),
             streets = L.tileLayer(mbUrl, {
                 id: 'mapbox/streets-v11',
                 tileSize: 512,
                 zoomOffset: -1,
-                attribution: mbAttr
+                attribution: false
             });
 // var map = L.map('map').setView([-37.82, 175.23], 13);
         var map = L.map('map', {
 
             center: [{{ $centrePoint->location }}],
-            zoom: 5,
+            zoom: 10,
+            attribution: false,
             layers: [streets]
         });
-L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-  attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
+var iconMarker1 = L.icon({
+            iconUrl: '{{ asset('build/iconMarkers/merah.png') }}',
+            iconSize: [50, 50], // Ukuran ikon (lebar x tinggi)
+            iconAnchor: [25, 50], // Titik anchor (biasanya di tengah bawah)
+        })
+        var iconMarker2 = L.icon({
+            iconUrl: '{{ asset('build/iconMarkers/kuning.png') }}',
+            iconSize: [50, 50], // Ukuran ikon (lebar x tinggi)
+            iconAnchor: [25, 50], // Titik anchor (biasanya di tengah bawah)
+        })
+        var iconMarker3 = L.icon({
+            iconUrl: '{{ asset('build/iconMarkers/hijau.png') }}',
+            iconSize: [50, 50], // Ukuran ikon (lebar x tinggi)
+            iconAnchor: [25, 50], // Titik anchor (biasanya di tengah bawah)
+        })
 
 var markers = L.markerClusterGroup();
 
         @foreach ($minpressuresensor as $item)
-
-                var marker = L.marker(new L.LatLng({{ $item->latitude }}, {{ $item->longitude }}));
-  marker.bindPopup( "<div class='my-2'><br><strong>{{ $item->location }}</strong></div>" +
+        var iconMarker;
+            if ({{ $item->pressure }} < 20) {
+                iconMarker = iconMarker1;
+            } else if ({{ $item->pressure }} >= 20 && {{ $item->pressure }} < 60) {
+                iconMarker = iconMarker2;
+            } else if ({{ $item->pressure }} >= 60) {
+                iconMarker = iconMarker3;
+            }
+            
+                var marker = L.marker([{{ $item->latitude }}, {{ $item->longitude }}], {
+                    icon: iconMarker
+                }).bindPopup( "<div class='my-2'><br><strong>{{ $item->location }}</strong></div>" +
   "<div class='my-2'>Tekanan :<br><strong>{{ $item->pressure }}</strong></div>" +
   "<div class='my-2'>Suhu :<br><strong>{{ $item->temperature }}</strong></div>" +
                     "<div><a href='{{ route('detail-customer',$item) }}' class='btn btn-outline-info btn-sm'>Detail Space</a></div>" +
@@ -555,6 +578,7 @@ map.addLayer(markers);
         // }
         // L.control.layers(baseLayers, overlays).addTo(map);
     </script>
+
 <!-- apexcharts -->
 <script src="{{ URL::asset('build/libs/apexcharts/apexcharts.min.js') }}"></script>
 <script src="{{ URL::asset('build/libs/jsvectormap/js/jsvectormap.min.js') }}"></script>
