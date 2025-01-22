@@ -60,7 +60,7 @@ class SensorDataController extends Controller
         $device = $request->input('device_id');
         $filter = $request->input('filter');
         $query = HistorySensor::where('device_id', $device)
-            ->whereRaw('id = 0');
+            ->whereRaw('id % 10 = 0');
     
         $currentYear = now()->year;
         $currentMonth = now()->month;
