@@ -59,7 +59,8 @@ class SensorDataController extends Controller
         $user = Auth::user(); // Mendapatkan pengguna yang sedang login
         $device = $request->input('device_id');
         $filter = $request->input('filter');
-        $query = HistorySensor::where('device_id', $device);
+        $query = HistorySensor::where('device_id', $device)
+            ->whereRaw('id % 10 = 0');
     
         $currentYear = now()->year;
         $currentMonth = now()->month;
