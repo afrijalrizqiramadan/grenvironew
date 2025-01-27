@@ -831,9 +831,8 @@ fetch('/theme/set', {
         body: JSON.stringify(themeData)
         }).then(response => response.json())
           .then(data => { if (data.success) {
-            alert('Theme updated successfully!');
+            location.reload();
         } else {
-
             alert('Failed to update theme. Please try again.');
         }
     })
