@@ -13,6 +13,7 @@ use App\Http\Controllers\OutletMapController;
 use App\Http\Controllers\CentrePointController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\SpaceController;
 use App\Http\Livewire\MembersTable;
 use App\Http\Controllers\LocationController;
@@ -57,6 +58,7 @@ Route::middleware([
     Route::get('/pressure', [PressureController::class,'pressurePage'])->name('pressure');
     Route::get('/temperature', [TemperatureController::class,'temperaturePage'])->name('temperature');
     Route::get('/delivery', [DeliveryController::class,'deliveryPage'])->name('delivery');
+    Route::post('/theme/set', [ThemeController::class, 'setTheme'])->name('theme.set');
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/map',[App\Http\Controllers\MapController::class,'index'])->name('map');

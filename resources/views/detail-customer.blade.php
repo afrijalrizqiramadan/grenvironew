@@ -1070,3 +1070,4 @@ function updateChart(filter, element) {
 
     </script>
 @endsection
+

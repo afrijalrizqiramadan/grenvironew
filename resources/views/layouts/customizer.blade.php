@@ -22,7 +22,10 @@
 </div>
 
 <!-- Theme Settings -->
+<form id="themeForm">
+
 <div class="offcanvas offcanvas-end border-0" tabindex="-1" id="theme-settings-offcanvas">
+
     <div class="d-flex align-items-center bg-primary bg-gradient p-3 offcanvas-header">
         <h5 class="m-0 me-2 text-white">Theme Customizer</h5>
 
@@ -149,7 +152,7 @@
                     <div class="row">
                         <div class="col-4">
                             <div class="form-check card-radio">
-                                <input class="form-check-input" type="radio" name="data-bs-theme"
+                                <input class="form-check-input" type="radio" name="data-sidebar"
                                     id="layout-mode-light" value="light">
                                 <label class="form-check-label p-0 avatar-md w-100" for="layout-mode-light">
                                     <span class="d-flex gap-1 h-100">
@@ -175,7 +178,7 @@
 
                         <div class="col-4">
                             <div class="form-check card-radio dark">
-                                <input class="form-check-input" type="radio" name="data-bs-theme"
+                                <input class="form-check-input" type="radio" name="data-sidebar"
                                     id="layout-mode-dark" value="dark">
                                 <label class="form-check-label p-0 avatar-md w-100 bg-dark" for="layout-mode-dark">
                                     <span class="d-flex gap-1 h-100">
@@ -260,7 +263,7 @@
                     <div class="row">
                         <div class="col-4">
                             <div class="form-check card-radio">
-                                <input class="form-check-input" type="radio" name="data-layout-width"
+                                <input class="form-check-input" type="radio" name="data-layout_width"
                                     id="layout-width-fluid" value="fluid">
                                 <label class="form-check-label p-0 avatar-md w-100" for="layout-width-fluid">
                                     <span class="d-flex gap-1 h-100">
@@ -285,7 +288,7 @@
                         </div>
                         <div class="col-4">
                             <div class="form-check card-radio">
-                                <input class="form-check-input" type="radio" name="data-layout-width"
+                                <input class="form-check-input" type="radio" name="data-layout_width"
                                     id="layout-width-boxed" value="boxed">
                                 <label class="form-check-label p-0 avatar-md w-100 px-2" for="layout-width-boxed">
                                     <span class="d-flex gap-1 h-100 border-start border-end">
@@ -467,7 +470,7 @@
 
                         <div class="col-4">
                             <div class="form-check sidebar-setting card-radio">
-                                <input class="form-check-input" type="radio" name="data-sidebar-size"
+                                <input class="form-check-input" type="radio" name="data-sidebarsize"
                                     id="sidebar-size-small-hover" value="sm-hover">
                                 <label class="form-check-label p-0 avatar-md w-100" for="sidebar-size-small-hover">
                                     <span class="d-flex gap-1 h-100">
@@ -585,7 +588,7 @@
                         <div class="col-4">
                             <div class="form-check sidebar-setting card-radio" data-bs-toggle="collapse"
                                 data-bs-target="#collapseBgGradient.show">
-                                <input class="form-check-input" type="radio" name="data-sidebar"
+                                <input class="form-check-input" type="radio" name="datasidebar"
                                     id="sidebar-color-dark" value="dark">
                                 <label class="form-check-label p-0 avatar-md w-100" for="sidebar-color-dark">
                                     <span class="d-flex gap-1 h-100">
@@ -733,7 +736,7 @@
                         <div class="col-4">
                             <div class="form-check sidebar-setting card-radio">
                                 <input class="form-check-input" type="radio" name="data-preloader"
-                                    id="preloader-view-custom" value="enable">
+                                    id="preloader-view-custom" value="enable" >
                                 <label class="form-check-label p-0 avatar-md w-100" for="preloader-view-custom">
                                     <span class="d-flex gap-1 h-100">
                                         <span class="flex-shrink-0">
@@ -802,8 +805,42 @@
                 <button type="button" class="btn btn-light w-100" id="reset-layout">Reset</button>
             </div>
             <div class="col-6">
-                <button type="button" class="btn btn-primary w-100">Preview</button>
+                <button id="customizer-btn" type="submit" class="btn btn-primary w-100">Preview</button>
             </div>
         </div>
     </div>
+
 </div>
+</form>
+
+<script>
+document.getElementById('themeForm').addEventListener('submit', function(event) {
+
+    event.preventDefault();
+
+// Ambil semua radio button yang dipilih
+const formData = new FormData(this);
+const themeData = Object.fromEntries(formData.entries());
+    console.log(themeData);
+fetch('/theme/set', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify(themeData)
+        }).then(response => response.json())
+          .then(data => { if (data.success) {
+            alert('Theme updated successfully!');
+        } else {
+
+            alert('Failed to update theme. Please try again.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while updating the theme.');
+    });
+    });
+    </script>
+<meta name="csrf-token" content="{{ csrf_token() }}">

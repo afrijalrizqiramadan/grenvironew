@@ -17,6 +17,16 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($user) {
+            $user->preferensi()->create([
+                'data_topbar' => 'light'
+            ]);
+        });
+    }
     protected $guard_name = 'web';
     use HasRoles;
 
@@ -52,5 +62,9 @@ class User extends Authenticatable
     public function customer()
     {
         return $this->hasOne(Customer::class, 'user_id', 'id');
+    }
+    public function theme()
+    {
+        return $this->hasOne(Theme::class, 'user_id', 'id')->withDefault();
     }
 }

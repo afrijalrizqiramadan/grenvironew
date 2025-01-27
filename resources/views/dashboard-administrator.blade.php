@@ -366,12 +366,12 @@ integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmV
 @section('script')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-         $('.insert-btn').on('click', function () {
-             var customerId = $(this).data('customer-id');
-             var customerName = $(this).data('customer-name');
-             $('#formCustomerName').val(customerName);
-             $('#formCustomerId').val(customerId);
-         });
+        //  $('.insert-btn').on('click', function () {
+        //      var customerId = $(this).data('customer-id');
+        //      var customerName = $(this).data('customer-name');
+        //      $('#formCustomerName').val(customerName);
+        //      $('#formCustomerId').val(customerId);
+        //  });
          $('#insertForm').on('submit', function (e) {
              e.preventDefault();
 
