@@ -59,8 +59,7 @@ class SensorDataController extends Controller
         $user = Auth::user(); // Mendapatkan pengguna yang sedang login
         $device = $request->input('device_id');
         $filter = $request->input('filter');
-        $query = HistorySensor::where('device_id', $device)
-            ->whereRaw('id % 4 = 0');
+        $query = HistorySensor::where('device_id', $device);
     
         $currentYear = now()->year;
         $currentMonth = now()->month;
@@ -68,18 +67,24 @@ class SensorDataController extends Controller
         if ($filter == '1d') {
             $currentHour = now()->hour;
             if ($currentHour >= 0 && $currentHour < 7) {
+                $query->whereRaw('id % 2 = 0');
                 $query->whereDate('timestamp', now()->subDay());
             } else {
+                $query->whereRaw('id % 2 = 0');
                 $query->whereDate('timestamp', now());
             }
         }
         elseif ($filter == '1y') {
+            $query->whereRaw('id % 2 = 0');
             $query->whereDate('timestamp', now()->subDay());
         } elseif ($filter == '1w') {
+            $query->whereRaw('id % 6 = 0');
             $query->whereBetween('timestamp', [now()->subDays(7), now()]);
         } elseif ($filter == '1m') {
+            $query->whereRaw('id % 10 = 0');
             $query->whereMonth('timestamp', $currentMonth)->whereYear('timestamp', $currentYear);
         } elseif ($filter == '6y') {
+            $query->whereRaw('id % 20 = 0');
             $query->whereYear('timestamp', '>=', $currentYear - 6);
         }
     
