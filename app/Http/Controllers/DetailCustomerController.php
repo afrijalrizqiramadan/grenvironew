@@ -35,8 +35,7 @@ class DetailCustomerController extends Controller
             ->take(5)->get();
 
             $sensorData = HistorySensor::where('device_id', $id_device)
-            ->whereMonth('timestamp', $currentMonth)
-            ->whereYear('timestamp', $currentYear)
+            ->whereDate('timestamp', Carbon::today())
             ->orderBy('timestamp')
             ->get();
 
