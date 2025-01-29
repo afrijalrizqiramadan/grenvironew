@@ -10,6 +10,7 @@ use App\Models\HistorySensor;
 use App\Models\DataSensor;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Carbon\Carbon;
 
 class SensorDataController extends Controller
 {
@@ -60,26 +61,19 @@ class SensorDataController extends Controller
         $device = $request->input('device_id');
         $filter = $request->input('filter');
         $query = HistorySensor::where('device_id', $device);
-        now()->setTimezone('Asia/Jakarta');
-        $currentYear = now()->year;
-        $currentMonth = now()->month;
+        $currentYear = Carbon::today()->year;
+        $currentMonth = Carbon::today()->month;
     
         if ($filter == '1d') {
-            $currentHour = now()->hour;
-            if ($currentHour >= 0 && $currentHour < 7) {
                 $query->whereRaw('id % 2 = 0');
-                $query->whereDate('timestamp', now()->subDay());
-            } else {
-                $query->whereRaw('id % 2 = 0');
-                $query->whereDate('timestamp', now());
-            }
+                $query->whereDate('timestamp', Carbon::today());
         }
         elseif ($filter == '1y') {
             $query->whereRaw('id % 2 = 0');
-            $query->whereDate('timestamp', now()->subDay());
+            $query->whereDate('timestamp', Carbon::today()->subDay());
         } elseif ($filter == '1w') {
             $query->whereRaw('id % 6 = 0');
-            $query->whereBetween('timestamp', [now()->subDays(7), now()]);
+            $query->whereBetween('timestamp', [Carbon::today()->subDays(7), Carbon::today()]);
         } elseif ($filter == '1m') {
             $query->whereRaw('id % 10 = 0');
             $query->whereMonth('timestamp', $currentMonth)->whereYear('timestamp', $currentYear);
