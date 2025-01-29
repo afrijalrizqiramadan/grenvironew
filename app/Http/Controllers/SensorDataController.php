@@ -73,7 +73,8 @@ class SensorDataController extends Controller
             $query->whereDate('timestamp', Carbon::today()->subDay());
         } elseif ($filter == '1w') {
             $query->whereRaw('id % 6 = 0');
-            $query->whereBetween('timestamp', [Carbon::today()->subDays(7), Carbon::today()]);
+            $query->whereBetween('timestamp', [ Carbon::now()->subDays(7)->startOfDay(),
+            Carbon::now()->endOfDay()]);
         } elseif ($filter == '1m') {
             $query->whereRaw('id % 10 = 0');
             $query->whereMonth('timestamp', $currentMonth)->whereYear('timestamp', $currentYear);
