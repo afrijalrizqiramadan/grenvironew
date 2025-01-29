@@ -21,7 +21,7 @@ class DashboardController extends Controller
     public function dashboardPage(Request $request): View {
         // $user = $request->user();
         $user = Auth::user();
-        
+        dd(now());
         if($user->hasRole('administrator')) {
             $user = Auth::user(); // Mendapatkan pengguna yang sedang login
             $customerCount = Customer::count(); // Menghitung jumlah data customer

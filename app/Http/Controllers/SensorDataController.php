@@ -66,7 +66,6 @@ class SensorDataController extends Controller
     
         if ($filter == '1d') {
             $currentHour = now()->hour;
-            dd(now());
             if ($currentHour >= 0 && $currentHour < 7) {
                 $query->whereRaw('id % 2 = 0');
                 $query->whereDate('timestamp', now()->subDay());
