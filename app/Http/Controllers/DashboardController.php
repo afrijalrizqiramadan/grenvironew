@@ -24,7 +24,7 @@ class DashboardController extends Controller
         
         if($user->hasRole('administrator')) {
             $user = Auth::user(); // Mendapatkan pengguna yang sedang login
-            dump(now());
+            dump("Tes");
             $customerCount = Customer::count(); // Menghitung jumlah data customer
             $averagePressure = DataSensor::avg('pressure');
             $lowPressureCount = DataSensor::where('pressure', '<', 20)->count();
