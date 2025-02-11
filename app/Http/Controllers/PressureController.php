@@ -16,8 +16,7 @@ class PressureController extends Controller
         $user = $request->user();
 
         if($user->hasRole('administrator')) {
-            $devices = Device::where('user_id', 0)->get();
-            dd($devices);
+            $devices = Device::where('user_id', '<>', 0)->get();
             $latestPressures = DataSensor::select('customers.id','customers.name','customers.telp','customers.location', 'data_sensors.device_id', 'data_sensors.pressure','data_sensors.temperature')
             ->leftJoin('customers', 'data_sensors.device_id', '=', 'customers.device_id')
             ->whereIn('data_sensors.device_id', $devices->pluck('id'))
