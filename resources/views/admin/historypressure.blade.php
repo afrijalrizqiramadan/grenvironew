@@ -85,7 +85,8 @@
                         <tr>
                             <td class="py-1">{{ $index + 1 }}</td>
 
-                            <td><a href="{{ route('detail-customer',$pressure->id) }}" class="text-success fw-bold">{{ $pressure->name }}</a></td>
+                            <td>
+                                <a href="{{ route('detail-customer',['slug' => $pressure->id]) }}" class="text-success fw-bold">{{ $pressure->name }}</a></td>
 
                             <td>{{ $pressure->capacity }} Bar</td>
                             <td>{{ $pressure->temperature }}</td>
