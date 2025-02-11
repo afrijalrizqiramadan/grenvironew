@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('data_sensor_kendaraans', function (Blueprint $table) {
             $table->id();            
-            $table->unsignedInteger('device_id');
+            $table->unsignedInteger('device_id')->unique();
             $table->timestamp('timestamp')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->float('pressure')->nullable();
             $table->double('latitude', 10, 6)->nullable();

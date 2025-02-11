@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('data_sensors', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('device_id')->nullable();
+            $table->unsignedInteger('device_id')->unique();
             $table->timestamp('timestamp')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->float('pressure')->nullable();
             $table->float('pressuremedium')->nullable();
