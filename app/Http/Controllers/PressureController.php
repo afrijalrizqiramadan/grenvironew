@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Customer;
 use App\Models\DeliveryStatus;
 use App\Models\DataSensor;
+use App\Models\Device;
 
 class PressureController extends Controller
 {
@@ -15,8 +16,10 @@ class PressureController extends Controller
         $user = $request->user();
 
         if($user->hasRole('administrator')) {
+            $devices = Device::where('user_id', 0)->get();
             $latestPressures = DataSensor::select('customers.id','customers.name','customers.telp','customers.location', 'data_sensors.device_id', 'data_sensors.pressure','data_sensors.temperature')
             ->leftJoin('customers', 'data_sensors.device_id', '=', 'customers.device_id')
+            ->whereIn('data_sensors.device_id', $devices->pluck('id'))
             ->whereIn('data_sensors.id', function ($query) {
                 $query->selectRaw('MAX(id)')
                       ->from('data_sensors')
