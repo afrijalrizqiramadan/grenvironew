@@ -68,8 +68,8 @@ Route::middleware([
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/map',[App\Http\Controllers\MapController::class,'index'])->name('map');
-    Route::get('/detailcustomer/{slug}',[App\Http\Controllers\DetailCustomerController::class,'detailPage'])->name('detail-customer');
-    Route::get('/detailkendaraan/{slug}',[App\Http\Controllers\ProfilKendaraanController::class,'detailPage'])->name('detail-kendaraan');
+    Route::get('/detailcustomer/{id}',[App\Http\Controllers\DetailCustomerController::class,'detailPage'])->name('detail-customer');
+    Route::get('/detailkendaraan/{id}',[App\Http\Controllers\ProfilKendaraanController::class,'detailPage'])->name('detail-kendaraan');
 
     Route::resource('customer',(CustomerController::class));
     Route::resource('centre-point',(CentrePointController::class));

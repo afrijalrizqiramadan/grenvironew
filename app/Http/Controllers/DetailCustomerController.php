@@ -14,12 +14,12 @@ use GuzzleHttp\Client;
 class DetailCustomerController extends Controller
 {
 
-    public function detailPage($slug): View {
+    public function detailPage($id): View {
         $user = Auth::user();
         $currentMonth = Carbon::now()->month;
         $currentYear = Carbon::now()->year;
         if($user->hasRole('administrator')) {
-            $customer = Customer::where('id',$slug)->first();
+            $customer = Customer::where('id',$id)->first();
             $device = $customer->device;
             $customer_id = $customer->id;
             $location = $customer->location;

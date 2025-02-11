@@ -16,12 +16,12 @@ use Illuminate\Support\Facades\Http;
 class ProfilKendaraanController extends Controller
 {
 
-    public function detailPage($slug): View {
+    public function detailPage($id): View {
         $user = Auth::user();
         $currentMonth = Carbon::now()->month;
         $currentYear = Carbon::now()->year;
         if($user->hasRole('administrator')) {
-            $kendaraan = Kendaraan::where('id',$slug)->first();
+            $kendaraan = Kendaraan::where('id',$id)->first();
             $device = $kendaraan->device;
             $dataSensor = DataSensorKendaraan::where('device_id', $device->id)->latest()->first();
             $kendaraan_id = $kendaraan->id;
