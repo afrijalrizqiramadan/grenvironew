@@ -12,6 +12,7 @@ integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmV
 <script src="http://unpkg.com/leaflet.markercluster@1.3.0/dist/leaflet.markercluster.js"></script>
 <link rel="stylesheet" href=" http://cdnjs.cloudflare.com/ajax/libs/leaflet-search/3.0.9/leaflet-search.min.css">
 <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet-search/3.0.9/leaflet-search.src.js"></script>
+
 @endsection
 @section('content')
 <div class="row">
@@ -128,7 +129,7 @@ integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmV
                             </div>
                             <div class="d-flex align-items-end justify-content-between mt-4">
                                 <div>
-                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="">{{$lowPressureCount}}</span>
+                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{$lowPressureCount}}">0</span>
                                         {{-- <a href="" class="text-decoration-underline">View all orders</a> --}}
                                 </div>
                                 <div class="avatar-sm flex-shrink-0">
@@ -279,8 +280,8 @@ integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmV
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title" id="insertModalLabel">Tambah Pengiriman</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
+                                                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true"></span>
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
@@ -354,7 +355,8 @@ integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmV
                         </div><!-- end card header -->
             
                         <div class="card-body">
-            <div id="map" class="leaflet-map"></div>
+                            <div id="map" class="leaflet-map"></div>
+
             </div><!-- end card-body -->
             </div><!-- end card -->
             </div>
@@ -364,14 +366,17 @@ integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmV
 </div>
 @endsection
 @section('script')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        //  $('.insert-btn').on('click', function () {
-        //      var customerId = $(this).data('customer-id');
-        //      var customerName = $(this).data('customer-name');
-        //      $('#formCustomerName').val(customerName);
-        //      $('#formCustomerId').val(customerId);
-        //  });
+          $('.insert-btn').on('click', function () {
+             var customerId = $(this).data('customer-id');
+             var customerName = $(this).data('customer-name');
+             $('#formCustomerName').val(customerName);
+             $('#formCustomerId').val(customerId);
+         });
          $('#insertForm').on('submit', function (e) {
              e.preventDefault();
 
@@ -422,8 +427,7 @@ integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmV
 
     // Menambahkan data ke dalam datas dalam format yang diinginkan
     addressPoints.push([latitude, longitude, location]);
-    console.log(addressPoints);
-
+    // console.log(addressPoints);
 
 });
 

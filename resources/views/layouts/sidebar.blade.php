@@ -66,6 +66,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link menu-link" href="{{ route('tracking.index') }}">
+                        <i class="ri-navigation-line"></i> <span>Tracking Kendaraan</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link menu-link" href="{{ route('customer.index') }}">
                         <i class="ri-customer-service-line"></i> <span>Pelanggan</span>
                     </a>

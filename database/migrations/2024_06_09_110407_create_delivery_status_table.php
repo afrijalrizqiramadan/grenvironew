@@ -14,8 +14,11 @@ return new class extends Migration
         Schema::create('delivery_status', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('customer_id')->nullable();
-            $table->float('total');
-            $table->date('delivery_date')->nullable();
+            $table->unsignedInteger('device_id')->nullable();
+            $table->float('pressure_before')->nullable();
+            $table->float('pressure_after')->nullable();
+            $table->float('total')->nullable();
+            $table->dateTime('delivery_time')->nullable();
             $table->enum('status', ['Disiapkan', 'Dalam Perjalanan', 'Ditunda', 'Selesai', 'Batal'])->nullable();
             $table->timestamps();
         });

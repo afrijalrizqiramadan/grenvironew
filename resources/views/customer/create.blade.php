@@ -1,17 +1,21 @@
-<x-app-layout>
-    @push('style-css')
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
-        integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
-        crossorigin="" />
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@extends('layouts.master')
+@section('title') @lang('translation.dashboards') @endsection
+@section('css')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+crossorigin="" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-    <style>
-        #map {
-            height: 500px;
-        }
+<style>
+#map {
+    height: 500px;
+}
 
-    </style>
-@endpush
+</style>
+<link href="{{ URL::asset('build/libs/jsvectormap/css/jsvectormap.min.css')}}" rel="stylesheet" type="text/css" />
+<link href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css')}}" rel="stylesheet" type="text/css" />
+@endsection
+@section('content')    
 @if (session('success'))
     <div class="alert alert-success">
         {{ session('success') }}
@@ -23,6 +27,11 @@
         {{ session('error') }}
     </div>
 @endif
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="container-fluid page-body-wrapper">
          <div class="main-panel">
            <div class="content-wrapper">
@@ -59,7 +68,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Telepon</label>
                                 <div class="col-sm-9">
-                                    <input class="form-control" type="number" id="telp" name="telp" value="{{ old('telp') }}" required="required">
+                                    <input class="form-control" type="number" id="telp" name="telp" value="{{ old('telp') }}">
                                 </div>
                               </div>
                             </div>
@@ -67,7 +76,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Nama Lokasi</label>
                                 <div class="col-sm-9">
-                                    <input class="form-control" type="text" id="location" name="location" value="{{ old('location') }}" maxlength="20" required="required">
+                                    <input class="form-control" type="text" id="location" name="location" value="{{ old('location') }}" maxlength="20" required>
                                 </div>
                               </div>
                             </div>
@@ -77,7 +86,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Kapasitas</label>
                                 <div class="col-sm-9">
-                                    <input class="form-control" type="number" step="any" id="capacity" name="capacity" value="{{ old('capacity') }}" required="required">
+                                    <input class="form-control" type="number" step="any" id="capacity" name="capacity" value="{{ old('capacity') }}" required>
                                 </div>
                               </div>
                             </div>
@@ -85,50 +94,51 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Device ID</label>
                                 <div class="col-sm-9">
-                                    <input class="form-control" type="text" id="device_id" name="device_id" value="{{ old('device_id') }}" required="required">
+                                    <input class="form-control" type="text" id="device_id" name="device_id" value="{{ old('device_id') }}" required>
                                 </div>
                               </div>
                             </div>
                             <div class="col-md-6">
                               <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Tanggal Registrasi</label>
+                                <label class="col-sm-3 col-form-label">Registrasi</label>
                                 <div class="col-sm-9">
-                                    <input  class="form-control" type="date" id="registration_date" name="registration_date" value="{{ old('registration_date') }}" required="required">
+                                    <input  class="form-control" type="date" id="registration_date" name="registration_date" value="{{ old('registration_date') }}" required>
                                 </div>
                               </div>
                             </div>
                           </div>
+                         
                           <div class="row">
                             <div class="col-md-6">
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Tipe</label>
                                 <div class="col-sm-9">
-                                  <select id="type" name="type" value="{{ old('type') }}" required="required" class="form-control">
+                                  <select id="type" name="type" value="{{ old('type') }}" class="form-control" required>
                                     <option>Kantor</option>
                                     <option>Pendidikan</option>
                                   </select>
                                 </div>
                               </div>
                             </div>
-                            <div class="col-md-6">
+                             <div class="col-md-6">
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Status</label>
                                 <div class="col-sm-9">
-                                <select id="status" name="status" required="required">
+                                <select name="status" class="form-select" data-choices data-choices-sorting="true" id="autoSizingSelect" required>
                                     <option value="Aktif" {{ old('status') == 'Aktif' ? 'selected' : '' }}>Aktif</option>
                                     <option value="Tidak Aktif" {{ old('status') == 'Tidak Aktif' ? 'selected' : '' }}>Tidak Aktif</option>
                                 </select>
-                            </div>
+                          </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                          <div class="form-group row">
+                          {{-- <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Upload Gambar</label>
                             <img id="previewImage" class="mb-2" src="{{ $customer->getImage() }}" width="100%" alt="">
-                            <input type="file" name="images" id="images" accept="image/*" required="required">
+                            <input type="file" name="images" id="images" accept="image/*">
 
-                          </div>
+                          </div> --}}
                         </div>
                         <div class="col-md-6">
 
@@ -146,7 +156,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Alamat Lengkap</label>
                                 <div class="col-sm-9">
-                                    <textarea class="form-control" id="address" name="address" required>{{ old('address') }}</textarea>
+                                    <textarea class="form-control" id="address" name="address">{{ old('address') }}</textarea>
                                 </div>
                               </div>
                             </div>
@@ -161,7 +171,7 @@
                                     $provinces = new App\Http\Controllers\LocationController;
                                     $provinces= $provinces->provinces();
                                 @endphp
-                                <select class="form-control" name="provinsi" id="provinsi" required="required">
+                                <select class="form-control" name="provinsi" id="provinsi">
                                     <option value="">==Pilih Salah Satu==</option>
                                     @foreach ($provinces as $item)
                                         <option value="{{ $item->id ?? '' }}">{{ $item->name ?? '' }}</option>
@@ -173,7 +183,7 @@
                               <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="kota">Kabupaten / Kota</label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" name="kota" id="kota" required="required">
+                                    <select class="form-control" name="kota" id="kota">
                                     </select>                                </div>
                               </div>
                             </div>
@@ -183,7 +193,7 @@
                               <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="kecamatan">Kecamatan</label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" name="kecamatan" id="kecamatan" required="required">
+                                    <select class="form-control" name="kecamatan" id="kecamatan">
                                     </select>                                </div>
                               </div>
                             </div>
@@ -191,25 +201,25 @@
                               <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="desa">Desa</label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" name="desa" id="desa" required="required">
+                                    <select class="form-control" name="desa" id="desa">
                                     </select>                                </div>
                               </div>
                             </div>
                           </div><div class="row">
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                               <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="maps">Maps</label>
                                 <div class="col-sm-9">
                                     <textarea id="maps" name="maps">{{ old('maps') }}</textarea>
                                 </div>
                               </div>
-                            </div>
+                            </div> --}}
                             <div class="col-md-6">
                               <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="desa">Latitude Longitude</label>
                                 <div class="col-sm-9">
                                     <input type="text" name="latlong"
-                                class="form-control @error('latlong') is-invalid @enderror" readonly id="" required="required">
+                                class="form-control @error('latlong') is-invalid @enderror" readonly id="">
                             @error('latlong')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -232,8 +242,9 @@
 
        </div>
    </div>
+   @endsection
    
-   @push('javascript')
+   @section('script')
    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
@@ -378,7 +389,5 @@
            })
        });
    </script>
-@endpush
-
-</x-app-layout>
+@endsection
 

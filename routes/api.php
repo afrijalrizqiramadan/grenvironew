@@ -17,6 +17,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SpaceController;
 use App\Http\Livewire\MembersTable;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\SensorDataController;
 
 /*
@@ -40,6 +41,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/insert-delivery', [DeliveryController::class, 'store'])->name('insert.route');
 Route::post('/update-status/{id}', [DeliveryController::class, 'updateStatus']);
 Route::get('/sensor-pressure/{id_device}', [DashboardController::class, 'getPressureData']);
+Route::get('/sensor-pressurekendaraan/{id_device}', [DashboardController::class, 'getPressureDataKendaraan']);
 Route::get('/sensor-temperature/{id_device}', [DashboardController::class, 'getTemperatureData']);
 Route::get('/sensor-data', [SensorDataController::class, 'getSensorData']);
+Route::get('/sensor-datakendaraan', [SensorDataController::class, 'getSensorDataKendaraan']);
+Route::get('/tracking/latest', [TrackingController::class, 'latest']);  // Ambil data terbaru
 

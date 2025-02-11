@@ -1,19 +1,26 @@
-<x-app-layout>
+@extends('layouts.master')
+@section('title') @lang('translation.dashboards') @endsection
+@section('css')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+crossorigin="" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-    @push('style-css')
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
-        integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
-        crossorigin="" />
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+#map {
+    height: 500px;
+}
 
-    <style>
-        #map {
-            height: 500px;
-        }
-
-    </style>
-@endpush
-
+</style>
+<link href="{{ URL::asset('build/libs/jsvectormap/css/jsvectormap.min.css')}}" rel="stylesheet" type="text/css" />
+<link href="{{ URL::asset('build/libs/swiper/swiper-bundle.min.css')}}" rel="stylesheet" type="text/css" />
+@endsection
+@section('content')    
+@if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
 <div class="container-fluid page-body-wrapper">
     <div class="main-panel">
       <div class="content-wrapper">
@@ -103,9 +110,9 @@
                                   <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Status</label>
                                     <div class="col-sm-9">
-                                    <select id="status" name="status" required="required">
-                                        <option value="Aktif" {{ $customer->status == 'Aktif' ? 'selected' : '' }}>Aktif</option>
-                                        <option value="Tidak Aktif" {{ $customer->status == 'Tidak Aktif' ? 'selected' : '' }}>Tidak Aktif</option>
+                                      <select name="status" class="form-select" data-choices data-choices-sorting="true" id="autoSizingSelect" required>
+                                        <option value="Aktif" {{ old('status') == 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                                        <option value="Tidak Aktif" {{ old('status') == 'Tidak Aktif' ? 'selected' : '' }}>Tidak Aktif</option>
                                     </select>
                                 </div>
                             </div>
@@ -189,14 +196,7 @@
                                   </div>
                                 </div>
                               </div><div class="row">
-                                <div class="col-md-6">
-                                  <div class="form-group row">
-                                    <label class="col-md-3 col-form-label" for="maps">Maps</label>
-                                    <div class="col-sm-9">
-                                        <textarea id="maps" name="maps">{{ old('maps') }}</textarea>
-                                    </div>
-                                  </div>
-                                </div>
+                               
                                 <div class="col-md-6">
                                   <div class="form-group row">
                                     <label class="col-md-3 col-form-label" for="latlong">Latitude Longitude</label>
@@ -223,8 +223,9 @@
             </div>
         </div>
     </div>
-
-@push('javascript')
+    @endsection
+   
+    @section('script')
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
         integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
@@ -369,5 +370,4 @@
             })
         });
     </script>
-@endpush
-</x-app-layout>
+@endsection

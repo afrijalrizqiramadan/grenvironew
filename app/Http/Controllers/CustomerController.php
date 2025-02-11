@@ -1,15 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Http\Request;
 use App\Models\DeliveryStatus;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use App\Models\Customer;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\CentrePoint;
+use Illuminate\Support\Facades\DB;
+use App\Models\User;
+use App\Models\Role;
+use Spatie\Permission\Models\Role as ModelsRole;
 
 class CustomerController extends Controller
 {
@@ -40,59 +44,90 @@ class CustomerController extends Controller
         }
     }
     public function store(Request $request)
-    {
+{
+    DB::beginTransaction(); // Mulai transaksi
 
-        // Lakukan validasi data
+    try {
+        // ✅ Debug: Periksa Data Masuk
+        Log::info('Data Request Masuk', $request->all());
         
+        // ✅ Validasi Data
         $request->validate([
-            'name' => 'required|string|max:25',
-            'address' => 'required|string',
-            'telp' => 'required',
-            'location' => 'required|string|max:20',
-            'maps' => 'nullable|string',
-            'images' => 'image|mimes:png,jpg,jpeg',
-            'registration_date' => 'required|date',
-            'type' => 'required|string|max:20',
-            'capacity' => 'required|numeric',
-            'device_id' => 'required|integer',
-            'status' => 'required|in:Aktif,Tidak Aktif',
+            'name' => 'required|string|max:255',
+            'address' => 'nullable|string|max:255',
+            'telp' => 'nullable|string|max:20',
+            'email' => 'required|email|unique:users,email',
+            'location' => 'nullable|string|max:255',
+            'maps' => 'nullable|text',
+            'latlong' => 'nullable|string', // Format: "latitude,longitude"
+            'images' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'registration_date' => 'nullable|date',
+            'type' => 'nullable|string|max:50',
+            'capacity' => 'nullable|numeric',
+            'device_id' => 'nullable|integer',
+            'province' => 'nullable|string|max:255',
+            'regency' => 'nullable|string|max:255',
+            'district' => 'nullable|string|max:255',
+            'village' => 'nullable|string|max:255',
+            'status' => 'nullable|string|max:50',
         ]);
 
+        // ✅ Buat customer baru
         $customer = new Customer();
+
+        // ✅ Upload gambar jika ada
         if ($request->hasFile('images')) {
             $file = $request->file('images');
             $uploadFile = time() . '_' . $file->getClientOriginalName();
-            $file->move('uploads/imgCover/', $uploadFile);
+            $file->move(public_path('uploads/imgCover/'), $uploadFile);
             $customer->images = $uploadFile;
         }
 
-        $latlong = $request->input('latlong'); // Format: "latitude,longitude"
-        [$latitude, $longitude] = explode(',', $latlong);
+        // ✅ Ambil latitude, longitude jika ada
+        $latitude = null;
+        $longitude = null;
+        if ($request->filled('latlong') && str_contains($request->latlong, ',')) {
+            [$latitude, $longitude] = explode(',', $request->latlong);
+        }
 
-        $customer->name = $request->name;
-        $customer->address = $request->address;
-        $customer->telp = $request->telp;
-        $customer->location = $request->location;
-        $customer->maps = $request->maps;
+        // ✅ Isi data customer
+        $customer->fill($request->only([
+            'name', 'address', 'telp', 'location', 'maps',
+            'registration_date', 'type', 'capacity', 'device_id',
+            'province', 'regency', 'district', 'village', 'status'
+        ]));
         $customer->latitude = $latitude;
         $customer->longitude = $longitude;
-        $customer->registration_date = $request->registration_date;
-        $customer->type = $request->type;
-        $customer->capacity = $request->capacity;
-        $customer->device_id = $request->device_id;
-        $customer->province = $request->provinsi;
-        $customer->regency = $request->kota;
-        $customer->district = $request->kecamatan;
-        $customer->village = $request->desa;
-        $customer->status = $request->status;
-
         $customer->save();
-        if ($customer) {
-            return redirect()->route('customer.index')->with('success', 'Data berhasil disimpan');
-        } else {
-            return redirect()->route('customer.index')->with('error', 'Data gagal disimpan');
-        }
+
+        // ✅ Debug: Pastikan Customer Tersimpan
+        // Log::info('Customer berhasil disimpan', ['customer_id' => $customer->id]);
+
+        // ✅ Buat User otomatis setelah Customer berhasil dibuat
+     
+        $user = new User();
+    $user->name = $request->name;
+    $user->email = $request->email;
+    $user->password = Hash::make('defaultpassword'); // Gantilah dengan password yang diinginkan
+    $user->save();
+
+    // Assign role 'customer' ke user
+    $user->assignRole('customer');
+        
+        $user->save();
+        // ✅ Debug: Pastikan User Tersimpan
+        Log::info('User berhasil dibuat', ['user_id' => $user->id]);
+
+        DB::commit(); // Simpan transaksi
+
+        return redirect()->route('customer.index')->with('success', 'Data berhasil disimpan.');
+    } catch (\Exception $e) {
+        DB::rollback(); // Batalkan transaksi jika terjadi error
+        // Log::error('Terjadi kesalahan saat menyimpan data', ['error' => $e->getMessage()]);
+        
+        return redirect()->route('customer.create')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
     }
+}
     public function show($id)
     {
         //
@@ -118,62 +153,94 @@ class CustomerController extends Controller
 
     public function update(Request $request, Customer $customer)
     {
+        try {
+
         // Menjalankan validasi
-        $validated = $request->validate([
-            'name' => 'required|string|max:25',
-            'address' => 'required|string',
-            'telp' => 'required',
-            'location' => 'required|string|max:20',
-            'maps' => 'nullable|string',
-            'images' => 'image|mimes:png,jpg,jpeg',
-            'registration_date' => 'required|date',
-            'type' => 'required|string|max:20',
-            'capacity' => 'required|numeric',
-            'device_id' => 'required|integer',
-            'status' => 'required|in:Aktif,Tidak Aktif',
-            ]);
-
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'address' => 'nullable|string|max:255',
+            'telp' => 'nullable|string|max:20',
+            'email' => 'required|email|unique:customers,email,' . $customer->id,
+            'location' => 'nullable|string|max:255',
+            'maps' => 'nullable|text',
+            'latlong' => 'nullable|string', // Format: "latitude,longitude"
+            'images' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'registration_date' => 'nullable|date',
+            'type' => 'nullable|string|max:50',
+            'capacity' => 'nullable|numeric',
+            'device_id' => 'nullable|integer',
+            'province' => 'nullable|string|max:255',
+            'regency' => 'nullable|string|max:255',
+            'district' => 'nullable|string|max:255',
+            'village' => 'nullable|string|max:255',
+            'status' => 'nullable|string|max:50',
+        ]);
         $customer = Customer::findOrFail($customer->id);
-        if ($request->hasFile('image')) {
-            if (File::exists("uploads/imgCover/" . $customer->image)) {
-                File::delete("uploads/imgCover/" . $customer->image);
-            }
 
-            $file = $request->file("image");
-            //$uploadFile = StoreImage::replace($space->image,$file->getRealPath(),$file->getClientOriginalName());
+        // Update Customer Data
+        $customer->name = $request->name;
+        $customer->address = $request->address;
+        $customer->telp = $request->telp;
+        $customer->email = $request->email;
+        $customer->location = $request->location;
+        $customer->maps = $request->maps;
+        if ($request->hasFile('images')) {
+            $file = $request->file('images');
             $uploadFile = time() . '_' . $file->getClientOriginalName();
-            $file->move('uploads/imgCover/', $uploadFile);
-            $customer->image = $uploadFile;
+            $destinationPath = 'uploads/imgCover/';
+            
+            // Delete existing file if exists
+            if ($customer->images && file_exists($destinationPath . $customer->images)) {
+                unlink($destinationPath . $customer->images);
+            }
+            
+            $file->move($destinationPath, $uploadFile);
+            $customer->images = $uploadFile;
         }
         $latlong = $request->input('latlong'); // Format: "latitude,longitude"
         [$latitude, $longitude] = explode(',', $latlong);
+        $customer->latitude = $latitude;
+        $customer->longitude = $longitude;
 
         // Lakukan Proses update data ke tabel space
-        $customer->update([
-            'name' => $request->name,
-            'address' => $request->address,
-            'telp' => $request->telp,
-            'location' => $request->location,
-            'maps' => $request->maps,
-            'latitude' => $latitude,
-            'longitude' => $longitude,
-            'registration_date' => $request->registration_date,
-            'type' => $request->type,
-            'capacity' => $request->capacity,
-            'device_id' => $request->device_id,
-            'province' => $request->provinsi,
-            'regency' => $request->kota,
-            'district' => $request->kecamatan,
-            'village' => $request->desa,
-            'status' => $request->status
-        ]);
-
-        // redirect ke halaman index space
-        if ($customer) {
-            return redirect()->route('customer.index')->with('success', 'Data berhasil diupdate');
-        } else {
-            return redirect()->route('customer.index')->with('error', 'Data gagal diupdate');
+        $customer->registration_date = $request->registration_date;
+        $customer->type = $request->type;
+        $customer->capacity = $request->capacity;
+        $customer->device_id = $request->device_id;
+        $customer->province = $request->provinsi;
+        $customer->regency = $request->kota;
+        $customer->district = $request->kecamatan;
+        $customer->village = $request->desa;
+        $customer->status = $request->status;
+    
+        $customer->save();
+    
+        // Update User terkait
+        $user = User::findOrFail($customer->user_id);
+        $user->name = $request->name;
+        if ($request->email !== $user->email) {
+            // Cek apakah email sudah dipakai user lain
+            $existingUser = User::where('email', $request->email)->where('id', '!=', $user->id)->first();
+            
+            if ($existingUser) {
+                return redirect()->back()->with('error', 'Email sudah digunakan oleh user lain.');
+            }
+        
+            $user->email = $request->email;
         }
+        // Jika ada perubahan password
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+    
+        $user->save();
+        return redirect()->route('customer.index')->with('success', 'Customer dan User berhasil diperbarui');
+    } catch (\Exception $e) {
+        DB::rollback(); // Batalkan transaksi jika terjadi error
+        // Log::error('Terjadi kesalahan saat menyimpan data', ['error' => $e->getMessage()]);
+        
+        return redirect()->route('customer.edit', $customer->id)->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+    }
     }
 
     /**

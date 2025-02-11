@@ -57,7 +57,7 @@ class HomeController extends Controller
       
             $lowPressureCount = DataSensor::where('pressure', '<', 20)->count();
             $lowTemperatureCount = DataSensor::where('temperature', '<', 20)->count();
-
+            
             $minpressuresensor = DataSensor::join('devices', 'data_sensors.device_id', '=', 'devices.id')
             ->join('customers', 'devices.id', '=', 'customers.device_id')
             ->join('indonesia_districts', 'customers.district', '=', 'indonesia_districts.id') // Join dengan tabel districts

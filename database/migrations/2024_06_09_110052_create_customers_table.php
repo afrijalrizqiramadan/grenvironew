@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('name', 25);
             $table->text('address');
             $table->string('telp', 13);
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('maps')->nullable();
             $table->double('latitude');
             $table->double('longitude');
-            $table->string('images', 30);
+            $table->string('images', 100)->nullable();
             $table->date('registration_date');
             $table->string('type', 20);
             $table->float('capacity');

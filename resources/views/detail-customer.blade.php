@@ -277,7 +277,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="position-relative">
-                                    <img src="{{ asset('build/images/customer/' . $images) }}"
+                                    <img src="{{ asset('/uploads/imgCover/' . $images) }}"
                                         class="rounded-3 w-100" alt="">
                                     {{-- <div class="live-info badge badge-success">Live</div> --}}
                                 </div>

@@ -18,6 +18,9 @@ use App\Http\Controllers\SpaceController;
 use App\Http\Livewire\MembersTable;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MqttController;
+use App\Http\Controllers\TrackingController;
+use App\Http\Controllers\ProfilKendaraanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +57,9 @@ Route::get('/route-cache', function () {
 Route::middleware([
     'auth','verified'
 ])->group(callback: function () {
+    Route::get('/mqtt-log', [MqttController::class, 'showMqttLog'])->name('mqtt.log');
+    Route::get('/mqtt-subscribe', [MqttController::class, 'subscribeMqtt'])->name('mqtt.subscribe');
+    Route::get('/mqtt/log', [MqttController::class, 'mqttLog'])->name('mqtt.mqttlog');
     Route::get('/dashboard', [DashboardController::class,'dashboardPage'])->name('dashboard');
     Route::get('/pressure', [PressureController::class,'pressurePage'])->name('pressure');
     Route::get('/temperature', [TemperatureController::class,'temperaturePage'])->name('temperature');
@@ -63,10 +69,12 @@ Route::middleware([
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/map',[App\Http\Controllers\MapController::class,'index'])->name('map');
     Route::get('/detailcustomer/{slug}',[App\Http\Controllers\DetailCustomerController::class,'detailPage'])->name('detail-customer');
+    Route::get('/detailkendaraan/{slug}',[App\Http\Controllers\ProfilKendaraanController::class,'detailPage'])->name('detail-kendaraan');
 
     Route::resource('customer',(CustomerController::class));
     Route::resource('centre-point',(CentrePointController::class));
     Route::resource('space',(SpaceController::class));
+    Route::resource('tracking',(TrackingController::class));
 
     Route::get('/centrepoint/data',[DataController::class,'centrepoint'])->name('centre-point.data');
     Route::get('/categories/data',[DataController::class,'categories'])->name('data-category');

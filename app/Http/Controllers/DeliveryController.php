@@ -19,7 +19,7 @@ class DeliveryController extends Controller
 
         $user = Auth::user();
         if($user->hasRole('administrator')) {
-            $customer = $user->customer; // Mendapatkan data customer yang terkait dengan pengguna
+            // $customer = $user->customer; // Mendapatkan data customer yang terkait dengan pengguna
             $statusesProses = DeliveryStatus::with('customer')
             ->where('status', 'Disiapkan')
             ->get();

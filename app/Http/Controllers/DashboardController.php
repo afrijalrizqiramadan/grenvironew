@@ -10,6 +10,7 @@ use App\Models\DeliveryStatus;
 use App\Models\HistorySensor;
 use App\Models\Device;
 use App\Models\DataSensor;
+use App\Models\Tracking;
 use Laravolt\Indonesia\Models\District;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
@@ -27,7 +28,7 @@ class DashboardController extends Controller
             $customerCount = Customer::count(); // Menghitung jumlah data customer
             $averagePressure = DataSensor::avg('pressure');
             $lowPressureCount = DataSensor::where('pressure', '<', 20)->count();
-                
+           
             $minpressuresensor = DataSensor::join('devices', 'data_sensors.device_id', '=', 'devices.id')
             ->join('customers', 'devices.id', '=', 'customers.device_id')
             ->join('indonesia_districts', 'customers.district', '=', 'indonesia_districts.id') // Join dengan tabel districts
@@ -138,6 +139,12 @@ class DashboardController extends Controller
     public function getPressureData($id_device)
     {
         $data = DataSensor::where('device_id', $id_device)->latest()->first(['pressure', 'timestamp']);
+        return response()->json($data);
+    }
+
+    public function getPressureDataKendaraan($id_device)
+    {
+        $data = Tracking::where('device_id', $id_device)->latest()->first(['pressure', 'timestamp']);
         return response()->json($data);
     }
 

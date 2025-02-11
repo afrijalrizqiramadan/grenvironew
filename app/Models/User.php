@@ -21,11 +21,11 @@ class User extends Authenticatable
     {
         parent::boot();
 
-        static::created(function ($user) {
-            $user->preferensi()->create([
-                'data_topbar' => 'light'
-            ]);
-        });
+        // static::created(function ($user) {
+        //     $user->preferensi()->create([
+        //         'data_topbar' => 'light'
+        //     ]);
+        // });
     }
     protected $guard_name = 'web';
     use HasRoles;
@@ -67,4 +67,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(Theme::class, 'user_id', 'id')->withDefault();
     }
+    public function role()
+{
+    return $this->belongsTo(Role::class);
+}
 }
