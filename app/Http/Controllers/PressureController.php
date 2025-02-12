@@ -55,7 +55,7 @@ class PressureController extends Controller
             $pressure = $sensorData->pluck('pressure');
             $timestamp = $sensorData->pluck('timestamp');
 
-            $latestPressures = DataSensor::select('customers.name', 'data_sensors.device_id', 'data_sensors.pressure', 'data_sensors.temperature')
+            $latestPressures = DataSensor::select('customers.name','customers.capacity', 'data_sensors.device_id','data_sensors.device_id', 'data_sensors.pressure', 'data_sensors.temperature')
             ->leftJoin('customers', 'data_sensors.device_id', '=', 'customers.device_id')
             ->whereColumn('data_sensors.id', function ($subQuery) {
                 $subQuery->selectRaw('MAX(id)')
