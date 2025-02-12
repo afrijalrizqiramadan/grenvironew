@@ -15,10 +15,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('detect:refill')->everyFifteenMinutes();
-        // $schedule->command('detect:refill')->everyHour();
+        $schedule->command('detect:refill')->everyThirtyMinutes();
     }
-
     /**
      * Register the commands for the application.
      *

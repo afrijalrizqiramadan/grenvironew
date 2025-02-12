@@ -10,6 +10,7 @@ class DetectRefillJob extends Command {
     protected $signature = 'detect:refill';
     protected $description = 'Cek pengisian ulang gas di semua device';
 
+
     public function handle() {
         $devices = DB::table('devices')->pluck('id'); // 🔥 Ambil dari tabel device
 
@@ -60,10 +61,7 @@ foreach ($devices as $device_id) {
 
         // Cek apakah sudah dicatat sebelumnya
         $existing = DB::table('delivery_status')
-            ->where('device_id', $device_id)
-            ->where('pressure_before', $pressure_before)
-            ->where('pressure_after', $pressure_after)
-            ->where('created_at', '>=', now()->subMinutes(10))
+            ->where('delivery_date', '>=', now()->subMinutes(60))
             ->exists();
 
         if (!$existing) {
@@ -74,7 +72,8 @@ foreach ($devices as $device_id) {
                 'pressure_after' => $pressure_after,
                 'total' => $increase,
                 'status' => "Selesai",
-                'created_at' => now()
+                'created_at' => now(),
+                'delivery_date' => now()
             ]);
 
             $this->info("✅ Pengisian ulang terdeteksi untuk device $device_id");
