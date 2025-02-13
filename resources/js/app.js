@@ -6,7 +6,13 @@ Website: https://Themesbrand.com/
 Contact: Themesbrand@gmail.com
 File: Main Js File
 */
+import '../../vendor/rappasoft/laravel-livewire-tables/resources/imports/laravel-livewire-tables-all.js';
+import flatpickr from "flatpickr";
+import "flatpickr/dist/flatpickr.css";
 
+document.addEventListener("DOMContentLoaded", function () {
+    flatpickr(".datepicker", {});
+});
 (function () {
 	("use strict");
 

@@ -6,6 +6,7 @@ Website: https://Themesbrand.com/
 Contact: Themesbrand@gmail.com
 File: Main Js File
 */
+import '../../vendor/rappasoft/laravel-livewire-tables/resources/imports/laravel-livewire-tables-all.js';
 
 (function () {
 	("use strict");

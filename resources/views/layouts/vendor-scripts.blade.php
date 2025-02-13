@@ -8,6 +8,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
-
+<script src="{{ asset('build/libs/choices.js/public/assets/scripts/choices.min.js') }}"></script>
+<script src="{{ asset('build/libs/flatpickr/flatpickr.min.js') }}"></script>
 @yield('script')
 @yield('script-bottom')

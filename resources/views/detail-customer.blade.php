@@ -369,43 +369,12 @@
                             </div>
                         </div><!-- end card header -->
                         <div class="card-body">
-                            <div class="table-responsive table-card">
-                                <table class="table table-borderless table-centered align-middle table-nowrap mb-0">
-                                    <thead class="text-muted table-light">
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Jumlah Pengiriman</th>
-                                        <th>Tanggal</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($statuses as $index => $status)
-                                        <tr>
-                                            <td>{{ $index + 1 }}</td>
-                                            <td>{{ $status->total }} Bar</td>
-                                            <td>{{ \Carbon\Carbon::parse($status->delivery_date)->translatedFormat('d F Y') }}
-                                            </td>
-                                            <td><label
-                                                    class="badge
-         @if ($status->status == 'Selesai') bg-success-subtle text-success
-        @elseif($status->status == 'Dalam Perjalanan')
-            bg-warning-subtle text-warning
-        @elseif($status->status == 'Batal')
-            bg-danger-subtle text-danger
-        @elseif($status->status == 'Disiapkan')
-            bg-success-info text-info @endif
-        ">{{ $status->status }}</label>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            </div>
-                            
+                            <livewire:delivery-table />
                         </div>
-                    </div> <!-- .card-->
-                </div> <!-- .col-->
+                        </div>
+                    </div>
+                </div>
+                
             </div> <!-- end row-->
 
         </div> <!-- end .h-100-->
@@ -981,6 +950,9 @@
 <script src="{{ URL::asset('build/js/pages/dashboard-nft.init.js') }}"></script>
 <script src="{{ URL::asset('build/js/pages/dashboard-ecommerce.init.js') }}"></script>
 <script src="{{ URL::asset('build/js/app.js') }}"></script>
+<script src="{{ URL::asset('build/libs/prismjs/prism.js') }}"></script>
+<script src="{{ URL::asset('build/libs/gridjs/gridjs.umd.js') }}"></script>
+<script src="{{ URL::asset('build/js/pages/gridjs.init.js') }}"></script>
 
 <script>
     var linechartBasicColors = getChartColorsArray("pressure_chart");
@@ -1037,6 +1009,43 @@ if (linechartBasicColors) {
     var chart = new ApexCharts(document.querySelector("#pressure_chart"), options);
     chart.render();
 }
+
+if (document.getElementById("tabel-riwayatpengiriman"))
+    new gridjs.Grid({
+        columns: [{
+            name: 'Name',
+            width: '150px',
+        }, {
+            name: 'Email',
+            width: '250px',
+        }, {
+            name: 'Position',
+            width: '250px',
+        }, {
+            name: 'Company',
+            width: '250px',
+        }, {
+            name: 'Country',
+            width: '150px',
+        }],
+        pagination: {
+            limit: 5
+        },
+        search: true,
+        data: [
+            ["Jonathan", "jonathan@example.com", "Senior Implementation Architect", "Hauck Inc", "Holy See"],
+            ["Harold", "harold@example.com", "Forward Creative Coordinator", "Metz Inc", "Iran"],
+            ["Shannon", "shannon@example.com", "Legacy Functionality Associate", "Zemlak Group", "South Georgia"],
+            ["Robert", "robert@example.com", "Product Accounts Technician", "Hoeger", "San Marino"],
+            ["Noel", "noel@example.com", "Customer Data Director", "Howell - Rippin", "Germany"],
+            ["Traci", "traci@example.com", "Corporate Identity Director", "Koelpin - Goldner", "Vanuatu"],
+            ["Kerry", "kerry@example.com", "Lead Applications Associate", "Feeney, Langworth and Tremblay", "Niger"],
+            ["Patsy", "patsy@example.com", "Dynamic Assurance Director", "Streich Group", "Niue"],
+            ["Cathy", "cathy@example.com", "Customer Data Director", "Ebert, Schamberger and Johnston", "Mexico"],
+            ["Tyrone", "tyrone@example.com", "Senior Response Liaison", "Raynor, Rolfson and Daugherty", "Qatar"],
+        ]
+    }).render(document.getElementById("table-search"));
+
 function updateChart(filter, element) {
         var deviceId = {{ $customer->device_id }};  // Gantilah dengan ID perangkat yang sesuai
 
@@ -1071,3 +1080,13 @@ function updateChart(filter, element) {
     </script>
 @endsection
 
+@rappasoftTableStyles
+ 
+<!-- Adds any relevant Third-Party Styles (Used for DateRangeFilter (Flatpickr) and NumberRangeFilter) -->
+@rappasoftTableThirdPartyStyles
+ 
+<!-- Adds the Core Table Scripts -->
+@rappasoftTableScripts
+ 
+<!-- Adds any relevant Third-Party Scripts (e.g. Flatpickr) -->
+@rappasoftTableThirdPartyScripts
