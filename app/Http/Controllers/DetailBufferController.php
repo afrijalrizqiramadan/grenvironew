@@ -9,6 +9,9 @@ use App\Models\Customer;
 use App\Models\Trip;
 use App\Models\BufferCustomer;
 use App\Models\BufferCustomerHistories;
+use App\Models\BufferCustomerHistory;
+use App\Models\BufferCustomersHistory;
+use App\Models\TripDestination;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 class DetailBufferController extends Controller
@@ -27,13 +30,11 @@ class DetailBufferController extends Controller
             $nama = $customer->name;
             $images = $customer->images;
             $email = $customer->email;
-            $id_buffercustomer = $buffercustomer->id;
-            $status_buffercustomer = $buffercustomer->status;
             $registration_date_device = $customer->registration_date;
-            $statuses = Trip::where('customer_id', $customer_id)->orderBy('delivery_date', 'desc')
+            $statuses = TripDestination::where('buffer_customers', $id)->orderBy('created_at', 'desc')
             ->take(5)->get();
 
-            $sensorData = BufferCustomerHistories::where('buffer_id', $id_buffercustomer)
+            $sensorData = BufferCustomersHistory::where('buffer_id', $id)
             ->whereDate('timestamp', Carbon::today())
             ->orderBy('timestamp')
             ->get();
@@ -53,18 +54,18 @@ class DetailBufferController extends Controller
         $weatherData = json_decode($response->getBody(), true);
 
             $registration_date_device = $customer->registration_date;
-            $statuses = Trip::where('customer_id', $customer_id)->orderBy('delivery_date', 'desc')
+            $statuses = TripDestination::where('buffer_customers', $id)->orderBy('created_at', 'desc')
             ->take(5)->get();
-           $latestPressure = BufferCustomer::where('buffer_id',  $id_buffercustomer)
+           $latestPressure = BufferCustomer::where('id',  $id)
             ->orderBy('timestamp', 'desc')
             ->value('pressure');
-            $latestTemperature = BufferCustomer::where('buffer_id',  $id_buffercustomer)
+            $latestTemperature = BufferCustomer::where('id',  $id)
             ->orderBy('timestamp', 'desc')
             ->value('temperature');
-            $latestTime = BufferCustomer::where('buffer_id',  $id_buffercustomer)
+            $latestTime = BufferCustomer::where('id',  $id)
             ->orderBy('timestamp', 'desc')
             ->value('timestamp');
-            $sensorData = BufferCustomerHistories::where('buffer_id', $id_buffercustomer)
+            $sensorData = BufferCustomersHistory::where('id', $id)
             ->whereMonth('timestamp', $currentMonth)
             ->whereYear('timestamp', $currentYear)
             ->orderBy('timestamp')
@@ -74,7 +75,7 @@ class DetailBufferController extends Controller
             $pressure = $sensorData->pluck('pressure');
             $timestamp = $sensorData->pluck('timestamp');
 
-        return view('detail-customer', compact('customer','pressure_history','latestTime','latestTemperature','weatherData','id_device','latestPressure','images','location','pressure', 'timestamp','nama', 'statuses','email','status_device','capacity','registration_date_device'));
+        return view('detail-buffer', compact('customer','pressure_history','latestTime','latestTemperature','weatherData','latestPressure','images','location','pressure', 'timestamp','nama', 'statuses','email','capacity','registration_date_device'));
         
           }
 

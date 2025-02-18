@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('data_aktuators', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('buffer_id');
+            $table->unsignedBigInteger('buffer_id');
             $table->tinyInteger('buzzer')->default(0);
             $table->tinyInteger('heater')->default(0);
             $table->timestamps();

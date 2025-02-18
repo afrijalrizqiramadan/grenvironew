@@ -86,7 +86,7 @@
                             <td class="py-1">{{ $index + 1 }}</td>
                             
                             <td>
-                                <a href="{{ route('detail-customer',$pressure->id) }}" class="text-success fw-bold">{{ $pressure->name }}</a></td>
+                                <a href="{{ route('detail-buffer',$pressure->id) }}" class="text-success fw-bold">{{ $pressure->name }}</a></td>
 
                             <td>{{ $pressure->capacity }} Bar</td>
                             <td>{{ $pressure->temperature }}</td>
@@ -101,7 +101,7 @@
                                 @else
                                     bg-success
                                 @endif
-                            " role="progressbar" style="width: {{$pressure->pressure }}%" aria-valuenow="{{$pressure->pressure }}" aria-valuemin="0" aria-valuemax="100"></div>                            </div>
+                            " role="progressbar" style="width: {{$pressure->pressure }}%" aria-valuenow="{{$pressure->pressure }}" aria-valuemin="0" aria-valuemax="200"></div>                            </div>
                           </td>
                       
                           <td class="@if($pressure->pressure < 20)

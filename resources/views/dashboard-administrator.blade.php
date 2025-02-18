@@ -252,7 +252,7 @@ integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmV
                                                 
                                                 @foreach($minpressuresensor as $index=>$status)
                                                 <td>{{ $index + 1 }}</td>
-                                                <td><a href="{{ route('detail-customer',$status->id) }}" class="text-success fw-bold">{{ $status->name }}</a></td>
+                                                <td><a href="{{ route('detail-buffer',$status->id) }}" class="text-success fw-bold">{{ $status->name }}</a></td>
                                                 {{-- <td>{{ $status->district_name }}</td> --}}
                                                 <td><div class="progress">
                                                     <div class="progress-bar
@@ -524,7 +524,7 @@ var markers = L.markerClusterGroup();
                 }).bindPopup( "<div class='my-2'><br><strong>{{ $item->location }}</strong></div>" +
   "<div class='my-2'>Tekanan :<br><strong>{{ $item->pressure }}</strong></div>" +
   "<div class='my-2'>Suhu :<br><strong>{{ $item->temperature }}</strong></div>" +
-                    "<div><a href='{{ route('detail-customer',$item) }}' class='btn btn-outline-info btn-sm'>Detail Space</a></div>" +
+                    "<div><a href='{{ route('detail-buffer',$item) }}' class='btn btn-outline-info btn-sm'>Detail Space</a></div>" +
                     "<div class='my-2'></div>");
   markers.addLayer(marker);
         @endforeach

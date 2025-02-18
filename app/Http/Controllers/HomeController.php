@@ -60,7 +60,7 @@ class HomeController extends Controller
             
             $minpressuresensor = BufferCustomer::join('customers', 'buffer_customers.customer_id', '=', 'customers.id')
             ->join('indonesia_districts', 'customers.district', '=', 'indonesia_districts.id') // Join dengan tabel districts
-            ->select('buffer_customers.*', 'customers.*', 'indonesia_districts.name as district_name')
+            ->select('buffer_customers.*',  'indonesia_districts.name as district_name')
             ->get();
             
             $countDeliveries = Trip::where('status', 'Selesai')

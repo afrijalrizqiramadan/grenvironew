@@ -25,8 +25,5 @@ class BufferCustomer extends Model
     {
         return $this->belongsTo(Device::class);
     }
-    public function buffercustomer()
-    {
-        return $this->belongsTo(Customer::class, 'id');
-    }
+    
 }

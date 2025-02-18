@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('buffer_kendaraans', function (Blueprint $table) {
             $table->id();            
-            $table->unsignedInteger('name')->unique();
-            $table->integer('kendaraan_id')->nullable();
+            $table->string('name')->unique();
+            $table->unsignedBigInteger('kendaraan_id')->nullable();
             $table->timestamp('timestamp')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->float('pressure')->nullable();
             $table->double('latitude', 10, 6)->nullable();

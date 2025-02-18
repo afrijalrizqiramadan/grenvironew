@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('trip_destinations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('trip_id')->nullable();
-            $table->unsignedInteger('buffer_customers');
+            $table->unsignedBigInteger('buffer_customers');
             $table->float('latitude');
             $table->float('longitude');
             $table->float('pressure_before')->nullable();

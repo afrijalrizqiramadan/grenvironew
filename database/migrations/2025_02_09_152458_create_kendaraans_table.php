@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('kendaraans', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('buffer_id');
+            $table->unsignedBigInteger('buffer_id');
             $table->string('plat_nomor')->unique();
             $table->string('tipe_kendaraan');
             $table->integer('fuel_type')->nullable();

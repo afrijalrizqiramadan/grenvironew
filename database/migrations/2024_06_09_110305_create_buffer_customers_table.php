@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('buffer_customers', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->unsignedInteger('customer_id');
+            $table->unsignedBigInteger('customer_id');
             $table->timestamp('timestamp')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->float('latitude');
             $table->float('longitude');

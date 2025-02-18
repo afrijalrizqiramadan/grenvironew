@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('buffer_customers_histories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('buffer_id')->nullable();
+            $table->unsignedBigInteger('buffer_id')->nullable();
             $table->timestamp('timestamp')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->float('pressure')->nullable();
             $table->float('pressure_medium')->nullable();

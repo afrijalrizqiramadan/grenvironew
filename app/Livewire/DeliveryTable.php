@@ -6,6 +6,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Trip;
 use App\Models\Customer;
+use App\Models\TripDestination;
 use Illuminate\Database\Eloquent\Builder;
 
 class DeliveryTable extends DataTableComponent
@@ -20,17 +21,18 @@ class DeliveryTable extends DataTableComponent
     public function builder(): Builder
     {
         $customer = Customer::where('id',1)->first();
-        return Trip::query()
-            ->join('customers', 'delivery_statuses.customer_id', '=', 'customers.id')
-            ->where('customers.id', $customer->id)
-            ->orderByDesc('delivery_date');
+        return TripDestination::query()
+            ->join('buffer_customers', 'trip_destinations.buffer_customers', '=', 'buffer_customers.id')
+            ->where('buffer_customers', 1)->orderBy('created_at', 'desc')
+            ->orderByDesc('created_at');
     }
+
     public function columns(): array
     {
         return [
             // Column::make("Id", "id")
             //     ->sortable(),
-            Column::make("Customer id", "customer.name")
+            Column::make("Customer id", "buffer_customers.name")
                 ->sortable(),
             Column::make("Total", "total")
                 ->sortable(),

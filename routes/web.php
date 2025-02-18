@@ -53,9 +53,9 @@ Route::get('/route-cache', function () {
 Route::middleware([
     'auth','verified'
 ])->group(callback: function () {
-    Route::get('/mqtt-log', [MqttController::class, 'showMqttLog'])->name('mqtt.log');
-    Route::get('/mqtt-subscribe', [MqttController::class, 'subscribeMqtt'])->name('mqtt.subscribe');
-    Route::get('/mqtt/log', [MqttController::class, 'mqttLog'])->name('mqtt.mqttlog');
+    // Route::get('/mqtt-log', [MqttController::class, 'showMqttLog'])->name('mqtt.log');
+    // Route::get('/mqtt-subscribe', [MqttController::class, 'subscribeMqtt'])->name('mqtt.subscribe');
+    // Route::get('/mqtt/log', [MqttController::class, 'mqttLog'])->name('mqtt.mqttlog');
     Route::get('/dashboard', [DashboardController::class,'dashboardPage'])->name('dashboard');
     Route::get('/pressure', [PressureController::class,'pressurePage'])->name('pressure');
     Route::get('/temperature', [TemperatureController::class,'temperaturePage'])->name('temperature');
@@ -64,7 +64,7 @@ Route::middleware([
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/map',[App\Http\Controllers\MapController::class,'index'])->name('map');
-    Route::get('/detailcustomer/{id}',[App\Http\Controllers\DetailBufferController::class,'detailPage'])->name('detail-customer');
+    Route::get('/detailbuffer/{id}',[App\Http\Controllers\DetailBufferController::class,'detailPage'])->name('detail-buffer');
     Route::get('/detailkendaraan/{id}',[App\Http\Controllers\ProfilKendaraanController::class,'detailPage'])->name('detail-kendaraan');
 
     Route::resource('customer',(CustomerController::class));
