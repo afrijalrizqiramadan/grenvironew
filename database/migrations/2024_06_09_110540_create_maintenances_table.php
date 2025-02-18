@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('maintenances', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('device_id');
+            $table->unsignedInteger('buffer_id');
             $table->unsignedInteger('technician_id');
             $table->dateTime('start_date');
             $table->dateTime('end_date')->nullable();

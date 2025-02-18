@@ -86,8 +86,8 @@ integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmV
 // var map = L.map('map').setView([-37.82, 175.23], 13);
         var map = L.map('map', {
 
-            center: [{{ $centrePoint->location }}],
-            zoom: 10,
+            center: [{{ $centrePoint }}],
+            zoom: 7,
             attribution: false,
             layers: [streets]
         });
@@ -142,7 +142,7 @@ map.addLayer(markers);
 
         // var map = L.map('map', {
 
-        //     center: [{{ $centrePoint->location }}],
+        //     center: [{{ $centrePoint }}],
         //     zoom: 5,
         //     layers: [streets]
         // });

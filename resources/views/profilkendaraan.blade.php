@@ -428,9 +428,9 @@ if (linechartBasicColors) {
     chart.render();
 }
 function updateChart(filter, element) {
-        var deviceId = {{ $kendaraan->device_id }};  // Gantilah dengan ID perangkat yang sesuai
+        var deviceId = {{ $kendaraan->buffer_id }};  // Gantilah dengan ID perangkat yang sesuai
         
-        fetch(`/api/sensor-datakendaraan?device_id=${deviceId}&filter=${filter}`)
+        fetch(`/api/sensor-datakendaraan?buffer_id=${deviceId}&filter=${filter}`)
             .then(response => response.json())
             .then(data => {
                 chart.updateOptions({

@@ -11,7 +11,7 @@ class AktuatorController extends Controller
 {
     public function getBuzzer(Request $request)
     {
-        $id = $request->input('device_id');
+        $id = $request->input('buffer_id');
         $api_key = $request->input('api_key');
 
         if ($api_key === env('API_KEY')) {

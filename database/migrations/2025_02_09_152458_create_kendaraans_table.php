@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('kendaraans', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('device_id');
+            $table->unsignedInteger('buffer_id');
             $table->string('plat_nomor')->unique();
             $table->string('tipe_kendaraan');
+            $table->integer('fuel_type')->nullable();
+            $table->integer('fuel_consumption')->nullable();
             $table->float('capacity');
+            $table->integer('active_trip_id')->nullable();
             $table->enum('status', ['Aktif', 'Nonaktif'])->default('Aktif');
         $table->timestamps();
         });

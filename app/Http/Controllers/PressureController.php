@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Customer;
-use App\Models\DeliveryStatus;
-use App\Models\DataSensor;
+use App\Models\Trip;
+use App\Models\BufferCustomer;
 use App\Models\Device;
 
 class PressureController extends Controller
@@ -16,15 +16,8 @@ class PressureController extends Controller
         $user = $request->user();
 
         if($user->hasRole('administrator')) {
-            $devices = Device::where('user_id', '<>', 0)->get();
-            $latestPressures = DataSensor::select('customers.id','customers.name','customers.capacity','customers.telp','customers.location', 'data_sensors.device_id', 'data_sensors.pressure','data_sensors.temperature')
-            ->leftJoin('customers', 'data_sensors.device_id', '=', 'customers.device_id')
-            ->whereIn('data_sensors.device_id', $devices->pluck('id'))
-            ->whereIn('data_sensors.id', function ($query) {
-                $query->selectRaw('MAX(id)')
-                      ->from('data_sensors')
-                      ->groupBy('device_id');
-            })
+            $latestPressures = BufferCustomer::select('customers.id','customers.name','customers.capacity','customers.telp', 'buffer_customers.name', 'buffer_customers.pressure','buffer_customers.temperature')
+            ->leftJoin('customers', 'buffer_customers.customer_id', '=', 'customers.id')
             ->get();
 
         return view('admin/historypressure', compact('latestPressures'));
@@ -44,23 +37,23 @@ class PressureController extends Controller
             $id_device = $device->id;
             $status_device = $device->status;
             $registration_date_device = $customer->registration_date;
-            $statuses = DeliveryStatus::where('customer_id', $customer_id)->orderBy('delivery_date', 'desc')
+            $statuses = Trip::where('customer_id', $customer_id)->orderBy('delivery_date', 'desc')
             ->take(5)->get();
-            $latestPressure = DataSensor::where('device_id',  $id_device)
+            $latestPressure = BufferCustomer::where('buffer_id',  $id_device)
             ->orderBy('timestamp', 'desc')
             ->value('pressure');
-            $sensorData = DataSensor::where('device_id', $id_device)->orderBy('timestamp')->get();
+            $sensorData = BufferCustomer::where('buffer_id', $id_device)->orderBy('timestamp')->get();
 
             // Mengumpulkan data nilai_sensor dan tanggal untuk chart
             $pressure = $sensorData->pluck('pressure');
             $timestamp = $sensorData->pluck('timestamp');
 
-            $latestPressures = DataSensor::select('customers.name','customers.capacity', 'data_sensors.device_id','data_sensors.device_id', 'data_sensors.pressure', 'data_sensors.temperature')
-            ->leftJoin('customers', 'data_sensors.device_id', '=', 'customers.device_id')
-            ->whereColumn('data_sensors.id', function ($subQuery) {
+            $latestPressures = BufferCustomer::select('customers.name','customers.capacity', 'buffer_customers.buffer_id','buffer_customers.buffer_id', 'buffer_customers.pressure', 'buffer_customers.temperature')
+            ->leftJoin('customers', 'buffer_customers.buffer_id', '=', 'customers.buffer_id')
+            ->whereColumn('buffer_customers.id', function ($subQuery) {
                 $subQuery->selectRaw('MAX(id)')
-                    ->from('data_sensors as ds')
-                    ->whereColumn('ds.device_id', 'data_sensors.device_id');
+                    ->from('buffer_customers as ds')
+                    ->whereColumn('ds.buffer_id', 'buffer_customers.buffer_id');
             })
             ->get();
             

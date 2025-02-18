@@ -17,9 +17,9 @@ class AdministratorsSeeder extends Seeder
             [
                 'id' => 1,
                 'user_id' => 1,
-                'name' => 'afrijal rizqi',
-                'email' => 'arizqiramadan@gmail.com',
-                'phone_number' => '083122122422',
+                'name' => 'Administrator',
+                'email' => 'administrator@gmail.com',
+                'telp' => '081234567890',
                 'join_date' => '2024-06-05',
                 'province' => 35,
                 'regency' => 3573,

@@ -176,7 +176,7 @@ var grayscale = L.tileLayer(mbUrl, {
 
 var layergroupcontrolmap = L.map('leaflet-map-group-control', {
     center: [39.73, -104.99],
-    zoom: 10,
+    zoom: 7,
     layers: [streets, cities]
 });
 

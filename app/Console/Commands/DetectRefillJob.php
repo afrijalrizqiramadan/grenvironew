@@ -14,13 +14,13 @@ class DetectRefillJob extends Command {
     public function handle() {
         $devices = DB::table('devices')->pluck('id'); // 🔥 Ambil dari tabel device
 
-foreach ($devices as $device_id) {
-    $customer = DB::table('customers')->where('device_id', $device_id)->first();
+foreach ($devices as $buffer_id) {
+    $customer = DB::table('customers')->where('buffer_id', $buffer_id)->first();
     if (!$customer) continue;
 
     // ✅ Ambil data terbaru dari history_sensors
     $latest = DB::table('history_sensors')
-        ->where('device_id', $device_id)
+        ->where('buffer_id', $buffer_id)
         ->orderBy('created_at', 'desc')
         ->first();
 
@@ -28,14 +28,14 @@ foreach ($devices as $device_id) {
 
     // 🔥 Cek apakah ada data dalam 1 jam terakhir
     $pressure_before = DB::table('history_sensors')
-        ->where('device_id', $device_id)
+        ->where('buffer_id', $buffer_id)
         ->whereBetween('created_at', [Carbon::now()->subMinutes(60), Carbon::now()->subMinutes(10)])
         ->min('pressure');
 
     // 🛑 Jika tidak ada data dalam 1 jam, gunakan tekanan terakhir dari tabel device_last_pressure
     if (!$pressure_before) {
-        $pressure_before = DB::table('data_sensors')
-            ->where('device_id', $device_id)
+        $pressure_before = DB::table('buffer_customers')
+            ->where('buffer_id', $buffer_id)
             ->value('pressure');
 
         if (!$pressure_before) continue;
@@ -48,14 +48,14 @@ foreach ($devices as $device_id) {
 
     if ($increase > $threshold) {
         $recentPressures = DB::table('history_sensors')
-            ->where('device_id', $device_id)
+            ->where('buffer_id', $buffer_id)
             ->orderBy('created_at', 'desc')
             ->limit(3)
             ->pluck('pressure')
             ->toArray();
 
         if ($this->isRefillOngoing($recentPressures)) {
-            $this->info("⏳ Pengisian gas device $device_id masih berlangsung...");
+            $this->info("⏳ Pengisian gas device $buffer_id masih berlangsung...");
             continue;
         }
 
@@ -66,7 +66,7 @@ foreach ($devices as $device_id) {
 
         if (!$existing) {
             DB::table('delivery_status')->insert([
-                'device_id' => $device_id,
+                'buffer_id' => $buffer_id,
                 'customer_id' => $customer->id,
                 'pressure_before' => $pressure_before,
                 'pressure_after' => $pressure_after,
@@ -76,13 +76,13 @@ foreach ($devices as $device_id) {
                 'delivery_date' => now()
             ]);
 
-            $this->info("✅ Pengisian ulang terdeteksi untuk device $device_id");
+            $this->info("✅ Pengisian ulang terdeteksi untuk device $buffer_id");
         }
     }
 
     // 🔥 Simpan tekanan terbaru agar bisa digunakan jika perangkat mati
     // DB::table('device_last_pressure')->updateOrInsert(
-    //     ['device_id' => $device_id],
+    //     ['buffer_id' => $buffer_id],
     //     ['pressure' => $latest->pressure, 'updated_at' => now()]
     // );
 }

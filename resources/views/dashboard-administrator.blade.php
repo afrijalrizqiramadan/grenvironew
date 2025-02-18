@@ -160,7 +160,7 @@ integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmV
                             </div>
                             <div class="d-flex align-items-end justify-content-between mt-4">
                                 <div>
-                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="">{{$lowTemperatureCount}}</span>
+                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{$lowTemperatureCount}}">0</span>
                                     </h4>
                                     <a href="" class="text-primary"></a>
                                 </div>
@@ -173,13 +173,44 @@ integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmV
                         </div><!-- end card body -->
                     </div><!-- end card -->
                 </div><!-- end col -->   
+                <div class="col-xl-3 col-md-6">
+                    <!-- card -->
+                    <div class="card card-animate">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1 overflow-hidden">
+                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">
+                                        Tagihan</p>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    {{-- <h5 class="text-success fs-14 mb-0">
+                                        <i class="ri-arrow-right-up-line fs-13 align-middle"></i>
+                                        +29.08 %
+                                    </h5> --}}
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-end justify-content-between mt-4">
+                                <div>
+                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{$unpaidInvoices}}">0</span>
+                                    </h4>
+                                    <a href="" class="text-primary"></a>
+                                </div>
+                                <div class="avatar-sm flex-shrink-0">
+                                    <span class="avatar-title bg-danger-subtle rounded fs-3">
+                                        <i class="ri-file-text-line text-primary"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div><!-- end card body -->
+                    </div><!-- end card -->
+                </div><!-- end col -->   
             </div> <!-- end row-->
             
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title mb-0">Data Pelanggan</h4>
+                            <h4 class="card-title mb-0">Presure Terendah</h4>
                         </div><!-- end card header -->
             
                         <div class="card-body">
@@ -208,8 +239,6 @@ integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmV
                                                 
                                                 <th class="long" data-sort="no">No</th>
                                                 <th class="long" data-sort="customer_name">Nama</th>
-                                                <th class="sort" data-sort="phone">Kapasitas</th>
-                                                <th class="sort" data-sort="phone">Suhu</th>
                                                 <th class="sort" data-sort="phone">Bar Tekanan</th>
                                                 <th class="sort" data-sort="phone">Nilai Tekanan</th>
                                                 <th class="sort" data-sort="status">Status</th>
@@ -224,9 +253,7 @@ integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmV
                                                 @foreach($minpressuresensor as $index=>$status)
                                                 <td>{{ $index + 1 }}</td>
                                                 <td><a href="{{ route('detail-customer',$status->id) }}" class="text-success fw-bold">{{ $status->name }}</a></td>
-                                                <td>{{ $status->capacity }} Bar</td>
                                                 {{-- <td>{{ $status->district_name }}</td> --}}
-                                                <td>{{ $status->temperature }}</td>
                                                 <td><div class="progress">
                                                     <div class="progress-bar
                                                     @if($status->pressure < 20)
@@ -421,9 +448,9 @@ integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmV
 
     var addressPoints = [];
     dataArray.forEach(function(data) {
-    var longitude = data.latitude;
-    var latitude = data.longitude;
-    var location = data.location.toString();
+    var longitude = data.longitude;
+    var latitude = data.latitude;
+    var location = data.name.toString();
 
     // Menambahkan data ke dalam datas dalam format yang diinginkan
     addressPoints.push([latitude, longitude, location]);
@@ -458,8 +485,8 @@ var mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">
 // var map = L.map('map').setView([-37.82, 175.23], 13);
         var map = L.map('map', {
 
-            center: [{{ $centrePoint->location }}],
-            zoom: 10,
+            center: [{{ $centrePoint }}],
+            zoom: 7,
             attribution: false,
             layers: [streets]
         });
@@ -486,9 +513,9 @@ var markers = L.markerClusterGroup();
         var iconMarker;
             if ({{ $item->pressure }} < 20) {
                 iconMarker = iconMarker1;
-            } else if ({{ $item->pressure }} >= 20 && {{ $item->pressure }} < 60) {
+            } else if ({{ $item->pressure }} >= 20 && {{ $item->pressure }} < 40) {
                 iconMarker = iconMarker2;
-            } else if ({{ $item->pressure }} >= 60) {
+            } else if ({{ $item->pressure }} >= 40) {
                 iconMarker = iconMarker3;
             }
             
@@ -514,7 +541,7 @@ map.addLayer(markers);
 
         // var map = L.map('map', {
 
-        //     center: [{{ $centrePoint->location }}],
+        //     center: [{{ $centrePoint }}],
         //     zoom: 5,
         //     layers: [streets]
         // });

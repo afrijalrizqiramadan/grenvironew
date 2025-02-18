@@ -28,7 +28,7 @@
                             <div class="form-group mb-4">
                                 <label for="">Lokasi</label>
                                 <input type="text" name="location"
-                                value="{{ $centrePoint->location }}"
+                                value="{{ $centrePoint }}"
                                     class="form-control @error('location') is-invalid @enderror" readonly id="">
                                 @error('location')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -77,7 +77,7 @@
             });
 
         var map = L.map('map', {
-            center: [{{ $centrePoint->location }}],
+            center: [{{ $centrePoint }}],
             zoom: 14,
             layers: [streets]
         });
@@ -98,7 +98,7 @@
         // ke tabel centre point. Di sini kita bisa mengubah nilainya dengan langkah yang sama saat
         // menambahkan titik koordinat untuk pertama kalinya.
 
-        var curLocation = [{{ $centrePoint->location }}];
+        var curLocation = [{{ $centrePoint }}];
         map.attributionControl.setPrefix(false);
 
         var marker = new L.marker(curLocation, {

@@ -94,7 +94,7 @@ crossorigin="" />
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Device ID</label>
                                 <div class="col-sm-9">
-                                    <input class="form-control" type="text" id="device_id" name="device_id" value="{{ old('device_id') }}" required>
+                                    <input class="form-control" type="text" id="buffer_id" name="buffer_id" value="{{ old('buffer_id') }}" required>
                                 </div>
                               </div>
                             </div>
@@ -302,7 +302,7 @@ crossorigin="" />
            // titik koordinat disini kita dapatkan dari tabel centrepoint tepatnya dari field location
            // yang sebelumnya sudah kita tambahkan jadi lokasi map yang akan muncul  sesuai dengan tabel
            // centrepoint
-           center: [{{ $centrepoint->location }}],
+           center: [{{ $centrepoint }}],
            zoom: 14,
            layers: [streets]
        });
@@ -324,7 +324,7 @@ crossorigin="" />
        // lalu kita masukkan curLocation tersebut ke dalam variabel marker untuk menampilkan marker
        // pada peta.
 
-       var curLocation = [{{ $centrepoint->location }}];
+       var curLocation = [{{ $centrepoint }}];
        map.attributionControl.setPrefix(false);
 
        var marker = new L.marker(curLocation, {

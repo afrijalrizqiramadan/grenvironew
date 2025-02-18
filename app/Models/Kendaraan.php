@@ -10,12 +10,12 @@ class Kendaraan extends Model
     use HasFactory;
     public function dataSensors()
     {
-        return $this->hasMany(Tracking::class, 'device_id', 'devices_id');
+        return $this->hasMany(Tracking::class, 'buffer_id', 'devices_id');
     }
 
    
     public function device()
     {
-        return $this->belongsTo(Device::class, 'device_id');
+        return $this->belongsTo(Device::class, 'buffer_id');
     }
 }

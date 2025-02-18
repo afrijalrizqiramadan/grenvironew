@@ -300,9 +300,9 @@
                         <h2 class="fs-24 fw-semibold">{{ $customer->location }}</h2>
                         <p class="text-muted">{{ $customer->address }}</p>
                         
-                        <a href="{{ $maps }}" class="btn btn-outline-success btn-icon">
+                        {{-- <a href="{{ $maps }}" class="btn btn-outline-success btn-icon">
                             <i class="mdi mdi-map-marker"></i>
-                        </a>
+                        </a> --}}
                        
                         <!--<div class="row pt-3 mt-md-1">-->
                         <!--	<div class="col">-->
@@ -1047,9 +1047,9 @@ if (document.getElementById("tabel-riwayatpengiriman"))
     }).render(document.getElementById("table-search"));
 
 function updateChart(filter, element) {
-        var deviceId = {{ $customer->device_id }};  // Gantilah dengan ID perangkat yang sesuai
+        var deviceId = {{ $customer->buffer_id }};  // Gantilah dengan ID perangkat yang sesuai
 
-        fetch(`/api/sensor-data?device_id=${deviceId}&filter=${filter}`)
+        fetch(`/api/sensor-data?buffer_id=${deviceId}&filter=${filter}`)
             .then(response => response.json())
             .then(data => {
                 chart.updateOptions({

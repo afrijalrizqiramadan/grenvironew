@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CentrePoint;
-use App\Models\DataSensor;
+use App\Models\BufferCustomer;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 
@@ -12,11 +11,10 @@ class MapController extends Controller
     public function index()
     {
 
-        $centrePoint = CentrePoint::get()->first();
-        $customers = DataSensor::join('devices', 'data_sensors.device_id', '=', 'devices.id')
-        ->join('customers', 'devices.id', '=', 'customers.device_id')
+        $centrePoint = env('APP_POINT');
+        $customers = BufferCustomer::join('customers', 'buffer_customers.customer_id', '=', 'customers.id')
         ->join('indonesia_districts', 'customers.district', '=', 'indonesia_districts.id') // Join dengan tabel districts
-        ->select('data_sensors.*', 'customers.*', 'indonesia_districts.name as district_name')
+        ->select('buffer_customers.*', 'customers.*', 'indonesia_districts.name as district_name')
         ->get();
         return view('map',[
             'customers' => $customers,
@@ -28,7 +26,7 @@ class MapController extends Controller
     public function show($slug)
     {
 
-        $centrePoint = CentrePoint::get()->first();
+        $centrePoint = env('APP_POINT');
         $spaces = Space::where('slug',$slug)->first();
         return view('detail-customer',[
             'centrePoint' => $centrePoint,

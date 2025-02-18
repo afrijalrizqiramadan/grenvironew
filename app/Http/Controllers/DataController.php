@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\CentrePoint;
 use App\Models\Space;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Datatables;

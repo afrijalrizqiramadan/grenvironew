@@ -25,16 +25,22 @@ class DatabaseSeeder extends Seeder
             VillagesSeeder::class,
         ]);
         $this->call(AdministratorsSeeder::class);
-        $this->call(CenterPointSeeder::class);
+        $this->call(BufferCustomerHistorySeeder::class);
+        $this->call(BufferCustomerSeeder::class);
+        $this->call(CostSeeder::class);
         $this->call(CustomersSeeder::class);
-        // $this->call(DataSensorsSeeder::class);
-        $this->call(DeliveryStatusSeeder::class);
-        $this->call(DevicesSeeder::class);
-        // $this->call(HistorySensorsSeeder::class);
-        $this->call(MaintenancesSeeder::class);
-        $this->call(TechniciansSeeder::class);
-        $this->call(UserRolePermissionSeeder::class);
+        $this->call(DeliverySeeder::class);
         $this->call(DriverSeeder::class);
+        $this->call(FuelSeeder::class);
+        $this->call(InvoicesSeeder::class);
+        $this->call(KendaraanSeeder::class);
+        $this->call(MaitenancesSeeder::class);
+        $this->call(TechniciansSeeder::class);
+        $this->call(ThemeSeeder::class);
+        $this->call(TransaksiSeeder::class);
+        $this->call(TripDestinationsSeeder::class);
+        $this->call(TripsSeeder::class);
+        $this->call(UserRolePermissionSeeder::class);
 
     }
 }

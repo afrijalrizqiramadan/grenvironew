@@ -16,12 +16,12 @@ return new class extends Migration
             $table->unsignedInteger('user_id');
             $table->string('name', 255);
             $table->string('address', 255)->nullable();
-            $table->string('phone_number', 20)->nullable();
+            $table->string('telp', 20)->nullable();
             $table->string('email', 255)->nullable();
             $table->date('join_date')->nullable();
             $table->string('specialization', 100)->nullable();
             $table->string('license_number', 50)->nullable();
-            $table->enum('employment_status', ['active', 'inactive', 'on leave'])->default('active');
+            $table->enum('employment_status', ['Aktif', 'Tidak Aktif'])->default('Aktif');
             $table->string('work_schedule', 255)->nullable();
             $table->text('additional_info')->nullable();
             $table->timestamps();

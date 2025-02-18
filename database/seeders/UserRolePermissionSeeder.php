@@ -18,31 +18,37 @@ class UserRolePermissionSeeder extends Seeder
 
     public function run()
     {
-        $default_user_value=[
-        'email_verified_at' => now(),
-        'password' => Hash::make('password'),
-        'remember_token' => Str::random(10),
-    ];
-        $administrator=User::create(array_merge([
+        $default_user_value = [
+            'email_verified_at' => now(),
+            'password' => Hash::make('password'),
+            'remember_token' => Str::random(10),
+        ];
+       
+        $administrator = User::create(array_merge([
             'email' => 'administrator@gmail.com',
-            'name' => 'administrator',
-        ],$default_user_value));
-        $customer=User::create(array_merge([
-            'email' => 'customer1@gmail.com',
-            'name' => 'Al Mahira',
-        ],$default_user_value));
-        $technician=User::create(array_merge([
+            'name' => 'Administrator',
+        ], $default_user_value));
+        $customer = User::create(array_merge([
+            'email' => 'customer@gmail.com',
+            'name' => 'Customer',
+        ], $default_user_value));
+        $technician = User::create(array_merge([
             'email' => 'technician@gmail.com',
-            'name' => 'technician',
-        ],$default_user_value));
-        $driver=User::create(array_merge([
+            'name' => 'Teknisi',
+        ], $default_user_value));
+        $driver = User::create(array_merge([
             'email' => 'driver@gmail.com',
             'name' => 'Driver',
-        ],$default_user_value));
-        $role_administrator=Role::create(['name'=> 'administrator']);
-        $role_customer=Role::create(['name'=> 'customer']);
-        $role_technician=Role::create(['name'=> 'technician']);
-        $role_driver=Role::create(['name'=> 'driver']);
+        ], $default_user_value));
+        $superadmin = User::create(array_merge([
+            'email' => 'superadmin@gmail.com',
+            'name' => 'Super Admin',
+        ], $default_user_value));
+        $role_superadmin = Role::create(['name' => 'superadmin']);
+        $role_administrator = Role::create(['name' => 'administrator']);
+        $role_customer = Role::create(['name' => 'customer']);
+        $role_technician = Role::create(['name' => 'technician']);
+        $role_driver = Role::create(['name' => 'driver']);
 
 
         $permissions = [
@@ -53,11 +59,10 @@ class UserRolePermissionSeeder extends Seeder
         ];
 
 
+        $superadmin->assignRole($role_superadmin);
         $administrator->assignRole($role_administrator);
         $customer->assignRole($role_customer);
         $technician->assignRole($role_technician);
         $driver->assignRole($role_driver);
-
     }
-
-  }
+}

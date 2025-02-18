@@ -18,7 +18,7 @@ class DeviceController extends Controller
 
         // Validasi data lainnya
         $validator = Validator::make($request->all(), [
-            'device_id' => 'required|string',
+            'buffer_id' => 'required|string',
             'uptime' => 'required|numeric',
             'memory' => 'required|numeric',
             'lastupdate' => 'required|date',
@@ -32,8 +32,8 @@ class DeviceController extends Controller
         // Ambil data yang telah divalidasi kecuali `api_key`
         $data = $validator->validated();
 
-        // Update data di tabel devices berdasarkan device_id
-        $device = Device::where('id', $data['device_id'])->first();
+        // Update data di tabel devices berdasarkan buffer_id
+        $device = Device::where('id', $data['buffer_id'])->first();
         if ($device) {
             $device->uptime = $data['uptime'];
             $device->memory = $data['memory'];

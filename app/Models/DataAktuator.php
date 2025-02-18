@@ -10,16 +10,16 @@ class DataAktuator extends Model
     use HasFactory;
     protected $table = 'data_aktuators'; // Nama tabel dalam database
     protected $fillable = [
-        'device_id',
+        'buffer_id',
         'buzzer',
         'heater',
     ];
 
    public function device()
     {
-        return $this->belongsTo(Device::class, 'device_id', 'id');
+        return $this->belongsTo(Device::class, 'buffer_id', 'id');
     }
-    public function device_id()
+    public function buffer_id()
     {
         return $this->belongsTo(Device::class);
     }

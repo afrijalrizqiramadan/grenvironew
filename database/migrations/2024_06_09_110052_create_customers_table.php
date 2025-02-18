@@ -18,15 +18,10 @@ return new class extends Migration
             $table->text('address');
             $table->string('telp', 13);
             $table->string('email', 30)->nullable();
-            $table->string('location',50);
-            $table->text('maps')->nullable();
-            $table->double('latitude');
-            $table->double('longitude');
             $table->string('images', 100)->nullable();
             $table->date('registration_date');
             $table->string('type', 20);
             $table->float('capacity');
-            $table->unsignedInteger('device_id');
             $table->unsignedInteger('province');
             $table->unsignedInteger('regency');
             $table->unsignedInteger('district');

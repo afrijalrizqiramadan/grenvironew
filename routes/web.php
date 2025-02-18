@@ -8,19 +8,15 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PressureController;
 use App\Http\Controllers\TemperatureController;
 use App\Http\Controllers\DeliveryController;
-use App\Http\Controllers\MapController;
-use App\Http\Controllers\OutletMapController;
-use App\Http\Controllers\CentrePointController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ThemeController;
-use App\Http\Controllers\SpaceController;
-use App\Http\Livewire\MembersTable;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MqttController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TrackingController;
-use App\Http\Controllers\ProfilKendaraanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,13 +64,13 @@ Route::middleware([
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/map',[App\Http\Controllers\MapController::class,'index'])->name('map');
-    Route::get('/detailcustomer/{id}',[App\Http\Controllers\DetailCustomerController::class,'detailPage'])->name('detail-customer');
+    Route::get('/detailcustomer/{id}',[App\Http\Controllers\DetailBufferController::class,'detailPage'])->name('detail-customer');
     Route::get('/detailkendaraan/{id}',[App\Http\Controllers\ProfilKendaraanController::class,'detailPage'])->name('detail-kendaraan');
 
     Route::resource('customer',(CustomerController::class));
-    Route::resource('centre-point',(CentrePointController::class));
-    Route::resource('space',(SpaceController::class));
     Route::resource('tracking',(TrackingController::class));
+    Route::resource('invoice',(InvoiceController::class));
+    Route::resource('settings',(SettingsController::class));
 
     Route::get('/centrepoint/data',[DataController::class,'centrepoint'])->name('centre-point.data');
     Route::get('/categories/data',[DataController::class,'categories'])->name('data-category');

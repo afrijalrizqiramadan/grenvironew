@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('drivers', function (Blueprint $table) {
             $table->id();  // Primary Key (Auto Increment)
-            $table->string('full_name', 100);
-            $table->string('email', 100)->unique();
-            $table->string('phone_number', 20)->unique();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('name', 100);
+            $table->string('email', 100)->nullable();
+            $table->string('telp', 20)->nullable();
             $table->text('address')->nullable();
             $table->string('license_number', 50)->unique();
             $table->date('license_expiry');
-            $table->unsignedBigInteger('vehicle_id')->nullable();
+            $table->unsignedBigInteger('kendaraan_id')->nullable();
             $table->enum('availability_status', ['Available', 'On Duty', 'Inactive'])->default('Available');
             $table->string('assigned_area', 100)->nullable();
             $table->integer('experience_years')->default(0);

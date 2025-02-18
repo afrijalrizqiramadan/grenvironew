@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Tracking extends Model
 {
     use HasFactory;
-    protected $fillable = ['device_id', 'latitude', 'longitude', 'pressure'];
+    protected $fillable = ['buffer_id', 'latitude', 'longitude', 'pressure'];
 
 }

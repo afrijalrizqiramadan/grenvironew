@@ -16,13 +16,14 @@ class DriverSeeder extends Seeder
     {
         $drivers = [
             [
-                'full_name' => 'John Doe',
-                'email' => 'johndoe@example.com',
-                'phone_number' => '081234567890',
+                'user_id' => '4',
+                'name' => 'John Doe',
+                'email' => '',
+                'telp' => '081234567890',
                 'address' => 'Jl. Merdeka No. 1, Jakarta',
                 'license_number' => 'A12345678',
                 'license_expiry' => '2025-12-31',
-                'vehicle_id' => 1,
+                'kendaraan_id' => 1,
                 'availability_status' => 'Available',
                 'assigned_area' => 'Jakarta',
                 'experience_years' => 5,

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedInteger('user_id');
             $table->string('name');
             $table->string('email')->nullable();
-            $table->string('phone_number')->nullable();
+            $table->string('telp')->nullable();
             $table->date('join_date')->nullable();
             $table->unsignedInteger('province')->nullable();
             $table->unsignedInteger('regency')->nullable();

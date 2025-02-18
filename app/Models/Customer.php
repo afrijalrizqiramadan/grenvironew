@@ -14,24 +14,21 @@ class Customer extends Model
     use HasFactory;
     protected $guarded = [];
     protected $fillable = [
-        'device_id',
+        'buffer_id',
         'name',
         // tambahkan kolom lain yang diperlukan
     ];
 
     public function dataSensors()
     {
-        return $this->hasMany(DataSensor::class, 'device_id', 'devices_id');
+        return $this->hasMany(DataSensor::class, 'buffer_id', 'devices_id');
     }
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
-    public function device()
-    {
-        return $this->belongsTo(Device::class, 'device_id');
-    }
+  
     public function getImage()
     {
         if (substr($this->image, 0, 5) == "https") {

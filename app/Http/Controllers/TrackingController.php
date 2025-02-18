@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CentrePoint;
-use App\Models\DataSensorKendaraan;
+use App\Models\BufferKendaraan;
 use App\Models\Tracking;
 use Illuminate\Http\Request;
 
@@ -13,18 +12,17 @@ class TrackingController extends Controller
 
     public function index()
     {
-        $minpressuresensor = DataSensorKendaraan::join('devices', 'data_sensor_kendaraans.device_id', '=', 'devices.id')
-        ->join('kendaraans', 'devices.id', '=', 'kendaraans.device_id')
-        ->select('data_sensor_kendaraans.*', 'kendaraans.*')
+        $minpressuresensor = BufferKendaraan::join('kendaraans', 'buffer_kendaraans.kendaraan_id', '=', 'kendaraans.id')
+        ->select('buffer_kendaraans.*', 'kendaraans.*')
         ->get();
-        $centrepoint = CentrePoint::get()->first();
+        $centrepoint = env('APP_POINT');
         return view('tracking.index', compact('centrepoint','minpressuresensor'));
     }
 
     public function store(Request $request)
     {
         $tracking = Tracking::create([
-            'device_id' => $request->device_id,
+            'buffer_id' => $request->buffer_id,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
             'pressure' => $request->pressure,

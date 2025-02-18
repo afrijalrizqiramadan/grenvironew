@@ -69,7 +69,7 @@
                                                     </div>
                                                 </th> --}}
                                                     <td class="id">{{ $index + 1 }}</td>
-                                                    <td class="customer_name"><a href="{{ route('detail-customer', $customer->id) }}" class="text-success"><strong>{{ $customer->name }}</strong></a></td>
+                                                    <td class="customer_name"><a href="{{ route('customer.show', $customer->id) }}" class="text-success"><strong>{{ $customer->name }}</strong></a></td>
                                                     <td class="email">{{ $customer->email }}</td>
                                                     <td class="phone">{{ $customer->capacity  }} Bar</td>
                                                     <td class="date">{{ \Carbon\Carbon::parse($customer->registration_date)->translatedFormat('d F Y') }}</td>

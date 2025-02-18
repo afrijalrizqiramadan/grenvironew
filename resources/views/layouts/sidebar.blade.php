@@ -52,7 +52,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="{{ route('pressure') }}">
-                        <i class="ri-bar-chart-line"></i> <span>Tekanan</span>
+                        <i class="ri-bar-chart-line"></i> <span>Monitoring Tekanan</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -62,7 +62,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="{{ route('map') }}">
-                        <i class="ri-map-line"></i> <span>Peta</span>
+                        <i class="ri-map-line"></i> <span>Peta Buffer</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -73,6 +73,21 @@
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="{{ route('customer.index') }}">
                         <i class="ri-customer-service-line"></i> <span>Pelanggan</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="{{ route('customer.index') }}">
+                        <i class="ri-money-cny-circle-line"></i> <span>Trip Cost</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="{{ route('invoice.index') }}">
+                        <i class="ri-bill-line"></i> <span>Invoice</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="{{ route('settings.index') }}">
+                        <i class="ri-settings-3-line"></i> <span>Pengaturan</span>
                     </a>
                 </li>
             @endif

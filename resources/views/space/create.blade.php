@@ -133,7 +133,7 @@ Untuk cdn yang kita muat disini hampir sama dengan form create pada file view cr
             // titik koordinat disini kita dapatkan dari tabel centrepoint tepatnya dari field location
             // yang sebelumnya sudah kita tambahkan jadi lokasi map yang akan muncul  sesuai dengan tabel
             // centrepoint
-            center: [{{ $centrepoint->location }}],
+            center: [{{ $centrepoint }}],
             zoom: 14,
             layers: [streets]
         });
@@ -155,7 +155,7 @@ Untuk cdn yang kita muat disini hampir sama dengan form create pada file view cr
         // lalu kita masukkan curLocation tersebut ke dalam variabel marker untuk menampilkan marker
         // pada peta.
 
-        var curLocation = [{{ $centrepoint->location }}];
+        var curLocation = [{{ $centrepoint }}];
         map.attributionControl.setPrefix(false);
 
         var marker = new L.marker(curLocation, {

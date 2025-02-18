@@ -9,13 +9,13 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 use App\Models\Customer;
-use App\Models\DeliveryStatus;
-use App\Models\HistorySensor;
+use App\Models\Trip;
+use App\Models\BufferCustomerHistories;
 use App\Models\Device;
-use App\Models\DataSensor;
+use App\Models\BufferCustomer;
+use App\Models\Invoice;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
-use App\Models\CentrePoint;
 
 class HomeController extends Controller
 {
@@ -52,24 +52,23 @@ class HomeController extends Controller
         if($user->hasRole('administrator')) {
             $user = Auth::user(); // Mendapatkan pengguna yang sedang login
             $customerCount = Customer::count(); // Menghitung jumlah data customer
-            $centrePoint = CentrePoint::get()->first();
+            $centrePoint = env('APP_POINT');
             $spaces = Customer::get();
-      
-            $lowPressureCount = DataSensor::where('pressure', '<', 20)->count();
-            $lowTemperatureCount = DataSensor::where('temperature', '<', 20)->count();
+            $unpaidInvoices = Invoice::where('status', 'UNPAID')->count();
+            $lowPressureCount = BufferCustomer::where('pressure', '<', 20)->count();
+            $lowTemperatureCount = BufferCustomer::where('temperature', '<', 20)->count();
             
-            $minpressuresensor = DataSensor::join('devices', 'data_sensors.device_id', '=', 'devices.id')
-            ->join('customers', 'devices.id', '=', 'customers.device_id')
+            $minpressuresensor = BufferCustomer::join('customers', 'buffer_customers.customer_id', '=', 'customers.id')
             ->join('indonesia_districts', 'customers.district', '=', 'indonesia_districts.id') // Join dengan tabel districts
-            ->select('data_sensors.*', 'customers.*', 'indonesia_districts.name as district_name')
+            ->select('buffer_customers.*', 'customers.*', 'indonesia_districts.name as district_name')
             ->get();
             
-            $countDeliveries = DeliveryStatus::where('status', 'Selesai')
-            ->whereYear('delivery_date', now()->year)
-            ->whereMonth('delivery_date', now()->month)
+            $countDeliveries = Trip::where('status', 'Selesai')
+            ->whereYear('departure_time', now()->year)
+            ->whereMonth('departure_time', now()->month)
             ->count();
 
-              return view('dashboard-administrator', compact( 'spaces','centrePoint','countDeliveries','lowTemperatureCount','customerCount','lowPressureCount', 'minpressuresensor'));
+              return view('dashboard-administrator', compact( 'unpaidInvoices','spaces','centrePoint','countDeliveries','lowTemperatureCount','customerCount','lowPressureCount', 'minpressuresensor'));
      }
         elseif($user->hasRole('customer')) {
             $user = Auth::user(); // Mendapatkan pengguna yang sedang login
@@ -85,7 +84,7 @@ class HomeController extends Controller
             $email = $customer->email;
             $id_device = $device->id;
             $status_device = $device->status;
-            $sensorData = HistorySensor::where('device_id', $id_device)
+            $sensorData = BufferCustomerHistories::where('buffer_id', $id_device)
             ->whereMonth('timestamp', $currentMonth)
             ->whereYear('timestamp', $currentYear)
             ->orderBy('timestamp')
@@ -106,18 +105,18 @@ class HomeController extends Controller
         $weatherData = json_decode($response->getBody(), true);
 
             $registration_date_device = $customer->registration_date;
-            $statuses = DeliveryStatus::where('customer_id', $customer_id)->orderBy('delivery_date', 'desc')
+            $statuses = Trip::where('customer_id', $customer_id)->orderBy('delivery_date', 'desc')
             ->take(5)->get();
-           $latestPressure = DataSensor::where('device_id',  $id_device)
+           $latestPressure = BufferCustomer::where('buffer_id',  $id_device)
             ->orderBy('timestamp', 'desc')
             ->value('pressure');
-            $latestTemperature = DataSensor::where('device_id',  $id_device)
+            $latestTemperature = BufferCustomer::where('buffer_id',  $id_device)
             ->orderBy('timestamp', 'desc')
             ->value('temperature');
-            $latestTime = DataSensor::where('device_id',  $id_device)
+            $latestTime = BufferCustomer::where('buffer_id',  $id_device)
             ->orderBy('timestamp', 'desc')
             ->value('timestamp');
-            $sensorData = HistorySensor::where('device_id', $id_device)
+            $sensorData = BufferCustomerHistories::where('buffer_id', $id_device)
             ->whereMonth('timestamp', $currentMonth)
             ->whereYear('timestamp', $currentYear)
             ->orderBy('timestamp')
@@ -134,16 +133,16 @@ class HomeController extends Controller
             $deviceData = Device::get();
             $user = Auth::user(); // Mendapatkan pengguna yang sedang login
             $customerCount = Customer::count(); // Menghitung jumlah data customer
-            $averagePressure = DataSensor::avg('pressure');
-            $lowPressureCount = DataSensor::where('pressure', '<', 20)->count();
+            $averagePressure = BufferCustomer::avg('pressure');
+            $lowPressureCount = BufferCustomer::where('pressure', '<', 20)->count();
 
-            $minpressuresensor = DataSensor::join('devices', 'data_sensors.device_id', '=', 'devices.id')
-            ->join('customers', 'devices.id', '=', 'customers.device_id')
+            $minpressuresensor = BufferCustomer::join('devices', 'buffer_customers.buffer_id', '=', 'devices.id')
+            ->join('customers', 'devices.id', '=', 'customers.buffer_id')
             ->join('indonesia_districts', 'customers.district', '=', 'indonesia_districts.id') // Join dengan tabel districts
-            ->select('data_sensors.*', 'customers.*', 'indonesia_districts.name as district_name')
+            ->select('buffer_customers.*', 'customers.*', 'indonesia_districts.name as district_name')
             ->get();
 
-            $countDeliveries = DeliveryStatus::where('status', 'Selesai')
+            $countDeliveries = Trip::where('status', 'Selesai')
             ->whereYear('delivery_date', now()->year)
             ->whereMonth('delivery_date', now()->month)
             ->count();
@@ -156,13 +155,13 @@ class HomeController extends Controller
 
     public function getPressureData($id_device)
     {
-        $data = DataSensor::where('device_id', $id_device)->latest()->first(['pressure', 'timestamp']);
+        $data = BufferCustomer::where('buffer_id', $id_device)->latest()->first(['pressure', 'timestamp']);
         return response()->json($data);
     }
 
     public function getTemperatureData($id_device)
     {
-        $data = DataSensor::where('device_id', $id_device)->latest()->first(['temperature', 'timestamp']);
+        $data = BufferCustomer::where('buffer_id', $id_device)->latest()->first(['temperature', 'timestamp']);
         return response()->json($data);
     }
 

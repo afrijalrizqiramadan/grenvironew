@@ -4,13 +4,13 @@ namespace App\Livewire;
 
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
-use App\Models\DeliveryStatus;
+use App\Models\Trip;
 use App\Models\Customer;
 use Illuminate\Database\Eloquent\Builder;
 
 class DeliveryTable extends DataTableComponent
 {
-    protected $model = DeliveryStatus::class;
+    protected $model = Trip::class;
 
     public function configure(): void
     {
@@ -20,7 +20,7 @@ class DeliveryTable extends DataTableComponent
     public function builder(): Builder
     {
         $customer = Customer::where('id',1)->first();
-        return DeliveryStatus::query()
+        return Trip::query()
             ->join('customers', 'delivery_statuses.customer_id', '=', 'customers.id')
             ->where('customers.id', $customer->id)
             ->orderByDesc('delivery_date');

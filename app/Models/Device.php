@@ -12,7 +12,7 @@ class Device extends Model
     // Kolom yang bisa diisi
 
     use HasFactory;
-    protected $fillable = ['device_id', 'uptime', 'memory', 'lastupdate', 'temperature'];
+    protected $fillable = ['buffer_id', 'uptime', 'memory', 'lastupdate', 'temperature'];
 
     // Nonaktifkan pengelolaan otomatis kolom created_at dan updated_at jika tidak diperlukan
     public $timestamps = false;
@@ -20,6 +20,6 @@ class Device extends Model
 
     public function customers()
     {
-        return $this->belongsTo(Customer::class, 'device_id', 'device_id');
+        return $this->belongsTo(Customer::class, 'buffer_id', 'buffer_id');
     }
 }

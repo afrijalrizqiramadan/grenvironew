@@ -1,18 +1,22 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\BufferCustomer;
+use App\Models\BufferCustomerHistories;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Http\Request;
-use App\Models\DeliveryStatus;
+use App\Models\Trip;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use App\Models\Customer;
-use App\Models\CentrePoint;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Role;
+use Carbon\Carbon;
+use GuzzleHttp\Client;
 use Spatie\Permission\Models\Role as ModelsRole;
 
 class CustomerController extends Controller
@@ -27,7 +31,7 @@ class CustomerController extends Controller
     public function create()
     {
         $provinces = \Indonesia::allProvinces();
-        $centrepoint = CentrePoint::get()->first();
+        $centrepoint = env('APP_POINT');
         return view('customer.create', compact('provinces','centrepoint'));
     }
 
@@ -36,7 +40,7 @@ class CustomerController extends Controller
         $user = Auth::user();
 
         if($user->hasRole('administrator')) {
-            $statuses = DeliveryStatus::with('customer')->orderBy('delivery_date', 'desc')
+            $statuses = Trip::with('customer')->orderBy('delivery_date', 'desc')
             ->get();
 
             return view('customer/index', compact('statuses'));
@@ -64,7 +68,7 @@ class CustomerController extends Controller
             'registration_date' => 'nullable|date',
             'type' => 'nullable|string|max:50',
             'capacity' => 'nullable|numeric',
-            'device_id' => 'nullable|integer',
+            'buffer_id' => 'nullable|integer',
             'province' => 'nullable|string|max:255',
             'regency' => 'nullable|string|max:255',
             'district' => 'nullable|string|max:255',
@@ -93,7 +97,7 @@ class CustomerController extends Controller
         // ✅ Isi data customer
         $customer->fill($request->only([
             'name', 'address', 'telp', 'location', 'maps',
-            'registration_date', 'type', 'capacity', 'device_id',
+            'registration_date', 'type', 'capacity', 'buffer_id',
             'province', 'regency', 'district', 'village', 'status'
         ]));
         $customer->latitude = $latitude;
@@ -128,10 +132,18 @@ class CustomerController extends Controller
         return redirect()->route('customer.create')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
     }
 }
-    public function show($id)
-    {
-        //
-    }
+public function show($id): View {
+    $user = Auth::user();
+    $currentMonth = Carbon::now()->month;
+    $currentYear = Carbon::now()->year;
+    if($user->hasRole('administrator')) {
+        $customer = Customer::where('id',$id)->first();
+
+    return view('customer.show', compact('customer'));
+    
+      }
+
+}
 
     /**
      * Show the form for editing the specified resource.
@@ -142,7 +154,7 @@ class CustomerController extends Controller
     public function edit(Customer $customer)
     {
         $provinces = \Indonesia::allProvinces();
-        $centrepoint = CentrePoint::get()->first();
+        $centrepoint = env('APP_POINT');
         $customer = Customer::findOrFail($customer->id);
         return view('customer.edit', [
             'customer' => $customer,
@@ -168,7 +180,7 @@ class CustomerController extends Controller
             'registration_date' => 'nullable|date',
             'type' => 'nullable|string|max:50',
             'capacity' => 'nullable|numeric',
-            'device_id' => 'nullable|integer',
+            'buffer_id' => 'nullable|integer',
             'province' => 'nullable|string|max:255',
             'regency' => 'nullable|string|max:255',
             'district' => 'nullable|string|max:255',
@@ -206,7 +218,7 @@ class CustomerController extends Controller
         $customer->registration_date = $request->registration_date;
         $customer->type = $request->type;
         $customer->capacity = $request->capacity;
-        $customer->device_id = $request->device_id;
+        $customer->buffer_id = $request->buffer_id;
         $customer->province = $request->provinsi;
         $customer->regency = $request->kota;
         $customer->district = $request->kecamatan;
